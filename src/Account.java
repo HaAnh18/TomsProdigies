@@ -45,8 +45,7 @@ public class Account {
         userName = registerUsername();
         name = registerName();
         email = registerEmail();
-        System.out.println("Enter address: ");
-        address = scanner.nextLine();
+        address = registerAddress();
         phone = registerPhoneNumber();
         customerType = "Regular";
         password = registerPassword();
@@ -65,7 +64,7 @@ public class Account {
         String username = scanner.nextLine();
         System.out.println("Enter password: ");
         String password = scanner.nextLine();
-        String hashing = this.hashingPassword(password);
+//        String hashing = this.hashingPassword(password);
         try {
             Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
 
@@ -167,6 +166,26 @@ public class Account {
         Pattern pattern = Pattern.compile(emailRules);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches(); // returns true if email matches, else returns false
+    }
+
+    public String registerAddress() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter address: ");
+        String address = scanner.nextLine();
+        if (validateAddress(address)) {
+            this.address = address;
+        } else {
+            System.out.println("Invalid address");
+            registerAddress();
+        }
+        return this.address;
+    }
+
+    public boolean validateAddress(String address) {
+        String rulesAddress = "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)";
+        Pattern pattern = Pattern.compile(rulesAddress);
+        Matcher matcher = pattern.matcher(address);
+        return matcher.matches(); // returns true if address matches, else returns false
     }
 
     public String registerPhoneNumber()
