@@ -2,6 +2,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +11,7 @@ import java.util.regex.Pattern;
 public class Account {
     private String cID;
     private String name;
+    private String email;
     private String address;
     private String phone;
     private String customerType;
@@ -16,9 +19,10 @@ public class Account {
     private String password;
 
 
-    public Account(String cID, String name, String address, String phone, String customerType, String userName, String password) {
+    public Account(String cID, String name, String email, String address, String phone, String customerType, String userName, String password) {
         this.cID = cID;
         this.name = name;
+        this.email = email;
         this.address = address;
         this.phone = phone;
         this.customerType = customerType;
@@ -40,12 +44,13 @@ public class Account {
         cID = String.format("C%03d", id);
         userName = registerUsername();
         name = registerName();
+        email = registerEmail();
         System.out.println("Enter address: ");
         address = scanner.nextLine();
         phone = registerPhoneNumber();
         customerType = "Regular";
         password = registerPassword();
-        pw.println("\n" + cID + "," + name + "," + address + "," + phone + "," + customerType + "," + userName + "," + password);
+        pw.println("\n" + cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + "," + userName + "," + password);
         // Write customer's information to customers file
         pw.close();
     }
@@ -60,26 +65,28 @@ public class Account {
         String username = scanner.nextLine();
         System.out.println("Enter password: ");
         String password = scanner.nextLine();
-
+        String hashing = this.hashingPassword(password);
         try {
             Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
 
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
                 String[] values = line.split(","); // Split each value in each line by comma
-                if (values[5].equals(username))
+                if (values[6].equals(username))
                 // If the username already had in customer file continue to check the password
                 {
-                    if (values[6].equals(password))
-                    // If the password match
+                    if (values[7].equals(password))
+//                    // If the password match
                     {
                         isAuthentication = true;
                     }
                 }
+//                System.out.println("not");
             }
         } catch (FileNotFoundException fe) {
             fe.printStackTrace();
         }
+
         return isAuthentication;
     }
 
@@ -96,7 +103,7 @@ public class Account {
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
                 String[] values = line.split(",");
-                if (values[5].equals(username))
+                if (username.equals(values[6]))
                 // If the username had been existed, the customer had to create another username
                 {
                     System.out.println("Username had been existed");
@@ -138,6 +145,30 @@ public class Account {
         return matcher.matches(); // Returns true if name matches, else returns false
     }
 
+    public String registerEmail() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter email: ");
+        String email = scanner.nextLine();
+        if (validateEmail(email)) {
+            this.email = email;
+        } else {
+            System.out.println("Invalid email!");
+            registerEmail();
+        }
+        return this.email;
+    }
+
+    public boolean validateEmail(String email) {
+        String emailRules = "^[a-zA-Z0-9_+&*-]+(?:\\." +
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+        //Compile regular expression to get the pattern
+        Pattern pattern = Pattern.compile(emailRules);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches(); // returns true if email matches, else returns false
+    }
+
     public String registerPhoneNumber()
     // Register the phone number
     {
@@ -168,6 +199,7 @@ public class Account {
     // Register the password
     {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter password: ");
         String password = scanner.nextLine();
         if (validatePassword(password))
         // If the password satisfy the password's rules
@@ -190,5 +222,30 @@ public class Account {
         Pattern pattern = Pattern.compile(rulesPassword);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches(); // returns true if password matches, else returns false
+    }
+
+    public String hashingPassword(String password) {
+        try {
+            // Create MessageDigest instance for MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // Add password bytes to digest
+            md.update(password.getBytes());
+
+            // Get the hash's bytes
+            byte[] bytes = md.digest();
+
+            // These bytes[] has bytes in decimal format. Convert it to hexadecimal format
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+
+            // Get complete hashed password in hex format
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
