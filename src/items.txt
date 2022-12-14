@@ -1,0 +1,11 @@
+# a product has the following format
+#ID,Title, Price, Catetory
+#you can remove or ignore these comments (start with #) when you run your program
+#Please note your final item data format could be very different based on your implementation to fullfil the requirements
+#So there could be more or less data field based on your implementation
+I001-2001,Dell XPS 17,5.5,Laptop
+I002-1988,Macbook Pro 15,8.5,Laptop
+I003-1992,Samsung Galaxy S22,4.5,Phone
+I004-1999,Iphone 13 PM,7.5,Phone
+I005-2015,Harman Kardon,3.5,Earbud
+I006-2014,Marshall,6,Headset
