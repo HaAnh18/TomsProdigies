@@ -1,6 +1,4 @@
-#Here is just an example of customer records has the following data format
 #ID,Name,Email,Address,Phone,membership,username,password
-#you can remove or ignore these comments (start with #) when you run your program
 #Please note your final customer data format could be very different based on your implementation to fullfil the requirements
 #So there could be more or less data field based on your implementation
 C001,Minh Hoang,minh.hoang@gmail.com,18 Irwin Street,0421473243,Silver,minhhoang,123456
