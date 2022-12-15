@@ -74,7 +74,7 @@ public class Account {
                 if (values[6].equals(username))
                 // If the username already had in customer file continue to check the password
                 {
-                    if (values[7].equals(password))
+                    if (values[7].equals(hashing(password)))
 //                    // If the password match
                     {
                         isAuthentication = true;
@@ -135,7 +135,7 @@ public class Account {
     }
 
     public boolean validateName(String name)
-    // Validate the name that customer input
+    // Validate the name that customer inputs
     {
         String rulesName = "(\\b[A-Z]{1}[a-z]+)( )([A-Z]{1}[a-z]+\\b)";
         // Customer's name must contain letters only and have white space
@@ -144,11 +144,15 @@ public class Account {
         return matcher.matches(); // Returns true if name matches, else returns false
     }
 
-    public String registerEmail() {
+    public String registerEmail()
+    // Register the customer's email
+    {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter email: ");
         String email = scanner.nextLine();
-        if (validateEmail(email)) {
+        if (validateEmail(email))
+        // If the email satisfy the email's rules
+        {
             this.email = email;
         } else {
             System.out.println("Invalid email!");
@@ -157,7 +161,9 @@ public class Account {
         return this.email;
     }
 
-    public boolean validateEmail(String email) {
+    public boolean validateEmail(String email)
+    // Validate the email that customer inputs
+    {
         String emailRules = "^[a-zA-Z0-9_+&*-]+(?:\\." +
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
@@ -168,11 +174,15 @@ public class Account {
         return matcher.matches(); // returns true if email matches, else returns false
     }
 
-    public String registerAddress() {
+    public String registerAddress()
+    // Register the customer's address
+    {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter address: ");
         String address = scanner.nextLine();
-        if (validateAddress(address)) {
+        if (validateAddress(address))
+        // If the address satisfy the address's rules
+        {
             this.address = address;
         } else {
             System.out.println("Invalid address");
@@ -181,7 +191,9 @@ public class Account {
         return this.address;
     }
 
-    public boolean validateAddress(String address) {
+    public boolean validateAddress(String address)
+    // Validate the address that customer inputs
+    {
         String rulesAddress = "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)";
         Pattern pattern = Pattern.compile(rulesAddress);
         Matcher matcher = pattern.matcher(address);
@@ -223,7 +235,7 @@ public class Account {
         if (validatePassword(password))
         // If the password satisfy the password's rules
         {
-            this.password = password;
+            this.password = hashing(password);
         } else {
             System.out.println("Your password is too weak!");
             registerPassword();
@@ -231,7 +243,9 @@ public class Account {
         return this.password;
     }
 
-    public boolean validatePassword(String password) {
+    public boolean validatePassword(String password)
+    // Validate the password that customer inputs
+    {
         String rulesPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}$";
         /* Password must contain at least one digit [0-9].
         Password must contain at least one lowercase Latin character [a-z].
@@ -243,25 +257,27 @@ public class Account {
         return matcher.matches(); // returns true if password matches, else returns false
     }
 
-    public String hashingPassword(String password) {
+    public String hashing(String password)
+    // Hashing the customer's password
+    {
         try {
-            // Create MessageDigest instance for MD5
-            MessageDigest md = MessageDigest.getInstance("MD5");
+            /* MessageDigest instance for MD5. */
+            MessageDigest m = MessageDigest.getInstance("MD5");
 
-            // Add password bytes to digest
-            md.update(password.getBytes());
+            /* Add plain-text password bytes to digest using MD5 update() method. */
+            m.update(password.getBytes());
 
-            // Get the hash's bytes
-            byte[] bytes = md.digest();
+            /* Convert the hash value into bytes */
+            byte[] bytes = m.digest();
 
-            // These bytes[] has bytes in decimal format. Convert it to hexadecimal format
-            StringBuilder sb = new StringBuilder();
+            /* The bytes array has bytes in decimal form. Converting it into hexadecimal format. */
+            StringBuilder s = new StringBuilder();
             for (int i = 0; i < bytes.length; i++) {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+                s.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
 
-            // Get complete hashed password in hex format
-            return sb.toString();
+            /* Complete hashed password in hexadecimal format */
+            return s.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
