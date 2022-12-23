@@ -1,0 +1,5 @@
+#Category,Quantity
+Laptop,2
+Phone,2
+Earbud,1
+Headset,1

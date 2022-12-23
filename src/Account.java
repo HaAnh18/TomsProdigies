@@ -6,7 +6,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +20,7 @@ public class Account {
     private String password;
 
     Path path = Paths.get("./src/customers.txt");
-    int id = (int) Files.lines(path).count() - 1;
+    int id = (int) Files.lines(path).count();
 
     public Account(String cID, String name, String email, String address, String phone, String customerType, String userName, String password) throws IOException {
         this.cID = cID;
@@ -288,87 +287,111 @@ public class Account {
         return "";
     }
 
-    public void getAllCustomerInfo() throws FileNotFoundException {
-        ArrayList<String[]> user = new ArrayList<>();
-        Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
 
-        while (fileScanner.hasNext()) {
-            String[] data = new String[6];
-            String line = fileScanner.nextLine();
-            StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
-            String ID = stringTokenizer.nextToken();
-            String name = stringTokenizer.nextToken();
-            String email = stringTokenizer.nextToken();
-            String address = stringTokenizer.nextToken();
-            String phone = stringTokenizer.nextToken();
-            String membership = stringTokenizer.nextToken();
-            String username = stringTokenizer.nextToken();
-            data = new String[]{ID, name, username, email, address, phone, membership};
-            user.add(data);
-        }
-
-        CreateTable createTable = new CreateTable();
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("ID", "NAME", "USERNAME", "EMAIL", "ADDRESS", "PHONE", "MEMBERSHIP");
-
-        for (int i = 1; i < user.size(); i++) {
-            createTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3], user.get(i)[4], user.get(i)[5], user.get(i)[6]);
-        }
-
-        createTable.print();
-        createTable.setHeaders(new String[0]);
-    }
-
-    public void updateInfo() {
-        System.out.println("Enter username: ");
-        Scanner scanner = new Scanner(System.in);
-        String cID = scanner.nextLine();
-
-        try {
-            Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
-            LineNumberReader lnr = null;
-            FileReader fr = null;
-
-            while (fileScanner.hasNext()) {
-                String line = fileScanner.nextLine();
-                String[] values = line.split(",");
-                fr = new FileReader("./src/customers.txt");
-                lnr = new LineNumberReader(fr);
-                System.out.println(values[0]);
-                if (cID.equals(values[0]))
-                // If the username had been existed, the customer had to create another username
-                {
-                    System.out.println("Which information you want to change?");
-                    System.out.println("1. Name");
-                    System.out.println("2. Email");
-                    System.out.println("3. Address");
-                    System.out.println("4. Phone");
-                    System.out.println("5. Password");
-                    int choice = Integer.parseInt(scanner.nextLine());
-                    switch (choice) {
-                        case 1:
-                            String name = scanner.nextLine();
-                            if (validateName(name)) {
-                                String lines = Files.readAllLines(Paths.get("./src/customers.txt")).get(lnr.getLineNumber() + 1);
-                                System.out.println(this.name);
-                                this.name = name;
-                                System.out.println(this.name);
-                                System.out.println(lines);
-                            }
-                            System.out.println(values[1]);
-                            break;
-                    }
-                } else {
-                    System.out.println("not");
-                }
+    public void updateName(String filepath, String newData, String userName) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        for (int i = 0; i < database.size(); i++) {
+            if (database.get(i)[6].equals(userName) && validateName(newData)) {
+                database.get(i)[1] = newData;
             }
-        } catch (FileNotFoundException fe) {
-            fe.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write("");
+        pw.close();
+
+        ArrayList<String[]> newDatabase = database;
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
         }
     }
 
+    public void updateEmail(String filepath, String newData, String userName) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        for (int i = 0; i < database.size(); i++) {
+            if (database.get(i)[6].equals(userName) && validateEmail(newData)) {
+                database.get(i)[2] = newData;
+            }
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write("");
+        pw.close();
+
+        ArrayList<String[]> newDatabase = database;
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+        }
+    }
+
+    public void updateAddress(String filepath, String newData, String userName) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        for (int i = 0; i < database.size(); i++) {
+            if (database.get(i)[6].equals(userName) && validateAddress(newData)) {
+                database.get(i)[3] = newData;
+            }
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write("");
+        pw.close();
+
+        ArrayList<String[]> newDatabase = database;
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+        }
+    }
+
+    public void updatePhone(String filepath, String newData, String userName) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        for (int i = 0; i < database.size(); i++) {
+            if (database.get(i)[6].equals(userName) && validatePhoneNumber(newData)) {
+                database.get(i)[4] = newData;
+            }
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write("");
+        pw.close();
+
+        ArrayList<String[]> newDatabase = database;
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+        }
+    }
+
+    public void updatePassword(String filepath, String newData, String userName) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        for (int i = 0; i < database.size(); i++) {
+            if (database.get(i)[6].equals(userName) && validatePassword(newData)) {
+                database.get(i)[7] = newData;
+            }
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write("");
+        pw.close();
+
+        ArrayList<String[]> newDatabase = database;
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+        }
+    }
+
+    public void checkMembership(String userName) throws IOException {
+        String[] database = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
+        System.out.println("Membership: " + database[5]);
+    }
 
     public String getcID() {
         return cID;
@@ -433,21 +456,4 @@ public class Account {
     public void setPassword(String password) {
         this.password = password;
     }
-
-//    public void checkMembershipStatus(Account account) throws IOException {
-//        String line = Files.readAllLines(Paths.get("./src/customers.txt")).get(account.id);
-//        System.out.println(account.id);
-//        StringTokenizer stringTokenizer = new StringTokenizer("./src/customers.txt",",");
-//        String[] data = line.split(",");
-//        System.out.println(data[5]);
-//        if (data[5].equals("Regular")) {
-//            System.out.println("You have a Regular membership!");
-//        } else if (data[5].equals("Silver")) {
-//            System.out.printf("You have a %s membership and you receive a discount of 5%\n",data[5]);
-//        } else if (data[5].equals("Gold")) {
-//            System.out.printf("You have a %s membership and you receive a discount of 10%\n",data[5]);
-//        } else if (data[5].equals("Platinum")) {
-//            System.out.printf("You have a %s membership and you receive a discount of 5%\n",data[5]);
-//        }
-//    }
 }
