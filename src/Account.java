@@ -84,7 +84,6 @@ public class Account {
                         isAuthentication = true;
                     }
                 }
-//                System.out.println("not");
             }
         } catch (FileNotFoundException fe) {
             fe.printStackTrace();
@@ -133,7 +132,7 @@ public class Account {
             this.name = name;
         } else {
             System.out.println("Invalid name");
-            registerName();
+            registerName(); // If name is incorrect, customer has to register name again
         }
         return this.name;
     }
@@ -160,7 +159,7 @@ public class Account {
             this.email = email;
         } else {
             System.out.println("Invalid email!");
-            registerEmail();
+            registerEmail(); // If email is incorrect, customer has to register email again
         }
         return this.email;
     }
@@ -190,7 +189,7 @@ public class Account {
             this.address = address;
         } else {
             System.out.println("Invalid address");
-            registerAddress();
+            registerAddress(); // If address is incorrect, customer has to register address again
         }
         return this.address;
     }
@@ -216,7 +215,7 @@ public class Account {
             this.phone = phone;
         } else {
             System.out.println("Invalid phone number!");
-            registerPhoneNumber();
+            registerPhoneNumber(); // If phone number is incorrect, customer has to register phone number again
         }
         return this.phone;
     }
@@ -242,7 +241,7 @@ public class Account {
             this.password = hashing(password);
         } else {
             System.out.println("Your password is too weak!");
-            registerPassword();
+            registerPassword(); // If password is not strong enough, customer has to register password again
         }
         return this.password;
     }
@@ -291,106 +290,127 @@ public class Account {
     public void updateName(String filepath, String newData, String userName) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[6].equals(userName) && validateName(newData)) {
-                database.get(i)[1] = newData;
+            if (database.get(i)[6].equals(userName) && validateName(newData))
+            /** If the system could find out the username in customers' file and the new name is validated
+             * then the system allow customer to update their information
+             */ {
+                database.get(i)[1] = newData; // The customer's information is changed
             }
         }
         File file = new File(filepath);
         PrintWriter pw = new PrintWriter(file);
 
-        pw.write("");
+        pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
         ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : newDatabase) {
             Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+            // This method would allow system to write all data including new data into the customers' file
         }
     }
 
     public void updateEmail(String filepath, String newData, String userName) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[6].equals(userName) && validateEmail(newData)) {
-                database.get(i)[2] = newData;
+            if (database.get(i)[6].equals(userName) && validateEmail(newData))
+            /** If the system could find out the username in customers' file and the new email is validated
+             * then the system allow customer to update their information
+             */ {
+                database.get(i)[2] = newData; // The customer's information is changed
             }
         }
         File file = new File(filepath);
         PrintWriter pw = new PrintWriter(file);
 
-        pw.write("");
+        pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
         ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : newDatabase) {
             Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+            // This method would allow system to write all data including new data into the customers' file
         }
     }
 
     public void updateAddress(String filepath, String newData, String userName) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[6].equals(userName) && validateAddress(newData)) {
-                database.get(i)[3] = newData;
+            if (database.get(i)[6].equals(userName) && validateAddress(newData))
+            /** If the system could find out the username in customers' file and the new address is validated
+             * then the system allow customer to update their information
+             */ {
+                database.get(i)[3] = newData; // The customer's information is changed
             }
         }
         File file = new File(filepath);
         PrintWriter pw = new PrintWriter(file);
 
-        pw.write("");
+        pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
         ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : newDatabase) {
             Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+            // This method would allow system to write all data including new data into the customers' file
         }
     }
 
     public void updatePhone(String filepath, String newData, String userName) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[6].equals(userName) && validatePhoneNumber(newData)) {
-                database.get(i)[4] = newData;
+            if (database.get(i)[6].equals(userName) && validatePhoneNumber(newData))
+            /** If the system could find out the username in customers' file and the new phone number is validated
+             * then the system allow customer to update their information
+             */ {
+                database.get(i)[4] = newData; // The customer's information is changed
             }
         }
         File file = new File(filepath);
         PrintWriter pw = new PrintWriter(file);
 
-        pw.write("");
+        pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
         ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : newDatabase) {
             Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+            // This method would allow system to write all data including new data into the customers' file
         }
     }
 
     public void updatePassword(String filepath, String newData, String userName) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[6].equals(userName) && validatePassword(newData)) {
-                database.get(i)[7] = newData;
+            if (database.get(i)[6].equals(userName) && validatePassword(newData))
+            /** If the system could find out the username in customers' file and the new password is validated
+             * then the system allow customer to update their information
+             */ {
+                database.get(i)[7] = newData; // The customer's information is changed
             }
         }
         File file = new File(filepath);
         PrintWriter pw = new PrintWriter(file);
 
-        pw.write("");
+        pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
         ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : newDatabase) {
             Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+            // This method would allow system to write all data including new data into the customers' file
         }
     }
 
     public void checkMembership(String userName) throws IOException {
         String[] database = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
-        System.out.println("Membership: " + database[5]);
+        // Read all information of this customer
+        System.out.println("Membership: " + database[5]); // Print the membership status of this customer
     }
 
     public String getcID() {
