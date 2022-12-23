@@ -407,7 +407,9 @@ public class Account {
         }
     }
 
-    public void checkMembership(String userName) throws IOException {
+    public void checkMembership(String userName) throws IOException
+    // This method would show the customer's membership status
+    {
         String[] database = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
         // Read all information of this customer
         System.out.println("Membership: " + database[5]); // Print the membership status of this customer
