@@ -15,9 +15,11 @@ public class Main {
         String path = "./src/categories.txt";
 //        admin.addProduct();
         Product product = new Product();
+        product.getAllProductInfo();
+        admin.updatePrice("./src/items.txt", "50", "I001-2001");
 //        admin.addProduct();
 //        System.out.println(product.checkCategory("laptop"));
-        product.registerCategory("laptop");
+//        product.registerCategory("laptop");
 //        System.out.println(product.checkCategory("iPhone"));
 //        System.out.println(product.registerCategory("Laptop"));
 //        System.out.println(product.validateTile("iphone new 12"));
