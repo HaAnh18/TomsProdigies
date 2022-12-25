@@ -3,6 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -94,9 +95,10 @@ public class Admin extends Account {
         System.out.println("Enter price: "); // Ask admin to input the product's price
         double price = scanner.nextDouble();
         scanner.nextLine();
-        pw.println("\n" + ID + "," + title + "," + price + "," + category);
+        pw.println(ID + "," + title + "," + price + "," + category + "\n");
 //        // Write product's information to items' file
         pw.close();
+
     }
 
     public void updatePrice(String filepath, String newData, String pID) throws IOException
@@ -119,10 +121,33 @@ public class Admin extends Account {
 
         ArrayList<String[]> newDatabase = database;
 
-        for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Title, Price, Catetory", String.join(",", obj));
+        for (int i = 0; i < newDatabase.size(); i++) {
+            System.out.println(Arrays.toString(newDatabase.get(i)));
+            Write.rewriteFile(filepath, "#ID,Title, Price, Catetory", String.join(",", newDatabase.get(i)));
             // This method would allow system to write all data including new data into the items' file
         }
     }
+
+
+    public void deleteProduct(String filepath, String delProduct) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+        ArrayList<String[]> newDatabase = new ArrayList<>();
+        for (int i = 0; i < database.size(); i++) {
+            if (!database.get(i)[1].equals(delProduct)) {
+                newDatabase.add(database.get(i)); // The customer's information is changed
+            }
+        }
+        PrintWriter pw = new PrintWriter("./src/items.txt");
+
+        pw.write(""); // The file would erase all the data in customers' file
+        pw.close();
+
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Title, Price, Catetory", String.join(",", obj));
+            // This method would allow system to write all data including new data into the customers' file
+        }
+    }
+
 
 }
