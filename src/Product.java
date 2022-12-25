@@ -98,4 +98,19 @@ public class Product {
         createTable.print();
 //        createTable.setHeaders(new String[0]);
     }
+
+    public ArrayList<Double> getAllPrice() throws IOException {
+        // Use the read column method to get prices
+        String[] readPrices = ReadDataFromTXTFile.readCol(2,"./src/items.txt",",");
+
+        // Creating an arraylist of prices
+        ArrayList<Double> pricesList = new ArrayList<>(readPrices.length);
+
+        // Prepping the price list to be able to sort
+        for(int i = 1; i < readPrices.length; i++){
+            pricesList.add(Double.parseDouble(readPrices[i]));
+        }
+
+        return pricesList;
+    }
 }
