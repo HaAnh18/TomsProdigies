@@ -3,9 +3,11 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+
   <component name="RunManager">
     <configuration name="TestUpdateMembership" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TestUpdateMembership" />
+
       <module name="TomsProdigies" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -13,6 +15,7 @@
     </configuration>
     <recent_temporary>
       <list>
+
         <item itemvalue="Application.TestUpdateMembership" />
         <item itemvalue="Application.TestUpdateMembership" />
         <item itemvalue="Application.TestUpdateMembership" />
@@ -21,4 +24,5 @@
       </list>
     </recent_temporary>
   </component>
+
 </project>
