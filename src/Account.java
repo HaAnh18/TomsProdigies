@@ -462,6 +462,31 @@ public class Account {
         createTable.print();
     }
 
+    public void updateTotalSpending(String filepath, String newData, String userName) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        for (int i = 0; i < database.size(); i++) {
+            if (database.get(i)[6].equals(userName))
+            /** If the system could find out the username in customers' file and the new password is validated
+             * then the system allow customer to update their information
+             */ {
+                database.get(i)[7] = newData; // The customer's information is changed
+            }
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write(""); // The file would erase all the data in customers' file
+        pw.close();
+
+        ArrayList<String[]> newDatabase = database;
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending", String.join(",", obj));
+            // This method would allow system to write all data including new data into the customers' file
+        }
+    }
+
+
     public String getcID() {
         return cID;
     }
