@@ -84,7 +84,6 @@ public class Order {
             createTable.addRow(orders.get(i)[0], orders.get(i)[1], orders.get(i)[2], orders.get(i)[3],
                     orders.get(i)[4], orders.get(i)[5], orders.get(i)[6], orders.get(i)[7], orders.get(i)[8]);
         }
-
         createTable.print();
     }
 }

@@ -9,6 +9,7 @@ public class Write {
     public static void rewriteFile(String filepath, String header, String data) throws IOException {
         FileWriter newFile = new FileWriter(filepath, true);
         BufferedReader bufferedReader = new BufferedReader(new FileReader(filepath));
+
         if (filepath.length() == 0) {
             newFile.append(header);
             newFile.append("\n");
