@@ -125,4 +125,17 @@ public class Admin extends Account {
         }
     }
 
+    public ArrayList<Double> getTotalRevenue() throws IOException {
+        String[] revenue = ReadDataFromTXTFile.readCol(6, "./src/ordersHistory.txt", ",");
+        // Creating an arraylist of prices
+        ArrayList<Double> revenueList = new ArrayList<>(revenue.length);
+
+        // Prepping the price list to be able to sort
+        for (int i = 1; i < revenue.length; i++) {
+            revenueList.add(Double.parseDouble(revenue[i]));
+        }
+        return revenueList;
+    }
 }
+
+
