@@ -99,18 +99,50 @@ public class Product {
 //        createTable.setHeaders(new String[0]);
     }
 
-    public ArrayList<Double> getAllPrice() throws IOException {
+    public ArrayList<Long> getAllPrice() throws IOException {
         // Use the read column method to get prices
-        String[] readPrices = ReadDataFromTXTFile.readCol(2,"./src/items.txt",",");
+        String[] readPrices = ReadDataFromTXTFile.readCol(2, "./src/items.txt", ",");
 
         // Creating an arraylist of prices
-        ArrayList<Double> pricesList = new ArrayList<>(readPrices.length);
+        ArrayList<Long> pricesList = new ArrayList<>(readPrices.length);
 
         // Prepping the price list to be able to sort
-        for(int i = 1; i < readPrices.length; i++){
-            pricesList.add(Double.parseDouble(readPrices[i]));
+        for (int i = 1; i < readPrices.length; i++) {
+            pricesList.add(Long.parseLong(readPrices[i]));
         }
 
         return pricesList;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
