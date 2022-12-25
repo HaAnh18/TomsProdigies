@@ -1,4 +1,7 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -25,9 +28,9 @@ public class Product {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
         PrintWriter writer = new PrintWriter(new FileWriter("./src/categories.txt", true));
         String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
-        for (String[] strings : database) {
-            if (strings[0].equals(capital)) {
-                strings[1] = String.valueOf(Integer.parseInt(strings[1]) + 1);
+        for (int i = 1; i < database.size(); i++) {
+            if (database.get(i)[1].equals(capital)) {
+                database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + 1);
                 File file = new File("./src/categories.txt");
                 PrintWriter pw = new PrintWriter(file);
                 pw.write("");
@@ -36,33 +39,36 @@ public class Product {
                 ArrayList<String[]> newDatabase = database;
 
                 for (String[] obj : newDatabase) {
-                    Write.rewriteFile("./src/categories.txt", "#Category,Quantity", String.join(",", obj));
+                    Write.rewriteFile("./src/categories.txt", "#ID,Category,Quantity", String.join(",", obj));
                 }
             }
         }
         if (!checkCategory(category)) {
             System.out.println("This category do not exist in category list yet!");
-            writer.print("\n" + category + "," + 1);
+            Path path = Paths.get("./src/categories.txt");
+            int id = (int) Files.lines(path).count();
+            writer.print("\n" + id + "," + category + "," + 1);
             writer.close();
         }
     }
 
     public boolean checkCategory(String category) {
         String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        boolean found = false;
         try {
             Scanner fileScanner = new Scanner(new File("./src/categories.txt"));
 
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
                 String[] values = line.split(",");
-                if (capital.equals(values[0])) {
-                    return true;
+                if (capital.equals(values[1])) {
+                    found = true;
                 }
             }
         } catch (FileNotFoundException fe) {
             fe.printStackTrace();
         }
-        return true;
+        return found;
     }
 
     public void getAllProductInfo() throws FileNotFoundException {
@@ -112,5 +118,46 @@ public class Product {
         }
 
         return pricesList;
+    }
+    //getter and setter
+
+    public ArrayList<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(ArrayList<String> categories) {
+        this.categories = categories;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
