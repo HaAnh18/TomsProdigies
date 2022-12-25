@@ -486,13 +486,17 @@ public class Account {
     }
 
     public static void updateMembership(String filepath,String userName) throws IOException {
+        // Read all data from .txt file
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
 
+        // Loop through all customers
         for (int i = 0; i < database.size(); i++) {
 
+            // Find corresponding user
             if (database.get(i)[6].equals(userName)) {
                 long compareNum = Long.parseLong(database.get(i)[8]);
 
+                // Membership requirements and newMembership variable use to update the membership
                 if (5000000 < compareNum && compareNum < 10000000) {
                     String newMembership = "Silver";
                     database.get(i)[5] = newMembership;
@@ -505,6 +509,7 @@ public class Account {
                 }
             }
         }
+        // setting up the PrintWriter
         File file = new File(filepath);
         PrintWriter pw = new PrintWriter(file);
 
@@ -513,6 +518,7 @@ public class Account {
 
         ArrayList<String[]> newDatabase = database;
 
+        // Rewrite the whole file with new updated information
         for (String[] obj : newDatabase) {
             Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending", String.join(",", obj));
         }
