@@ -1,7 +1,0 @@
-#ID,Name,Email,Address,Phone,membership,username,password,total spending
-C001,Minh Hoang,minh.hoang@gmail.com,18 Irwin Street,0421473243,Regular,minhhoang,123456,6000000
-C002,Hong Wang,hong.wang@gmail.com,20 Irwin Street,0424173255,Regular,wanghong98,987654,10000000
-C003,Linh Nguyen,linh.nguyen22@yahoomail.com,12 Brunswick Street,0424173255,Regular,linhtb,linhlinh,350000000
-C004,Antony Zinc,antony97@gmail.com,114 Fraser Avenue,0424512345,Regular,abookworm,booklover,3400000
-C005,John Cain,john.cain@gmail.com,45 Sydney Road,0424325123,Platinum,johnthebaby,123456,28000000
-C006,Dylan Case,dylan@hotmail.com,02 West Drive,0424125598,Regular,dylanc,2222222,5365000

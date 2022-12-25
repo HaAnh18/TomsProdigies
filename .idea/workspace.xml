@@ -3,86 +3,9 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="ChangeListManager">
-<<<<<<< HEAD
-    <list default="true" id="9b59d6ee-aa29-4a11-b8a2-8534055ce4a6" name="Changes" comment="Change some double values in txt file to test checkMembership method" />
-=======
-
-    <list default="true" id="9b59d6ee-aa29-4a11-b8a2-8534055ce4a6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Product.java" afterDir="false" />
-
-    <list default="true" id="9b59d6ee-aa29-4a11-b8a2-8534055ce4a6" name="Changes" comment="Change some double values in txt file to test checkMembership method">
-      <change afterPath="$PROJECT_DIR$/src/TestUpdateMembership.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TestSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestSort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/items.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/items.txt" afterDir="false" />
-
-    </list>
->>>>>>> c6f9d6028a4cc4a1ab0f088cd64d07d46b41bcec
-    <option name="SHOW_DIALOG" value="false" />
-    <option name="HIGHLIGHT_CONFLICTS" value="true" />
-    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
-    <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectId" id="2ItLY21ZNyO6rIwb5bHkYQr9r7o" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/user/Documents/GitHub/TomsProdigies",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
-  }
-}]]></component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Application.TestUpdateMembership">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="TestFiles.Main" />
-      <module name="TomsProdigies" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestSort" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="TestFiles.TestSort" />
-      <module name="TomsProdigies" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager">
     <configuration name="TestUpdateMembership" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="TestFiles.TestUpdateMembership" />
+      <option name="MAIN_CLASS_NAME" value="TestUpdateMembership" />
       <module name="TomsProdigies" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -91,120 +14,11 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.TestUpdateMembership" />
-        <item itemvalue="Application.TestSort" />
-        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.TestUpdateMembership" />
+        <item itemvalue="Application.TestUpdateMembership" />
+        <item itemvalue="Application.TestUpdateMembership" />
+        <item itemvalue="Application.TestUpdateMembership" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="9b59d6ee-aa29-4a11-b8a2-8534055ce4a6" name="Changes" comment="" />
-      <created>1670995976706</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1670995976706</updated>
-      <workItem from="1670995978084" duration="44000" />
-      <workItem from="1670996030282" duration="10997000" />
-      <workItem from="1671041119220" duration="25631000" />
-      <workItem from="1671522948347" duration="10481000" />
-      <workItem from="1671549307586" duration="6000" />
-      <workItem from="1671549319023" duration="22656000" />
-      <workItem from="1671769588752" duration="6742000" />
-      <workItem from="1671783607350" duration="11090000" />
-      <workItem from="1671958238900" duration="5202000" />
-    </task>
-    <task id="LOCAL-00001" summary="Create register and login method (already validate but not hash the password yet)">
-      <created>1671016743296</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1671016743296</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Update register and login">
-      <created>1671024475632</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1671024475632</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Update validate address">
-      <created>1671024924237</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1671024924237</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Update hashing password">
-      <created>1671077524182</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1671077524182</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Add CreateTable, Admin">
-      <created>1671531125554</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1671531125554</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Done update information, add product, create write class, get all information, read data class">
-      <created>1671782603546</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1671782603546</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Change some double values in txt file to test checkMembership method">
-      <created>1671945979112</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1671945979112</updated>
-    </task>
-    <option name="localTasksCounter" value="8" />
-    <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Create register and login method (already validate but not hash the password yet)" />
-    <MESSAGE value="Update register and login" />
-    <MESSAGE value="Update validate address" />
-    <MESSAGE value="Update hashing password" />
-    <MESSAGE value="Add CreateTable, Admin" />
-    <MESSAGE value="Done update information, add product, create write class, get all information, read data class" />
-    <MESSAGE value="Change some double values in txt file to test checkMembership method" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change some double values in txt file to test checkMembership method" />
-    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
-    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
-    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.lang.NumberFormatException" package="java.lang" />
-          <option name="timeStamp" value="1" />
-        </breakpoint>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
-          <option name="timeStamp" value="2" />
-        </breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

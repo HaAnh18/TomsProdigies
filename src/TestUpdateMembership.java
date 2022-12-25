@@ -5,6 +5,6 @@ import java.util.ArrayList;
 
 public class TestUpdateMembership {
     public static void main(String[] args) throws IOException {
-        Account.updateMembership("./src/customers.txt","johnthebaby");
+        Account.updateMembership("./src/customers.txt","linhtb");
     }
 }
