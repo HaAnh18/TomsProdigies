@@ -54,6 +54,8 @@ public class Order {
                 break;
         }
 
+        customer.updateTotalSpending("./src/customers.txt", String.valueOf(customer.getTotalSpending()), customer.getUserName());
+
         pw.println("\n" + oID + "," + customerID + "," + productID + "," + membership + "," + totalPayment +
                 "," + orderDate + "," + totalSpending + "," + orderStatus + "," + deliveryStatus);
         pw.close();
