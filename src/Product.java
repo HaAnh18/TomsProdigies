@@ -123,20 +123,32 @@ public class Product {
 //        createTable.setHeaders(new String[0]);
     }
 
-    public ArrayList<Double> getAllPrice() throws IOException {
+    public ArrayList<Long> getAllPrice() throws IOException {
         // Use the read column method to get prices
-        String[] readPrices = ReadDataFromTXTFile.readCol(2,"./src/items.txt",",");
+        String[] readPrices = ReadDataFromTXTFile.readCol(2, "./src/items.txt", ",");
 
         // Creating an arraylist of prices
-        ArrayList<Double> pricesList = new ArrayList<>(readPrices.length);
+        ArrayList<Long> pricesList = new ArrayList<>(readPrices.length);
 
         // Prepping the price list to be able to sort
         for (int i = 1; i < readPrices.length; i++) {
-            pricesList.add(Double.parseDouble(readPrices[i]));
+
+            pricesList.add(Long.parseLong(readPrices[i]));
+
         }
 
         return pricesList;
     }
+
+
+    public ArrayList<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(ArrayList<String> categories) {
+        this.categories = categories;
+    }
+
 
     public String getID() {
         return ID;

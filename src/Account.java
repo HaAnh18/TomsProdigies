@@ -426,7 +426,7 @@ public class Account {
         Product product = new Product();
 
         // Use the get all prices method to create a prices list
-        ArrayList<Double> prices = product.getAllPrice();
+        ArrayList<Long> prices = product.getAllPrice();
 
         // Create an createTable object
         CreateTable createTable = new CreateTable();
@@ -434,7 +434,7 @@ public class Account {
         // Check for user inputs whether to sort ascend or descend
         if (input == 1) {
             // Create an arraylist that sorted the prices in an ascending order
-            ArrayList<Double> priceAscend = SortProduct.sortAscending(prices);
+            ArrayList<Long> priceAscend = SortProduct.sortAscending(prices);
 
             // Create the headers and lines
             createTable.setShowVerticalLines(true);
@@ -442,20 +442,19 @@ public class Account {
 
             // Loop to add items description into a table
             for (int a = 0; a < prices.size(); a++) {
-
                 // Use the given prices to determine the correct item then adding them into an array list
-                String sortProducts[] = ReadDataFromTXTFile.readSpecificLine(Double.toString(priceAscend.get(a)), 2, "./src/items.txt", ",");
+                String[] sortProducts = ReadDataFromTXTFile.readSpecificLine(Long.toString(priceAscend.get(a)), 2, "./src/items.txt", ",");
                 createTable.addRow(sortProducts[0], sortProducts[1], sortProducts[2], sortProducts[3]);
             }
         } else if (input == 2) {
-            ArrayList<Double> priceDescend = SortProduct.sortDescending(prices);
+            ArrayList<Long> priceDescend = SortProduct.sortDescending(prices);
 
             createTable.setShowVerticalLines(true);
 
             createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
 
             for (int a = 0; a < prices.size(); a++) {
-                String sortProducts[] = ReadDataFromTXTFile.readSpecificLine(Double.toString(priceDescend.get(a)), 2, "./src/items.txt", ",");
+                String[] sortProducts = ReadDataFromTXTFile.readSpecificLine(Long.toString(priceDescend.get(a)), 2, "./src/items.txt", ",");
                 createTable.addRow(sortProducts[0], sortProducts[1], sortProducts[2], sortProducts[3]);
             }
         }
@@ -486,6 +485,38 @@ public class Account {
         }
     }
 
+    public static void updateMembership(String filepath,String userName) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+
+        for (int i = 0; i < database.size(); i++) {
+
+            if (database.get(i)[6].equals(userName)) {
+                long compareNum = Long.parseLong(database.get(i)[8]);
+
+                if (5000000 < compareNum && compareNum < 10000000) {
+                    String newMembership = "Silver";
+                    database.get(i)[5] = newMembership;
+                } else if (10000000 < compareNum && compareNum < 25000000) {
+                    String newMembership = "Gold";
+                    database.get(i)[5] = newMembership;
+                } else if (25000000 < compareNum) {
+                    String newMembership = "Platinum";
+                    database.get(i)[5] = newMembership;
+                }
+            }
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write(""); // The file would erase all the data in customers' file
+        pw.close();
+
+        ArrayList<String[]> newDatabase = database;
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending", String.join(",", obj));
+        }
+    }
 
     public String getcID() {
         return cID;
