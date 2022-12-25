@@ -4,7 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="9b59d6ee-aa29-4a11-b8a2-8534055ce4a6" name="Changes" comment="Change some double values in txt file to test checkMembership method" />
+=======
+
+    <list default="true" id="9b59d6ee-aa29-4a11-b8a2-8534055ce4a6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Product.java" afterDir="false" />
+
+    <list default="true" id="9b59d6ee-aa29-4a11-b8a2-8534055ce4a6" name="Changes" comment="Change some double values in txt file to test checkMembership method">
+      <change afterPath="$PROJECT_DIR$/src/TestUpdateMembership.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TestSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestSort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/items.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/items.txt" afterDir="false" />
+
+    </list>
+>>>>>>> c6f9d6028a4cc4a1ab0f088cd64d07d46b41bcec
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
