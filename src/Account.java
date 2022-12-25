@@ -18,11 +18,14 @@ public class Account {
     private String customerType;
     private String userName;
     private String password;
+    private double totalSpending;
 
     Path path = Paths.get("./src/customers.txt");
     int id = (int) Files.lines(path).count();
 
-    public Account(String cID, String name, String email, String address, String phone, String customerType, String userName, String password) throws IOException {
+    public Account(String cID, String name, String email,
+                   String address, String phone, String customerType,
+                   String userName, String password, double totalSpending) throws IOException {
         this.cID = cID;
         this.name = name;
         this.email = email;
@@ -31,6 +34,7 @@ public class Account {
         this.customerType = customerType;
         this.userName = userName;
         this.password = password;
+        this.totalSpending = totalSpending;
     }
 
     public Account() throws IOException {
@@ -39,7 +43,6 @@ public class Account {
     public void register() throws IOException
     // Register the customer's account
     {
-        Scanner scanner = new Scanner(System.in);
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/customers.txt", true));
 //        Path path = Paths.get("./src/customers.txt");
@@ -52,7 +55,9 @@ public class Account {
         phone = registerPhoneNumber();
         customerType = "Regular";
         password = registerPassword();
-        pw.println("\n" + cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + "," + userName + "," + password);
+        totalSpending = 0;
+        pw.println("\n" + cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + ","
+                + userName + "," + password + "," + totalSpending);
         // Write customer's information to customers file
         pw.close();
     }
@@ -407,6 +412,7 @@ public class Account {
         }
     }
 
+
     public void checkMembership(String userName) throws IOException
     // This method would show the customer's membership status
     {
@@ -414,6 +420,7 @@ public class Account {
         // Read all information of this customer
         System.out.println("Membership: " + database[5]); // Print the membership status of this customer
     }
+
 
     public String getcID() {
         return cID;
@@ -477,5 +484,14 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public double getTotalSpending() {
+        return totalSpending;
+    }
+
+    public double setTotalSpending(double totalSpending) {
+        this.totalSpending = totalSpending;
+        return totalSpending;
     }
 }
