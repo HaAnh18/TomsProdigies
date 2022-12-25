@@ -485,12 +485,38 @@ public class Account {
         }
     }
 
-//    public void updateMembership(String filepath, String userName) throws IOException {
-//        String[] database = ReadDataFromTXTFile.readCol(8,".src/customers.txt",",");
-//
-//
-//
-//    }
+    public static void updateMembership(String filepath,String userName) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+
+        for (int i = 0; i < database.size(); i++) {
+
+            if (database.get(i)[6].equals(userName)) {
+                long compareNum = Long.parseLong(database.get(i)[8]);
+
+                if (5000000 < compareNum && compareNum < 10000000) {
+                    String newMembership = "Silver";
+                    database.get(i)[5] = newMembership;
+                } else if (10000000 < compareNum && compareNum < 25000000) {
+                    String newMembership = "Gold";
+                    database.get(i)[5] = newMembership;
+                } else if (25000000 < compareNum) {
+                    String newMembership = "Platinum";
+                    database.get(i)[5] = newMembership;
+                }
+            }
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write(""); // The file would erase all the data in customers' file
+        pw.close();
+
+        ArrayList<String[]> newDatabase = database;
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending", String.join(",", obj));
+        }
+    }
 
     public String getcID() {
         return cID;
