@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Write {
@@ -28,6 +25,41 @@ public class Write {
             newFile.close();
         } catch (Exception e) {
             e.getStackTrace();
+        }
+    }
+
+    public static void deleteEmptyLine(String filepath) {
+        String tempFile = "./src/temp.txt";
+        File oldFile = new File(filepath);
+        File newFile = new File(tempFile);
+
+        String currentLine;
+
+        try {
+            FileWriter fileWriter = new FileWriter(tempFile, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            PrintWriter printWriter = new PrintWriter(bufferedWriter);
+
+            FileReader fileReader = new FileReader(filepath);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            while ((currentLine = bufferedReader.readLine()) != null) {
+                if (!currentLine.equals("")) {
+                    printWriter.println(currentLine);
+                }
+            }
+            printWriter.flush();
+            printWriter.close();
+            fileWriter.close();
+            bufferedReader.close();
+            bufferedWriter.close();
+            fileWriter.close();
+
+            oldFile.delete();
+            File dump = new File(filepath);
+            newFile.renameTo(dump);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

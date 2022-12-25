@@ -44,12 +44,30 @@ public class Product {
             }
         }
         if (!checkCategory(category)) {
+            Scanner scanner = new Scanner(System.in);
             System.out.println("This category do not exist in category list yet!");
-            Path path = Paths.get("./src/categories.txt");
-            int id = (int) Files.lines(path).count();
-            writer.print("\n" + id + "," + category + "," + 1);
-            writer.close();
+            System.out.println("Please choose your option: ");
+            System.out.println("1. Create new category automatically");
+            System.out.println("2. Exit");
+            int option = Integer.parseInt(scanner.nextLine());
+            switch (option) {
+                case 1:
+                    createNewCategory(category);
+                    break;
+            }
+//            Path path = Paths.get("./src/categories.txt");
+//            int id = (int) Files.lines(path).count();
+//            writer.print("\n" + id + "," + category + "," + 1);
+//            writer.close();
         }
+    }
+
+    public void createNewCategory(String category) throws IOException {
+        Path path = Paths.get("./src/categories.txt");
+        int id = (int) Files.lines(path).count();
+        PrintWriter writer = new PrintWriter(new FileWriter("./src/categories.txt", true));
+        writer.print("\n" + id + "," + category + "," + 1);
+        writer.close();
     }
 
     public boolean checkCategory(String category) {
