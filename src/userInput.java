@@ -1,8 +1,6 @@
-package crud;
-
 import java.util.Scanner;
 
-public class UserInput {
+public class userInput {
     public static String rawInput() {
         while (true) {
             Scanner sc = new Scanner(System.in);

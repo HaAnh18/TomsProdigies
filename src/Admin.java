@@ -1,10 +1,3 @@
-package component;
-
-import crud.CreateTable;
-import crud.ReadDataFromTXTFile;
-import crud.Write;
-import library.SortProduct;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -103,7 +96,7 @@ public class Admin extends Account {
         double price = scanner.nextDouble();
         scanner.nextLine();
         pw.println(ID + "," + title + "," + price + "," + category + "\n");
-//        // crud.Write product's information to items' file
+//        // Write product's information to items' file
         pw.close();
 
     }

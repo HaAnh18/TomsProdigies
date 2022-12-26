@@ -1,12 +1,10 @@
-package library;
-
 //https://algs4.cs.princeton.edu/53substring/BoyerMoore.java.html
-public class SearchAlgorithm {
+public class searchAlgorithm {
     private int R;
     private int[] right;
     private String pattern;
 
-    public SearchAlgorithm(String pattern) {
+    public searchAlgorithm(String pattern) {
         this.R = 256;
         this.pattern = pattern;
 
