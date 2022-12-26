@@ -1,10 +1,3 @@
-package component;
-
-import crud.CreateTable;
-import crud.ReadDataFromTXTFile;
-import crud.Write;
-import library.SortProduct;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -65,7 +58,7 @@ public class Account {
         totalSpending = (long)0;
         pw.println("\n" + cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + ","
                 + userName + "," + password + "," + totalSpending);
-        // crud.Write customer's information to customers file
+        // Write customer's information to customers file
         pw.close();
     }
 
@@ -153,7 +146,7 @@ public class Account {
     // Validate the name that customer inputs
     {
         String rulesName = "(\\b[A-Z]{1}[a-z]+)( )([A-Z]{1}[a-z]+\\b)";
-        // component.Customer's name must contain letters only and have white space
+        // Customer's name must contain letters only and have white space
         Pattern pattern = Pattern.compile(rulesName);
         Matcher matcher = pattern.matcher(name);
         return matcher.matches(); // Returns true if name matches, else returns false

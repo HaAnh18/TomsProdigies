@@ -1,9 +1,3 @@
-package component;
-
-import crud.CreateTable;
-import crud.ReadDataFromTXTFile;
-import crud.Write;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -117,11 +111,11 @@ public class Product {
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
-//        crud.CreateTable.setShowVerticalLines(true);
-//        crud.CreateTable.setHeaders("ID","NAME","USERNAME","EMAIL","ADDRESS","PHONE","MEMBERSHIP");
+//        CreateTable.setShowVerticalLines(true);
+//        CreateTable.setHeaders("ID","NAME","USERNAME","EMAIL","ADDRESS","PHONE","MEMBERSHIP");
 
         for (int i = 1; i < user.size(); i++) {
-//            crud.CreateTable.addRow(user.get(i)[0], user.get(i)[1],user.get(i)[2],user.get(i)[3],user.get(i)[4],user.get(i)[5],user.get(i)[6]);
+//            CreateTable.addRow(user.get(i)[0], user.get(i)[1],user.get(i)[2],user.get(i)[3],user.get(i)[4],user.get(i)[5],user.get(i)[6]);
             createTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3]);
         }
 

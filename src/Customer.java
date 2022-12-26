@@ -1,6 +1,3 @@
-package component;
-
-
 import java.io.IOException;
 
 public class Customer extends Account {
