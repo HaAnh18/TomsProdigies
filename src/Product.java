@@ -142,6 +142,71 @@ public class Product {
         return pricesList;
     }
 
+    public ArrayList<String[]> getMatchResult(String data) throws IOException {
+        String[] category = ReadDataFromTXTFile.readColString(3, "./src/items.txt", ",");
+        String[] title = ReadDataFromTXTFile.readColString(1, "./src/items.txt", ",");
+
+        ArrayList<String[]> matchResult = new ArrayList<>();
+
+        for (int i = 0; i < title.length; i++) {
+            //use Boyer Moore Searching Algorithm
+            SearchAlgorithm text = new SearchAlgorithm(data);
+            boolean isFound = text.boyerMooreSearch(category[i], data);
+
+            if (isFound) {
+                String[] specificLine = ReadDataFromTXTFile.getSpecificLine(title[i], 1, "./src/items.txt", ",");
+                matchResult.add(specificLine);
+            }
+        }
+        return matchResult;
+    }
+
+    public void findItemByPriceRange(String item) throws IOException {
+        String[] category = ReadDataFromTXTFile.readColString(1, "./src/items.txt", ",");
+
+        category = Arrays.stream(category).distinct().toArray(String[]::new);
+
+        String option = OptionInput.input();
+
+        ArrayList<String[]> matchResult = new ArrayList<>(this.getMatchResult(category[0]).size());
+
+        CreateTable table = new CreateTable();
+        switch (option) {
+            case "1":
+                matchResult = this.getMatchResult(category[0]);
+                System.out.println("this is 1");
+                break;
+            case "2":
+                matchResult = this.getMatchResult(category[1]);
+                System.out.println("this is 2");
+                break;
+            case "3":
+                matchResult = this.getMatchResult(category[2]);
+                System.out.println("this is 3");
+                break;
+            case "4":
+                matchResult = this.getMatchResult(category[3]);
+                System.out.println("this is 4");
+                break;
+            // for menu add 1 more but will be menu.something();
+        }
+        if (matchResult.size() == 0) {
+            System.out.println("Sorry, there is no found result");
+        }
+        if (matchResult.size() > 0) {
+            System.out.println("Available Products");
+            table.setShowVerticalLines(true);
+            table.setHeaders("PRODUCT_ID", "ITEM", "CATEGORY", "PRICE");
+
+            for (int i = 0; i < matchResult.size(); i++) {
+                table.addRow(matchResult.get(i)[0], matchResult.get(i)[1], matchResult.get(i)[3], matchResult.get(i)[2]);
+            }
+            table.print();
+
+            table.setHeaders(new String[0]);
+            table.setRows(new ArrayList<String[]>());
+        }
+    }
 
 
     public ArrayList<String> getCategories() {
