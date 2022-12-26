@@ -198,10 +198,11 @@ public class Admin extends Account {
             }
             return revenueList;
         }
-        public static void calculateRevenue(ArrayList<Long> moneyList) throws IOException{
+        public static void calculateRevenue(ArrayList<Long> moneyList){
         long sum = 0;
-            for(int i = 0; i < moneyList.size(); i++)
+            for(int i = 0; i < moneyList.size(); i++) {
                 sum += moneyList.get(i);
+            }
             CreateTable revenueTable = new CreateTable();
                 revenueTable.setShowVerticalLines(true);
                 revenueTable.setHeaders("TotalRevenue");
