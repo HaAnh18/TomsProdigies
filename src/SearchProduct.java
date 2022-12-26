@@ -3,12 +3,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class searchProduct {
+public class SearchProduct {
     public static void viewSearch(String uInput) throws IOException {
-        String[] categories = ReadDataFromTXTFile.readCol(3, "./scr/items.txt", ",");
+        String[] categories = ReadDataFromTXTFile.readColString(3, "./scr/items.txt", ",");
         Menu newMenu = new Menu();
         categories = Arrays.stream(categories).distinct().toArray(String[]::new);
-        String option = userInput.rawInput();
+        String option = UserInput.rawInput();
         ArrayList<String[]> matchResult = new ArrayList<>();
 
     }
@@ -20,7 +20,7 @@ public class searchProduct {
 
         for (int i = 0; i < productsName.length; i++) {
             // Implement Boyer Moore Searching Algorithm
-            searchAlgorithm text = new searchAlgorithm(data);
+            SearchAlgorithm text = new SearchAlgorithm(data);
             boolean isFound = text.boyerMooreSearch(category[i], data);
 
             if (isFound) {
@@ -35,7 +35,7 @@ public class searchProduct {
     }
 
     public static void getAllSearchInfo(String product) throws IOException {
-        ArrayList<String[]> results = searchProduct.getMatchResult(product);
+        ArrayList<String[]> results = SearchProduct.getMatchResult(product);
 
 
     }
