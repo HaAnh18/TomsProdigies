@@ -1,17 +1,14 @@
-package library;
-
-import crud.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SearchProduct {
+public class searchProduct {
     public static void viewSearch(String uInput) throws IOException {
         String[] categories = ReadDataFromTXTFile.readCol(3, "./scr/items.txt", ",");
         Menu newMenu = new Menu();
         categories = Arrays.stream(categories).distinct().toArray(String[]::new);
-        String option = UserInput.rawInput();
+        String option = userInput.rawInput();
         ArrayList<String[]> matchResult = new ArrayList<>();
 
     }
@@ -23,7 +20,7 @@ public class SearchProduct {
 
         for (int i = 0; i < productsName.length; i++) {
             // Implement Boyer Moore Searching Algorithm
-            SearchAlgorithm text = new SearchAlgorithm(data);
+            searchAlgorithm text = new searchAlgorithm(data);
             boolean isFound = text.boyerMooreSearch(category[i], data);
 
             if (isFound) {
@@ -38,7 +35,7 @@ public class SearchProduct {
     }
 
     public static void getAllSearchInfo(String product) throws IOException {
-        ArrayList<String[]> results = SearchProduct.getMatchResult(product);
+        ArrayList<String[]> results = searchProduct.getMatchResult(product);
 
 
     }
