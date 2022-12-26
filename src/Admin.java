@@ -206,7 +206,7 @@ public class Admin extends Account {
                 revenueTable.setShowVerticalLines(true);
                 revenueTable.setHeaders("TotalRevenue");
                 revenueTable.addRow(String.valueOf(sum));
-                revenueTable.print();
+                revenueTable.print();   
         }
     }
 
