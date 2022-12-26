@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 // Link code https://www.logicbig.com/how-to/code-snippets/jcode-java-cmd-command-line-table.html
 public class CreateTable {
@@ -9,7 +8,7 @@ public class CreateTable {
     private String verticalSep;
     private String joinSep;
     private String[] headers;
-    private List<String[]> rows = new ArrayList<>();
+    private ArrayList<String[]> rows = new ArrayList<>();
     private boolean rightAlign;
 
     public CreateTable() {
@@ -82,5 +81,10 @@ public class CreateTable {
             }
         }
         System.out.println();
+    }
+
+    public void setRows(ArrayList<String[]> rows) {
+        CreateTable table = new CreateTable();
+        table.rows = rows;
     }
 }
