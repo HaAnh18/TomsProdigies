@@ -156,6 +156,7 @@ public class Admin extends Account {
         // Get total spending column
         String[] readSpendings = ReadDataFromTXTFile.readCol(8, "./src/customers.txt", ",");
 
+
         // Create an arraylist of all the total spendings
         ArrayList<Long> spendingList = new ArrayList<>(readSpendings.length);
 
@@ -198,10 +199,11 @@ public class Admin extends Account {
             }
             return revenueList;
         }
-        public static void calculateRevenue(ArrayList<Long> moneyList) throws IOException{
+        public static void calculateRevenue(ArrayList<Long> moneyList){
         long sum = 0;
-            for(int i = 0; i < moneyList.size(); i++)
+            for(int i = 0; i < moneyList.size(); i++) {
                 sum += moneyList.get(i);
+            }
             CreateTable revenueTable = new CreateTable();
                 revenueTable.setShowVerticalLines(true);
                 revenueTable.setHeaders("TotalRevenue");
