@@ -129,11 +129,11 @@ public class Admin extends Account {
     }
 
 
-    public void deleteProduct(String filepath, String delProduct) throws IOException {
+    public void deleteProduct(String filepath, String delProduct, int col) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
         for (int i = 0; i < database.size(); i++) {
-            if (!database.get(i)[1].equals(delProduct)) {
+            if (!database.get(i)[col].equals(delProduct)) {
                 newDatabase.add(database.get(i)); // The customer's information is changed
             }
         }
@@ -147,6 +147,27 @@ public class Admin extends Account {
             Write.rewriteFile(filepath, "#ID,Title, Price, Catetory", String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
+    }
+
+    public void deleteCategory(String filepath, String delCategory) throws IOException {
+        ArrayList<String[]> categoryList = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
+        ArrayList<String[]> newCategoryList = new ArrayList<>();
+        for (int i=0; i< categoryList.size(); i++) {
+            if (!categoryList.get(i)[1].equals(delCategory)) {
+                newCategoryList.add(categoryList.get(i));
+            }
+        }
+        PrintWriter pw = new PrintWriter("./src/categories.txt");
+
+        pw.write(""); // The file would erase all the data in customers' file
+        pw.close();
+
+
+        for (String[] obj : newCategoryList) {
+            Write.rewriteFile(filepath, "#ID,Category,Quantity", String.join(",", obj));
+            // This method would allow system to write all data including new data into the customers' file
+        }
+        deleteProduct("./src/items.txt",delCategory,3);
     }
 
 
@@ -199,7 +220,9 @@ public class Admin extends Account {
             }
             return revenueList;
         }
-        public static void calculateRevenue(ArrayList<Long> moneyList){
+
+
+    public static void calculateRevenue(ArrayList<Long> moneyList){
         long sum = 0;
             for(int i = 0; i < moneyList.size(); i++) {
                 sum += moneyList.get(i);
@@ -210,7 +233,8 @@ public class Admin extends Account {
                 revenueTable.addRow(String.valueOf(sum));
                 revenueTable.print();
         }
-    }
+
+}
 
 
 
