@@ -5,15 +5,15 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        Customer account = new Customer();
-        Admin admin = new Admin();
-        Scanner scanner = new Scanner(System.in);
+//        Customer account = new Customer();
+//        Admin admin = new Admin();
+//        Scanner scanner = new Scanner(System.in);
 //        admin.getAllCustomerInfo();
 //        account.register();
 //        String username = scanner.nextLine();
 //        account.registerUsername(username);
 //        File file = new File("./src/test.txt");
-        String path = "./src/categories.txt";
+//        String path = "./src/categories.txt";
 //        admin.addProduct();
 //        Product product = new Product();
 //        File orderSession = new File("orderSession.txt");

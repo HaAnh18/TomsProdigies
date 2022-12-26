@@ -153,7 +153,7 @@ public class Admin extends Account {
         CreateTable createTable = new CreateTable();
 
         // Get total spending column
-        String[] readSpendings = ReadDataFromTXTFile.readCol(8,"./src/customers.txt",",");
+        String[] readSpendings = ReadDataFromTXTFile.readColString(8,"./src/customers.txt",",");
 
         // Create an arraylist of all the total spendings
         ArrayList<Long> spendingList = new ArrayList<>(readSpendings.length);

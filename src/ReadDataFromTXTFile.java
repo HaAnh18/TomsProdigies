@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ReadDataFromTXTFile {
-    public static String[] readCol(int col, String filepath, String delimiter) throws IOException
+    public static String[] readColString(int col, String filepath, String delimiter) throws IOException
     // https://www.youtube.com/watch?v=Ek6HFMNi3fs
     {
         String[] data;
@@ -23,6 +23,26 @@ public class ReadDataFromTXTFile {
             throw new RuntimeException();
         }
         return colData.toArray(new String[0]);
+    }
+
+    public static Integer[] readColInt(int col, String filepath, String delimiter) throws IOException{
+        String[] data;
+        String currentLine;
+        ArrayList<Integer> colData = new ArrayList<>();
+
+        try {
+            FileReader fileReader = new FileReader(filepath);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            while ((currentLine = bufferedReader.readLine()) != null) {
+                data = currentLine.split(delimiter);
+                colData.add(Integer.valueOf(data[col]));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+        return colData.toArray(new Integer[0]);
+
     }
 
     public static ArrayList<String[]> readAllLines(String filepath) {

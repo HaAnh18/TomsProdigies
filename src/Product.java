@@ -8,7 +8,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Product {
-    ArrayList<String> categories = new ArrayList<>(Arrays.asList(ReadDataFromTXTFile.readCol(3, "./src/items.txt", ",")));
+    ArrayList<String> categories = new ArrayList<>(Arrays.asList(ReadDataFromTXTFile.readColString(3, "./src/items.txt", ",")));
     private String ID;
     private String title;
     private double price;
@@ -125,7 +125,7 @@ public class Product {
 
     public ArrayList<Long> getAllPrice() throws IOException {
         // Use the read column method to get prices
-        String[] readPrices = ReadDataFromTXTFile.readCol(2, "./src/items.txt", ",");
+        String[] readPrices = ReadDataFromTXTFile.readColString(2, "./src/items.txt", ",");
 
         // Creating an arraylist of prices
         ArrayList<Long> pricesList = new ArrayList<>(readPrices.length);
