@@ -528,6 +528,27 @@ public class Account {
         }
     }
 
+    public void searchOrder(String oId) {
+        ArrayList<String[]> orders = new ArrayList<>();
+
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        for (int i = 1; i < database.size(); i++) {
+            if (database.get(i)[0].equals(oId))
+                /* If the system could find out the customer's ID in ordersHistory's file
+                 */ {
+                orders.add(database.get(i));
+            }
+        }
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("OID", "CID", "PID", "MEMBERSHIP", "TOTAL PAYMENT", "TIMESTAMP", "TOTAL SPENDING", "ORDER STATUS", "DELIVERING STATUS");
+        for (String[] order : orders) {
+            createTable.addRow(order[0], order[1], order[2], order[3],
+                    order[4], order[5], order[6], order[7], order[8]);
+        }
+        createTable.print();
+    }
+
     public String getcID() {
         return cID;
     }
