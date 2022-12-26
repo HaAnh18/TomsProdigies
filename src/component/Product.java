@@ -1,3 +1,9 @@
+package component;
+
+import crud.CreateTable;
+import crud.ReadDataFromTXTFile;
+import crud.Write;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,10 +17,10 @@ public class Product {
     ArrayList<String> categories = new ArrayList<>(Arrays.asList(ReadDataFromTXTFile.readCol(3, "./src/items.txt", ",")));
     private String ID;
     private String title;
-    private double price;
+    private Long price;
     private String category;
 
-    public Product(String ID, String title, double price, String category) throws IOException {
+    public Product(String ID, String title, Long price, String category) throws IOException {
         this.ID = ID;
         this.title = title;
         this.price = price;
@@ -111,11 +117,11 @@ public class Product {
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
-//        CreateTable.setShowVerticalLines(true);
-//        CreateTable.setHeaders("ID","NAME","USERNAME","EMAIL","ADDRESS","PHONE","MEMBERSHIP");
+//        crud.CreateTable.setShowVerticalLines(true);
+//        crud.CreateTable.setHeaders("ID","NAME","USERNAME","EMAIL","ADDRESS","PHONE","MEMBERSHIP");
 
         for (int i = 1; i < user.size(); i++) {
-//            CreateTable.addRow(user.get(i)[0], user.get(i)[1],user.get(i)[2],user.get(i)[3],user.get(i)[4],user.get(i)[5],user.get(i)[6]);
+//            crud.CreateTable.addRow(user.get(i)[0], user.get(i)[1],user.get(i)[2],user.get(i)[3],user.get(i)[4],user.get(i)[5],user.get(i)[6]);
             createTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3]);
         }
 
@@ -133,12 +139,15 @@ public class Product {
         // Prepping the price list to be able to sort
         for (int i = 1; i < readPrices.length; i++) {
 
+
             pricesList.add(Long.parseLong(readPrices[i]));
+
 
         }
 
         return pricesList;
     }
+
 
 
     public ArrayList<String> getCategories() {
@@ -148,6 +157,7 @@ public class Product {
     public void setCategories(ArrayList<String> categories) {
         this.categories = categories;
     }
+
 
 
     public String getID() {
@@ -166,11 +176,11 @@ public class Product {
         this.title = title;
     }
 
-    public double getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 

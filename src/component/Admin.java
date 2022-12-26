@@ -1,3 +1,10 @@
+package component;
+
+import crud.CreateTable;
+import crud.ReadDataFromTXTFile;
+import crud.Write;
+import library.SortProduct;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -96,7 +103,7 @@ public class Admin extends Account {
         double price = scanner.nextDouble();
         scanner.nextLine();
         pw.println(ID + "," + title + "," + price + "," + category + "\n");
-//        // Write product's information to items' file
+//        // crud.Write product's information to items' file
         pw.close();
 
     }
@@ -149,11 +156,12 @@ public class Admin extends Account {
         }
     }
 
+
     public static void getMostSpender() throws IOException {
         CreateTable createTable = new CreateTable();
 
         // Get total spending column
-        String[] readSpendings = ReadDataFromTXTFile.readCol(8,"./src/customers.txt",",");
+        String[] readSpendings = ReadDataFromTXTFile.readCol(8, "./src/customers.txt", ",");
 
         // Create an arraylist of all the total spendings
         ArrayList<Long> spendingList = new ArrayList<>(readSpendings.length);
@@ -167,10 +175,10 @@ public class Admin extends Account {
 
         // Creating and printing out the information
         createTable.setShowVerticalLines(true);
-        createTable.setHeaders("#ID","Name","Email","Address","Phone","Membership","Username","Password","Total Spending");
+        createTable.setHeaders("#ID", "Name", "Email", "Address", "Phone", "Membership", "Username", "Password", "Total Spending");
 
         // Get the first person on the list (Max spenders as the list have been sorted to Ascend from Max)
-        String[] mostSpender = ReadDataFromTXTFile.readSpecificLine(Long.toString(spendingList.get(0)),8,"./src/customers.txt",",");
+        String[] mostSpender = ReadDataFromTXTFile.readSpecificLine(Long.toString(spendingList.get(0)), 8, "./src/customers.txt", ",");
 
         // Add that person into an ArrayList so it can be displayed on the table
         createTable.addRow(mostSpender[0],
@@ -185,4 +193,29 @@ public class Admin extends Account {
 
         createTable.print();
     }
-}
+
+    public static ArrayList<Long> getTotalRevenue() throws IOException {
+        String[] revenue = ReadDataFromTXTFile.readCol(6, "./src/ordersHistory.txt", ",");
+        // Creating an arraylist of prices
+        ArrayList<Long> revenueList = new ArrayList<>(revenue.length);
+
+            // Prepping the price list to be able to sort
+            for (int i = 1; i < revenue.length; i++) {
+                revenueList.add(Long.valueOf(revenue[i]));
+            }
+            return revenueList;
+        }
+        public static void calculateRevenue(ArrayList<Long> moneyList) throws IOException{
+        long sum = 0;
+            for(int i = 0; i < moneyList.size(); i++)
+                sum += moneyList.get(i);
+            CreateTable revenueTable = new CreateTable();
+                revenueTable.setShowVerticalLines(true);
+                revenueTable.setHeaders("TotalRevenue");
+                revenueTable.addRow(String.valueOf(sum));
+                revenueTable.print();
+        }
+    }
+
+
+
