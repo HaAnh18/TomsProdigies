@@ -154,7 +154,7 @@ public class Admin extends Account {
         CreateTable createTable = new CreateTable();
 
         // Get total spending column
-        String[] readSpendings = ReadDataFromTXTFile.readCol(8, "./src/customers.txt", ",");
+        String[] readSpendings = ReadDataFromTXTFile.readColString(8, "./src/customers.txt", ",");
 
 
         // Create an arraylist of all the total spendings
@@ -189,7 +189,7 @@ public class Admin extends Account {
     }
 
     public static ArrayList<Long> getTotalRevenue() throws IOException {
-        String[] revenue = ReadDataFromTXTFile.readCol(6, "./src/ordersHistory.txt", ",");
+        String[] revenue = ReadDataFromTXTFile.readColString(6, "./src/ordersHistory.txt", ",");
         // Creating an arraylist of prices
         ArrayList<Long> revenueList = new ArrayList<>(revenue.length);
 
@@ -206,7 +206,7 @@ public class Admin extends Account {
             }
             CreateTable revenueTable = new CreateTable();
                 revenueTable.setShowVerticalLines(true);
-                revenueTable.setHeaders("TotalRevenue");
+                revenueTable.setHeaders("Total Revenue");
                 revenueTable.addRow(String.valueOf(sum));
                 revenueTable.print();
         }

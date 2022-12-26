@@ -29,14 +29,12 @@ public class Order {
         String customerID = customer.getcID();
         String productID = product.getID();
 
-        String membership = customer.getCustomerType();
+//        String membership = customer.getCustomerType();
 
 
         Random rd = new Random();
         int i = rd.nextInt(999);
-        oID = String.format("0%3d", i);
-
-
+        oID = oIDDataForValidate(String.format("0%03d", i));
         totalPayment = product.getPrice();
         //Set discount level for each membership level
         switch (customer.getCustomerType()) {
@@ -89,6 +87,26 @@ public class Order {
         createTable.print();
     }
 
+    public String oIDDataForValidate(String oId) {
+        try {
+            Scanner fileScanner = new Scanner(new File("./src/ordersHistory.txt"));
+
+            while (fileScanner.hasNext()) {
+                String line = fileScanner.nextLine();
+                String[] helo = line.split(",");
+                if (helo[0].equals(oId)) {
+                    Random random = new Random();
+                    oId = String.format("0%03d",random.nextInt(999));
+                    oIDDataForValidate(oId);
+                } else {
+                    this.oID = oId;
+                }
+            }
+        } catch (FileNotFoundException err) {
+            err.printStackTrace();
+        }
+        return this.oID;
+    }
     public String getoID() {
         return oID;
     }
@@ -101,7 +119,7 @@ public class Order {
         return totalPayment;
     }
 
-    public void setTotalPayment(double totalPayment) {
+    public void setTotalPayment(Long totalPayment) {
         this.totalPayment = totalPayment;
     }
 
@@ -128,102 +146,5 @@ public class Order {
     public void setDeliveryStatus(String deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
     }
-
-    //
-
-//    public void getOrderId(Order order) throws  IOException {
-//
-//        ArrayList<Integer[]> orderID = new ArrayList<>();
-//
-//        ArrayList<Integer[]> database2 = ReadDataFromTXTFile.readColInt(0,"./src/ordersHistory.txt",",");
-//        System.out.println(database2.get(1)[1]);
-//        for (int i=1;i < database2.size();i++){
-//            if(database2.get(i)[1].equals(order.getoID())){
-//
-//                orderID.add(database2.get(i));
-//
-//            }
-//        }
-//        CreateTable cT = new CreateTable();
-//        cT.setShowVerticalLines(true);
-//        cT.setHeaders("OID");
-//
-//        for (Integer[] position : orderID){
-//            cT.addRow(String.valueOf(position[0]));
-//        }
-//        cT.print();
-//    }
-
-    // testing this method: this method will read 1 specific column of a text file which is oID column in ordersHistory
-    // and store it into an array of arrayList
-    public String oIDDataForValidate(String oId) {
-//        String newoId = null;
-        try {
-            ArrayList<String> helo = new ArrayList<String>();
-            BufferedReader reader = new BufferedReader(new FileReader("./src/OIDCheck.txt"));
-            Pattern pattern = Pattern.compile("^([A-Z0-9]{3,4}).*");
-            // "^" mean at the beginning of the string
-            //"[A-Z0-9]" mean any character between A and Z , any number between 0-9
-            //"{3,4}" mean between 3 and 4 time ( matching the most amount possible)
-
-            reader.readLine(); // repeat as necessary to skip headers
-            while (reader.ready()) {
-                String line = reader.readLine();
-                Matcher matcher = pattern.matcher(line);
-                if (matcher.matches()) {
-                    helo.add(matcher.group(1));
-                }
-            }
-
-//            for (String helos : helo) {
-//                System.out.println(helos);
-//            }
-            for (int i = 0; i < helo.size(); i++) {
-                if (helo.get(i).equals(oId)) {
-                    Random random = new Random();
-                    oId = String.valueOf(random.nextInt(999));
-                    oIDDataForValidate(oId);
-                } else {
-
-                    this.oID = oId;
-                }
-            }
-        } catch (FileNotFoundException err) {
-            System.out.println("File not found");
-        } catch (IOException err) {
-            System.out.println("IO error");
-        }
-        return this.oID;
-    }
-
-
-    // this method will copy 1 column from ordersHistory which is oID column
-    // and write that specific column in to another .txt file
-    public static void onlyOID() throws FileNotFoundException {
-        Scanner scanner =new Scanner(new File("./src/ordersHistory.txt"));
-
-        //reading the first line, always hava header
-        String nextLine = scanner.nextLine();
-        String regex = ",";//break on any ","
-
-        //
-        String[] header = nextLine.split(regex);
-        //this printing the column oID into a new file
-        try (PrintWriter pw = new PrintWriter(new FileWriter("src/OIDCheck.txt", true))) {
-            pw.println(Arrays.toString(new String[]{header[0]}));
-            //reading the row
-            while (scanner.hasNext()) {
-                String[] row = scanner.nextLine().split(regex);
-                //printing  rows in a specific column into a text file
-                pw.println(Arrays.toString(new String[]{row[0]}));
-            }
-        } catch (IOException ioe) {
-            System.out.println(ioe.getMessage());
-        }
-    }
-
-
-
-    //compare a file with ArrayList to check for similarity
 
 }

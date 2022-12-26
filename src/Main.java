@@ -8,7 +8,7 @@ public class Main {
 //        Customer account = new Customer();
 //        Admin admin = new Admin();
 //        Scanner scanner = new Scanner(System.in);
-        Admin.calculateRevenue(Admin.getTotalRevenue());
+//        Admin.calculateRevenue(Admin.getTotalRevenue());
 
 //        admin.getAllCustomerInfo();
 //        account.register();
@@ -21,16 +21,16 @@ public class Main {
 //        File orderSession = new File("orderSession.txt");
 
 //
-//        Order order = new Order();
-//        String userName = "minhhoang";
-//        String[] obj = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
-////        System.out.println(Arrays.toString(obj));
-//        String[] productInfo = ReadDataFromTXTFile.readSpecificLine("Dell XPS 17", 1, "./src/items.txt", ",");
-//        Customer member = new Customer(obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6], obj[7], Double.parseDouble(obj[8]));
-//        Product product = new Product((productInfo[0]), productInfo[1], Double.parseDouble(productInfo[2]), productInfo[3]);
-//        ;
-//        ;
-//        order.createNewOrder(member, product);
+        Order order = new Order();
+        String userName = "minhhoang";
+        String[] obj = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
+//        System.out.println(Arrays.toString(obj));
+        String[] productInfo = ReadDataFromTXTFile.readSpecificLine("Dell XPS 17", 1, "./src/items.txt", ",");
+        Customer member = new Customer(obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6], obj[7], Long.parseLong(obj[8]));
+        Product product = new Product((productInfo[0]), productInfo[1], Long.parseLong((productInfo[2])), productInfo[3]);
+        ;
+        ;
+        order.createNewOrder(member, product);
 //        String[] data = ReadDataFromTXTFile.readSpecificLine("C001", 1, "./src/ordersHistory.txt", ",");
 //        System.out.println(Arrays.toString(data));
 //        ArrayList<String[]> orders = new ArrayList<>(); // Create an arraylist to contain all customers' information

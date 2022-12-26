@@ -1,10 +1,10 @@
 //https://algs4.cs.princeton.edu/53substring/BoyerMoore.java.html
-public class searchAlgorithm {
+public class SearchAlgorithm {
     private int R;
     private int[] right;
     private String pattern;
 
-    public searchAlgorithm(String pattern) {
+    public SearchAlgorithm(String pattern) {
         this.R = 256;
         this.pattern = pattern;
 
