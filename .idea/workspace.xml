@@ -20,48 +20,28 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectId" id="2JR7sUet3hEChrMg4Iy3tMFxhKo" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false"
-  }
-}]]></component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="30e01ab4-4772-4119-ad09-21247482daac" name="Changes" comment="" />
-      <created>1672029258773</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1672029258773</updated>
-      <workItem from="1672029262858" duration="6947000" />
-    </task>
-    <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
+
+
+  <component name="RunManager">
+    <configuration name="TestUpdateMembership" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="TestUpdateMembership" />
+
+
+
+      <module name="TomsProdigies" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.TestUpdateMembership" />
+        <item itemvalue="Application.TestUpdateMembership" />
+        <item itemvalue="Application.TestUpdateMembership" />
+        <item itemvalue="Application.TestUpdateMembership" />
+        <item itemvalue="Application.TestUpdateMembership" />
+      </list>
+    </recent_temporary>
+
   </component>
 </project>

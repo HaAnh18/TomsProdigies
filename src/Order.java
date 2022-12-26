@@ -6,12 +6,12 @@ import java.util.regex.Pattern;
 
 public class Order {
     private String oID;
-    private double totalPayment;
+    private Long totalPayment;
     private String orderDate;
     private String orderStatus;
     private String deliveryStatus;
 
-    public Order(String oID, double totalPayment, String orderDate, String orderStatus, String deliveryStatus) {
+    public Order(String oID, Long totalPayment, String orderDate, String orderStatus, String deliveryStatus) {
         this.oID = oID;
         this.totalPayment = totalPayment;
         this.orderDate = orderDate;
@@ -25,8 +25,10 @@ public class Order {
     public void createNewOrder(Customer customer, Product product) throws IOException {
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/ordersHistory.txt", true));
+
         String customerID = customer.getcID();
         String productID = product.getID();
+
         String membership = customer.getCustomerType();
 
 
@@ -34,43 +36,42 @@ public class Order {
         int i = rd.nextInt(999);
         oID = String.format("0%3d", i);
 
-        totalPayment = product.getPrice();
-        orderDate = new SimpleDateFormat("MM/dd/yyyy_HH:mm").format(Calendar.getInstance().getTime());
-        double totalSpending = customer.setTotalSpending(customer.getTotalSpending() + totalPayment);
-        orderStatus = "SUCCESSFUL";
-        deliveryStatus = "DELIVERING";
 
+        totalPayment = product.getPrice();
         //Set discount level for each membership level
         switch (customer.getCustomerType()) {
             case "Silver":
-                this.totalPayment = this.totalPayment * (1 - 0.05);
+                this.totalPayment = (long)(this.totalPayment * (1 - 0.05));
                 break;
             case "Gold":
-                this.totalPayment = this.totalPayment * (1 - 0.1);
+                this.totalPayment = (long)(this.totalPayment * (1 - 0.1));
                 break;
             case "Platinum":
-                this.totalPayment = this.totalPayment * (1 - 0.15);
+                this.totalPayment = (long)(this.totalPayment * (1 - 0.15));
                 break;
             case "Regular":
                 break;
         }
+        Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + totalPayment);
+        customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
+        customer.updateMembership("./src/customers.txt",customer.getUserName());
+        String membership = customer.getCustomerType();
+        orderDate = new SimpleDateFormat("MM/dd/yyyy_HH:mm").format(Calendar.getInstance().getTime());
+        orderStatus = "SUCCESSFUL";
+        deliveryStatus = "DELIVERING";
 
-        customer.updateTotalSpending("./src/customers.txt", String.valueOf(customer.getTotalSpending()), customer.getUserName());
-
-        pw.println("\n" + oID + "," + customerID + "," + productID + "," + membership + "," + totalPayment +
+        pw.println( oID + "," + customerID + "," + productID + "," + membership + "," + totalPayment +
                 "," + orderDate + "," + totalSpending + "," + orderStatus + "," + deliveryStatus);
         pw.close();
 
         getOrderInfo(customer);
-
     }
 
-    public void getOrderInfo(Customer customer) throws IOException {
+    public void getOrderInfo(Customer customer) {
 
         ArrayList<String[]> orders = new ArrayList<>();
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
-        System.out.println(database.get(1)[1]);
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(customer.getcID()))
                 /* If the system could find out the customer's ID in ordersHistory's file

@@ -11,10 +11,10 @@ public class Product {
     ArrayList<String> categories = new ArrayList<>(Arrays.asList(ReadDataFromTXTFile.readColString(3, "./src/items.txt", ",")));
     private String ID;
     private String title;
-    private double price;
+    private Long price;
     private String category;
 
-    public Product(String ID, String title, double price, String category) throws IOException {
+    public Product(String ID, String title, Long price, String category) throws IOException {
         this.ID = ID;
         this.title = title;
         this.price = price;
@@ -133,12 +133,15 @@ public class Product {
         // Prepping the price list to be able to sort
         for (int i = 1; i < readPrices.length; i++) {
 
+
             pricesList.add(Long.parseLong(readPrices[i]));
+
 
         }
 
         return pricesList;
     }
+
 
 
     public ArrayList<String> getCategories() {
@@ -148,6 +151,7 @@ public class Product {
     public void setCategories(ArrayList<String> categories) {
         this.categories = categories;
     }
+
 
 
     public String getID() {
@@ -166,11 +170,11 @@ public class Product {
         this.title = title;
     }
 
-    public double getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 

@@ -8,6 +8,8 @@ public class Main {
 //        Customer account = new Customer();
 //        Admin admin = new Admin();
 //        Scanner scanner = new Scanner(System.in);
+        Admin.calculateRevenue(Admin.getTotalRevenue());
+
 //        admin.getAllCustomerInfo();
 //        account.register();
 //        String username = scanner.nextLine();
@@ -87,4 +89,6 @@ public class Main {
 //        Product product =new Product();
 //        product.registerCategory("laptop");
     }
+
+
 }
