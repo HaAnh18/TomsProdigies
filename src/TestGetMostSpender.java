@@ -1,9 +1,8 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class TestSort {
+public class TestGetMostSpender {
     public static void main(String[] args) throws IOException {
-        Account testing = new Account();
-        testing.sortItems(1);
+        Admin.getMostSpender();
     }
 }
-

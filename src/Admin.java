@@ -3,6 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -94,9 +95,10 @@ public class Admin extends Account {
         System.out.println("Enter price: "); // Ask admin to input the product's price
         double price = scanner.nextDouble();
         scanner.nextLine();
-        pw.println("\n" + ID + "," + title + "," + price + "," + category);
+        pw.println(ID + "," + title + "," + price + "," + category + "\n");
 //        // Write product's information to items' file
         pw.close();
+
     }
 
     public void updatePrice(String filepath, String newData, String pID) throws IOException
@@ -119,11 +121,70 @@ public class Admin extends Account {
 
         ArrayList<String[]> newDatabase = database;
 
-        for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Title, Price, Catetory", String.join(",", obj));
+        for (int i = 0; i < newDatabase.size(); i++) {
+            System.out.println(Arrays.toString(newDatabase.get(i)));
+            Write.rewriteFile(filepath, "#ID,Title, Price, Catetory", String.join(",", newDatabase.get(i)));
             // This method would allow system to write all data including new data into the items' file
         }
     }
+
+
+    public void deleteProduct(String filepath, String delProduct) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+        ArrayList<String[]> newDatabase = new ArrayList<>();
+        for (int i = 0; i < database.size(); i++) {
+            if (!database.get(i)[1].equals(delProduct)) {
+                newDatabase.add(database.get(i)); // The customer's information is changed
+            }
+        }
+        PrintWriter pw = new PrintWriter("./src/items.txt");
+
+        pw.write(""); // The file would erase all the data in customers' file
+        pw.close();
+
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Title, Price, Catetory", String.join(",", obj));
+            // This method would allow system to write all data including new data into the customers' file
+        }
+    }
+
+
+    public static void getMostSpender() throws IOException {
+        CreateTable createTable = new CreateTable();
+
+        // Get total spending column
+        String[] readSpendings = ReadDataFromTXTFile.readCol(8,"./src/customers.txt",",");
+
+        // Create an arraylist of all the total spendings
+        ArrayList<Long> spendingList = new ArrayList<>(readSpendings.length);
+
+        // Creating a new list to utilise the sort method
+        for (int i = 1; i < readSpendings.length; i++) {
+            spendingList.add(Long.parseLong(readSpendings[i]));
+        }
+        // Sort the product from min to max
+        SortProduct.sortAscending(spendingList);
+
+        // Creating and printing out the information
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("#ID","Name","Email","Address","Phone","Membership","Username","Password","Total Spending");
+
+        // Get the first person on the list (Max spenders as the list have been sorted to Ascend from Max)
+        String[] mostSpender = ReadDataFromTXTFile.readSpecificLine(Long.toString(spendingList.get(0)),8,"./src/customers.txt",",");
+
+        // Add that person into an ArrayList so it can be displayed on the table
+        createTable.addRow(mostSpender[0],
+                mostSpender[1],
+                mostSpender[2],
+                mostSpender[3],
+                mostSpender[4],
+                mostSpender[5],
+                mostSpender[6],
+                mostSpender[7],
+                mostSpender[8]);
+
+        createTable.print();
 
     public ArrayList<Double> getTotalRevenue() throws IOException {
         String[] revenue = ReadDataFromTXTFile.readCol(6, "./src/ordersHistory.txt", ",");
@@ -135,6 +196,7 @@ public class Admin extends Account {
             revenueList.add(Double.parseDouble(revenue[i]));
         }
         return revenueList;
+
     }
 }
 
