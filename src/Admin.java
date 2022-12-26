@@ -149,10 +149,28 @@ public class Admin extends Account {
         }
     }
 
+    public void deleteCustomer(String filepath, String delCustomer, int col) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        ArrayList<String[]> newDatabase = new ArrayList<>();
+        for (int i = 0; i < database.size(); i++) {
+            if (!database.get(i)[col].equals(delCustomer)) {
+                newDatabase.add(database.get(i));
+            }
+        }
+        PrintWriter pw = new PrintWriter("./src/customers.txt");
+
+        pw.write("");
+        pw.close();
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID, Name, Email, Address, Phone, membership, username, password, total spending", String.join(","));
+        }
+    }
+
     public void deleteCategory(String filepath, String delCategory) throws IOException {
         ArrayList<String[]> categoryList = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
         ArrayList<String[]> newCategoryList = new ArrayList<>();
-        for (int i=0; i< categoryList.size(); i++) {
+        for (int i = 0; i < categoryList.size(); i++) {
             if (!categoryList.get(i)[1].equals(delCategory)) {
                 newCategoryList.add(categoryList.get(i));
             }
