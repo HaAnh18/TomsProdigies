@@ -3,11 +3,37 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-
+  <component name="ChangeListManager">
+    <list default="true" id="9b59d6ee-aa29-4a11-b8a2-8534055ce4a6" name="Changes" comment="Add method delete blank line">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Customer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TestUpdateMembership.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestUpdateMembership.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/categories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/categories.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customers.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/customers.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/items.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/items.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ordersHistory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/ordersHistory.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "node.js.selected.package.tslint": "(autodetect)"
+  }
+}]]></component>
   <component name="RunManager">
     <configuration name="TestUpdateMembership" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TestUpdateMembership" />
-
       <module name="TomsProdigies" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -15,7 +41,6 @@
     </configuration>
     <recent_temporary>
       <list>
-
         <item itemvalue="Application.TestUpdateMembership" />
         <item itemvalue="Application.TestUpdateMembership" />
         <item itemvalue="Application.TestUpdateMembership" />
@@ -24,5 +49,18 @@
       </list>
     </recent_temporary>
   </component>
-
+  <component name="TaskManager">
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
 </project>

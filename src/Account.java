@@ -18,14 +18,14 @@ public class Account {
     private String customerType;
     private String userName;
     private String password;
-    private double totalSpending;
+    private Long totalSpending;
 
     Path path = Paths.get("./src/customers.txt");
     int id = (int) Files.lines(path).count();
 
     public Account(String cID, String name, String email,
                    String address, String phone, String customerType,
-                   String userName, String password, double totalSpending) throws IOException {
+                   String userName, String password, Long totalSpending) throws IOException {
         this.cID = cID;
         this.name = name;
         this.email = email;
@@ -55,7 +55,7 @@ public class Account {
         phone = registerPhoneNumber();
         customerType = "Regular";
         password = registerPassword();
-        totalSpending = 0;
+        totalSpending = (long)0;
         pw.println("\n" + cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + ","
                 + userName + "," + password + "," + totalSpending);
         // Write customer's information to customers file
@@ -468,7 +468,7 @@ public class Account {
             /** If the system could find out the username in customers' file and the new password is validated
              * then the system allow customer to update their information
              */ {
-                database.get(i)[7] = newData; // The customer's information is changed
+                database.get(i)[8] = newData; // The customer's information is changed
             }
         }
         File file = new File(filepath);
@@ -485,7 +485,7 @@ public class Account {
         }
     }
 
-    public static void updateMembership(String filepath,String userName) throws IOException {
+    public void updateMembership(String filepath,String userName) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
 
         for (int i = 0; i < database.size(); i++) {
@@ -496,12 +496,15 @@ public class Account {
                 if (5000000 < compareNum && compareNum < 10000000) {
                     String newMembership = "Silver";
                     database.get(i)[5] = newMembership;
+                    setCustomerType(newMembership);
                 } else if (10000000 < compareNum && compareNum < 25000000) {
                     String newMembership = "Gold";
                     database.get(i)[5] = newMembership;
+                    setCustomerType(newMembership);
                 } else if (25000000 < compareNum) {
                     String newMembership = "Platinum";
                     database.get(i)[5] = newMembership;
+                    setCustomerType(newMembership);
                 }
             }
         }
@@ -586,8 +589,8 @@ public class Account {
         return totalSpending;
     }
 
-    public double setTotalSpending(double totalSpending) {
-        this.totalSpending = totalSpending;
-        return totalSpending;
+    public Long setTotalSpending(double totalSpending) {
+        this.totalSpending = (long) totalSpending;
+        return (long) totalSpending;
     }
 }
