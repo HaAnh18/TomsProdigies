@@ -18,11 +18,14 @@ public class Account {
     private String customerType;
     private String userName;
     private String password;
+    private Long totalSpending;
 
     Path path = Paths.get("./src/customers.txt");
     int id = (int) Files.lines(path).count();
 
-    public Account(String cID, String name, String email, String address, String phone, String customerType, String userName, String password) throws IOException {
+    public Account(String cID, String name, String email,
+                   String address, String phone, String customerType,
+                   String userName, String password, Long totalSpending) throws IOException {
         this.cID = cID;
         this.name = name;
         this.email = email;
@@ -31,6 +34,7 @@ public class Account {
         this.customerType = customerType;
         this.userName = userName;
         this.password = password;
+        this.totalSpending = totalSpending;
     }
 
     public Account() throws IOException {
@@ -39,7 +43,6 @@ public class Account {
     public void register() throws IOException
     // Register the customer's account
     {
-        Scanner scanner = new Scanner(System.in);
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/customers.txt", true));
 //        Path path = Paths.get("./src/customers.txt");
@@ -52,7 +55,9 @@ public class Account {
         phone = registerPhoneNumber();
         customerType = "Regular";
         password = registerPassword();
-        pw.println("\n" + cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + "," + userName + "," + password);
+        totalSpending = (long)0;
+        pw.println("\n" + cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + ","
+                + userName + "," + password + "," + totalSpending);
         // Write customer's information to customers file
         pw.close();
     }
@@ -407,12 +412,120 @@ public class Account {
         }
     }
 
+
     public void checkMembership(String userName) throws IOException
     // This method would show the customer's membership status
     {
         String[] database = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
         // Read all information of this customer
         System.out.println("Membership: " + database[5]); // Print the membership status of this customer
+    }
+
+    public void sortItems(int input) throws IOException {
+        // Create an product object
+        Product product = new Product();
+
+        // Use the get all prices method to create a prices list
+        ArrayList<Long> prices = product.getAllPrice();
+
+        // Create an createTable object
+        CreateTable createTable = new CreateTable();
+
+        // Check for user inputs whether to sort ascend or descend
+        if (input == 1) {
+            // Create an arraylist that sorted the prices in an ascending order
+            ArrayList<Long> priceAscend = SortProduct.sortAscending(prices);
+
+            // Create the headers and lines
+            createTable.setShowVerticalLines(true);
+            createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
+
+            // Loop to add items description into a table
+            for (int a = 0; a < prices.size(); a++) {
+                // Use the given prices to determine the correct item then adding them into an array list
+                String[] sortProducts = ReadDataFromTXTFile.readSpecificLine(Long.toString(priceAscend.get(a)), 2, "./src/items.txt", ",");
+                createTable.addRow(sortProducts[0], sortProducts[1], sortProducts[2], sortProducts[3]);
+            }
+        } else if (input == 2) {
+            ArrayList<Long> priceDescend = SortProduct.sortDescending(prices);
+
+            createTable.setShowVerticalLines(true);
+
+            createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
+
+            for (int a = 0; a < prices.size(); a++) {
+                String[] sortProducts = ReadDataFromTXTFile.readSpecificLine(Long.toString(priceDescend.get(a)), 2, "./src/items.txt", ",");
+                createTable.addRow(sortProducts[0], sortProducts[1], sortProducts[2], sortProducts[3]);
+            }
+        }
+        createTable.print();
+    }
+
+    public void updateTotalSpending(String filepath, String newData, String userName) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        for (int i = 0; i < database.size(); i++) {
+            if (database.get(i)[6].equals(userName))
+            /** If the system could find out the username in customers' file and the new password is validated
+             * then the system allow customer to update their information
+             */ {
+                database.get(i)[8] = newData; // The customer's information is changed
+            }
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write(""); // The file would erase all the data in customers' file
+        pw.close();
+
+        ArrayList<String[]> newDatabase = database;
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending", String.join(",", obj));
+            // This method would allow system to write all data including new data into the customers' file
+        }
+    }
+
+
+    public void updateMembership(String filepath,String userName) throws IOException {
+
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+
+        // Loop through all customers
+        for (int i = 0; i < database.size(); i++) {
+
+            // Find corresponding user
+            if (database.get(i)[6].equals(userName)) {
+                long compareNum = Long.parseLong(database.get(i)[8]);
+
+                // Membership requirements and newMembership variable use to update the membership
+                if (5000000 < compareNum && compareNum < 10000000) {
+                    String newMembership = "Silver";
+                    database.get(i)[5] = newMembership;
+                    setCustomerType(newMembership);
+                } else if (10000000 < compareNum && compareNum < 25000000) {
+                    String newMembership = "Gold";
+                    database.get(i)[5] = newMembership;
+                    setCustomerType(newMembership);
+                } else if (25000000 < compareNum) {
+                    String newMembership = "Platinum";
+                    database.get(i)[5] = newMembership;
+                    setCustomerType(newMembership);
+                }
+            }
+        }
+        // setting up the PrintWriter
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write(""); // The file would erase all the data in customers' file
+        pw.close();
+
+        ArrayList<String[]> newDatabase = database;
+
+        // Rewrite the whole file with new updated information
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending", String.join(",", obj));
+        }
     }
 
     public String getcID() {
@@ -477,5 +590,14 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public double getTotalSpending() {
+        return totalSpending;
+    }
+
+    public Long setTotalSpending(double totalSpending) {
+        this.totalSpending = (long) totalSpending;
+        return (long) totalSpending;
     }
 }
