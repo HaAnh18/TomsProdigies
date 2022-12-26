@@ -1,4 +1,4 @@
-#ID,Title, Price, Catetory
+#ID,Title, Price, Category
 I001-2001,Dell XPS 17,50000000,Laptop
 I002-1988,Macbook Pro 15,60000000,Laptop
 I003-1992,Samsung Galaxy S22,38000000,Phone
