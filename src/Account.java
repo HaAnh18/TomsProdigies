@@ -62,16 +62,16 @@ public class Account {
         pw.close();
     }
 
-    public boolean login()
+    public boolean login(String username, String password)
     // Login if he/she had account already
     {
         boolean isAuthentication = false;
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter username: ");
-        String username = scanner.nextLine();
-        System.out.println("Enter password: ");
-        String password = scanner.nextLine();
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.println("Enter username: ");
+//        String username = scanner.nextLine();
+//        System.out.println("Enter password: ");
+//        String password = scanner.nextLine();
 //        String hashing = this.hashingPassword(password);
         try {
             Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
@@ -535,7 +535,8 @@ public class Account {
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(oId))
                 /* If the system could find out the customer's ID in ordersHistory's file
-                 */ {
+                 */
+            {
                 orders.add(database.get(i));
             }
         }
