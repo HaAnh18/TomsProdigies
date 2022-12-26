@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b59d6ee-aa29-4a11-b8a2-8534055ce4a6" name="Changes" comment="">
+    <list default="true" id="9b59d6ee-aa29-4a11-b8a2-8534055ce4a6" name="Changes" comment="total revenue calculation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Admin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Product.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,6 +95,7 @@
       <workItem from="1671769588752" duration="6742000" />
       <workItem from="1671783607350" duration="11090000" />
       <workItem from="1671949613841" duration="304000" />
+      <workItem from="1672027976064" duration="400000" />
     </task>
     <task id="LOCAL-00001" summary="Create register and login method (already validate but not hash the password yet)">
       <created>1671016743296</created>
@@ -140,7 +139,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671782603546</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="total revenue calculation">
+      <created>1671953341148</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1671953341148</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,7 +171,8 @@
     <MESSAGE value="Add CreateTable, Admin" />
     <MESSAGE value="Done update information, add product, create write class, get all information, read data class" />
     <MESSAGE value="add searchAlgorithm, searchProduct, userInput." />
-    <option name="LAST_COMMIT_MESSAGE" value="add searchAlgorithm, searchProduct, userInput." />
+    <MESSAGE value="total revenue calculation" />
+    <option name="LAST_COMMIT_MESSAGE" value="total revenue calculation" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
