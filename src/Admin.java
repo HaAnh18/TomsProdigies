@@ -128,6 +128,31 @@ public class Admin extends Account {
         }
     }
 
+    public void updateDeliveryStatus(String filepath, String newData, String oID) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        for (int i = 0; i < database.size(); i++) {
+            if (database.get(i)[0].equals(oID))
+            /** If the system could find out the oID in ordersHistory's file
+             * then the system allow admin to update the order delivery status
+             */ {
+                database.get(i)[2] = newData; // Modify the product's price
+            }
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write(""); // The file would erase all the data in items' file
+        pw.close();
+
+        ArrayList<String[]> newDatabase = database;
+
+        for (int i = 0; i < newDatabase.size(); i++) {
+            System.out.println(Arrays.toString(newDatabase.get(i)));
+            Write.rewriteFile(filepath, "#OID,CID,PID,Membership,Total payment,Timestamp,Total spending,Order status,Delivery status", String.join(",", newDatabase.get(i)));
+            // This method would allow system to write all data including new data into the items' file
+        }
+    }
+
 
     public void deleteProduct(String filepath, String delProduct, int col) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
@@ -163,7 +188,7 @@ public class Admin extends Account {
         pw.close();
 
         for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID, Name, Email, Address, Phone, membership, username, password, total spending", String.join(","));
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password,total spending", String.join(","));
         }
     }
 
