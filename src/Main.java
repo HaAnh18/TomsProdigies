@@ -1,14 +1,23 @@
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-//        Customer account = new Customer();
-//        Admin admin = new Admin();
+    public static void main(String[] args) throws IOException, InterruptedException {
+        Account account = new Customer();
+        Admin admin = new Admin();
+        CustomerMenu customerMenu = new CustomerMenu();
+        customerMenu.view();
+//        Product product = new Product();
+//        product.getProductToCreateOrder();
+//        account.searchOrder("0289");
 //        Scanner scanner = new Scanner(System.in);
 //        Admin.calculateRevenue(Admin.getTotalRevenue());
+//        customerMenu.viewHomepage("minhhoang");
+//        String[] customerInfo = ReadDataFromTXTFile.readSpecificLine("minhhoang",6,"./src/customers.txt",",");
 
 //        admin.getAllCustomerInfo();
 //        account.register();
@@ -19,18 +28,28 @@ public class Main {
 //        admin.addProduct();
 //        Product product = new Product();
 //        File orderSession = new File("orderSession.txt");
-
-//
-        Order order = new Order();
-        String userName = "minhhoang";
-        String[] obj = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
-//        System.out.println(Arrays.toString(obj));
-        String[] productInfo = ReadDataFromTXTFile.readSpecificLine("Dell XPS 17", 1, "./src/items.txt", ",");
-        Customer member = new Customer(obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6], obj[7], Long.parseLong(obj[8]));
-        Product product = new Product((productInfo[0]), productInfo[1], Long.parseLong((productInfo[2])), productInfo[3]);
-        ;
-        ;
-        order.createNewOrder(member, product);
+//        customerMenu.viewHomepage("minhhoang");
+//        Order order = new Order();
+//        String userName = "minhhoang";
+//        String[] obj = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
+////        System.out.println(Arrays.toString(obj));
+//        String[] productInfo = ReadDataFromTXTFile.readSpecificLine("Dell XPS 17", 1, "./src/items.txt", ",");
+//        Customer member = new Customer(obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6], obj[7], Long.parseLong(obj[8]));
+//        Product product = new Product((productInfo[0]), productInfo[1], Long.parseLong((productInfo[2])), productInfo[3]);
+//        ;
+//        ;
+//        order.createNewOrder(member, product);
+//        Product product = new Product();
+//        product.getProductToCreateOrder();
+//        String choiceOrder = UserInput.rawInput();
+//        ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+//        for (int i = 0; i< productList.size(); i++) {
+//            if (i == Integer.parseInt(choiceOrder)) {
+//                String[] productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1],1,"./src/items.txt",",");
+//                System.out.println(Arrays.toString(productInfo));
+//            }
+//        }
+//        admin.deleteCategory("./src/categories.txt","Laptop");
 //        String[] data = ReadDataFromTXTFile.readSpecificLine("C001", 1, "./src/ordersHistory.txt", ",");
 //        System.out.println(Arrays.toString(data));
 //        ArrayList<String[]> orders = new ArrayList<>(); // Create an arraylist to contain all customers' information

@@ -123,6 +123,40 @@ public class Product {
 //        createTable.setHeaders(new String[0]);
     }
 
+    public void getProductToCreateOrder() throws FileNotFoundException {
+        ArrayList<String[]> user = new ArrayList<>();
+        Scanner fileProducts = new Scanner(new File("./src/items.txt"));
+
+        while (fileProducts.hasNext()) {
+//            ArrayList<String[]> user = null;
+            String[] productData = new String[3];
+            String line = fileProducts.nextLine();
+            StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
+            String ID = stringTokenizer.nextToken();
+            String title = stringTokenizer.nextToken();
+            String price = stringTokenizer.nextToken();
+            String category = stringTokenizer.nextToken();
+            productData = new String[]{ID, title, price, category};
+            user.add(productData);
+        }
+//        ArrayList<String[]> user = Read.readAllLine("users.txt");
+//        ArrayList<String[]> allProducts = Read.readAllLine("products.txt");
+
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("OPTION","ID", "TITLE", "PRICE", "CATEGORY");
+//        CreateTable.setShowVerticalLines(true);
+//        CreateTable.setHeaders("ID","NAME","USERNAME","EMAIL","ADDRESS","PHONE","MEMBERSHIP");
+
+        for (int i = 1; i < user.size(); i++) {
+//            CreateTable.addRow(user.get(i)[0], user.get(i)[1],user.get(i)[2],user.get(i)[3],user.get(i)[4],user.get(i)[5],user.get(i)[6]);
+            createTable.addRow(String.valueOf(i),user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3]);
+        }
+
+        createTable.print();
+//        createTable.setHeaders(new String[0]);
+    }
+
     public ArrayList<Long> getAllPrice() throws IOException {
         // Use the read column method to get prices
         String[] readPrices = ReadDataFromTXTFile.readColString(2, "./src/items.txt", ",");
