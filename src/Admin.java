@@ -156,6 +156,7 @@ public class Admin extends Account {
         // Get total spending column
         String[] readSpendings = ReadDataFromTXTFile.readCol(8, "./src/customers.txt", ",");
 
+
         // Create an arraylist of all the total spendings
         ArrayList<Long> spendingList = new ArrayList<>(readSpendings.length);
 

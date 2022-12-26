@@ -9,6 +9,7 @@ public class Main {
 //        Admin admin = new Admin();
 //        Scanner scanner = new Scanner(System.in);
         Admin.calculateRevenue(Admin.getTotalRevenue());
+
 //        admin.getAllCustomerInfo();
 //        account.register();
 //        String username = scanner.nextLine();
