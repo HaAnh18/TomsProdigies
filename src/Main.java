@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -6,11 +7,13 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        Account account = new Customer();
-        Admin admin = new Admin();
-        CustomerMenu customerMenu = new CustomerMenu();
-        customerMenu.view();
+    public static void main(String[] args) throws IOException, InterruptedException, ParseException {
+//        Account account = new Customer();
+//        Admin admin = new Admin();
+//        CustomerMenu customerMenu = new CustomerMenu();
+//        customerMenu.view();
+//        Product.searchByCategory("Laptop");
+            Admin.calculateRevenue(Admin.getDailyRevenue());
 //        Product product = new Product();
 //        product.getProductToCreateOrder();
 //        account.searchOrder("0289");
