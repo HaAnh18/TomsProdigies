@@ -239,7 +239,25 @@ public class Product {
             table.setRows(new ArrayList<String[]>());
         }
     }
-
+  public static void searchByCategory(String category) throws IOException{
+        ArrayList<String[]> categories = new ArrayList<>();
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+      for (int i = 1; i < database.size(); i++) {
+          if (database.get(i)[3].equals(category))
+              /* If the system could find out the customer's ID in ordersHistory's file
+               */
+          {
+              categories.add(database.get(i));
+          }
+      }
+      CreateTable createTable = new CreateTable();
+      createTable.setShowVerticalLines(true);
+      createTable.setHeaders("ID", "Title", "Prices", "Category");
+      for (String[] categoryOutput : categories) {
+          createTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
+      }
+      createTable.print();
+  }
 
     public ArrayList<String> getCategories() {
         return categories;

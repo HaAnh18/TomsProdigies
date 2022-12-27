@@ -122,6 +122,15 @@ public class Order {
         return this.oID;
     }
 
+    public static ArrayList<Order> getOrderByDate(String date){
+        ArrayList<Order> dailyOrder = new ArrayList<>();
+        for (Order strings : Order.getOrderByDate(date)) {
+            String orderDate = strings.getOrderDate();
+            if (date.equalsIgnoreCase(orderDate)) {
+                dailyOrder.add(strings);
+            }
+        }
+        return dailyOrder;}
 
     public String getoID() {
         return oID;
@@ -163,4 +172,7 @@ public class Order {
         this.deliveryStatus = deliveryStatus;
     }
 
-}
+
+        }
+
+
