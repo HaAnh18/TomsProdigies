@@ -128,12 +128,37 @@ public class Admin extends Account {
         }
     }
 
+    public void updateDeliveryStatus(String filepath, String newData, String oID) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        for (int i = 0; i < database.size(); i++) {
+            if (database.get(i)[0].equals(oID))
+            /** If the system could find out the oID in ordersHistory's file
+             * then the system allow admin to update the order delivery status
+             */ {
+                database.get(i)[2] = newData; // Modify the product's price
+            }
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
 
-    public void deleteProduct(String filepath, String delProduct) throws IOException {
+        pw.write(""); // The file would erase all the data in items' file
+        pw.close();
+
+        ArrayList<String[]> newDatabase = database;
+
+        for (int i = 0; i < newDatabase.size(); i++) {
+            System.out.println(Arrays.toString(newDatabase.get(i)));
+            Write.rewriteFile(filepath, "#OID,CID,PID,Membership,Total payment,Timestamp,Total spending,Order status,Delivery status", String.join(",", newDatabase.get(i)));
+            // This method would allow system to write all data including new data into the items' file
+        }
+    }
+
+
+    public void deleteProduct(String filepath, String delProduct, int col) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
         for (int i = 0; i < database.size(); i++) {
-            if (!database.get(i)[1].equals(delProduct)) {
+            if (!database.get(i)[col].equals(delProduct)) {
                 newDatabase.add(database.get(i)); // The customer's information is changed
             }
         }
@@ -147,6 +172,45 @@ public class Admin extends Account {
             Write.rewriteFile(filepath, "#ID,Title, Price, Catetory", String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
+    }
+
+    public void deleteCustomer(String filepath, String delCustomer, int col) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        ArrayList<String[]> newDatabase = new ArrayList<>();
+        for (int i = 0; i < database.size(); i++) {
+            if (!database.get(i)[col].equals(delCustomer)) {
+                newDatabase.add(database.get(i));
+            }
+        }
+        PrintWriter pw = new PrintWriter("./src/customers.txt");
+
+        pw.write("");
+        pw.close();
+
+        for (String[] obj : newDatabase) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password,total spending", String.join(","));
+        }
+    }
+
+    public void deleteCategory(String filepath, String delCategory) throws IOException {
+        ArrayList<String[]> categoryList = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
+        ArrayList<String[]> newCategoryList = new ArrayList<>();
+        for (int i = 0; i < categoryList.size(); i++) {
+            if (!categoryList.get(i)[1].equals(delCategory)) {
+                newCategoryList.add(categoryList.get(i));
+            }
+        }
+        PrintWriter pw = new PrintWriter("./src/categories.txt");
+
+        pw.write(""); // The file would erase all the data in customers' file
+        pw.close();
+
+
+        for (String[] obj : newCategoryList) {
+            Write.rewriteFile(filepath, "#ID,Category,Quantity", String.join(",", obj));
+            // This method would allow system to write all data including new data into the customers' file
+        }
+        deleteProduct("./src/items.txt",delCategory,3);
     }
 
 
@@ -199,7 +263,9 @@ public class Admin extends Account {
             }
             return revenueList;
         }
-        public static void calculateRevenue(ArrayList<Long> moneyList){
+
+
+    public static void calculateRevenue(ArrayList<Long> moneyList){
         long sum = 0;
             for(int i = 0; i < moneyList.size(); i++) {
                 sum += moneyList.get(i);
@@ -210,7 +276,41 @@ public class Admin extends Account {
                 revenueTable.addRow(String.valueOf(sum));
                 revenueTable.print();
         }
+
+    public static void getBestSeller() throws IOException {
+        int count = 0;
+        int maxCount = 0;
+        int minCount = 1;
+        String[] productList = ReadDataFromTXTFile.readColString(2, "./src/ordersHistory.txt", ",");
+        ArrayList<String> countProduct = new ArrayList<>();
+        CreateTable table = new CreateTable();
+
+        for (int a = 1; a < productList.length; a++) {
+            countProduct.add(productList[a]);
+        }
+
+        for (int i = 0; i < countProduct.size(); i++) {
+            count = 1;
+
+            for (int j = i + 1; j < countProduct.size(); j++) {
+                if (countProduct.get(i).equals(countProduct.get(j)))
+                    count++;
+            }
+            if(count > maxCount){
+                maxCount = count;
+                String popularProduct = countProduct.get(i);
+                String[] displayProduct = ReadDataFromTXTFile.readSpecificLine(popularProduct, 0, "./src/items.txt", ",");
+                table.addRow(displayProduct[0],
+                        displayProduct[1],
+                        displayProduct[2],
+                        displayProduct[3]);
+            }
+        }
+        table.setShowVerticalLines(true);
+        table.setHeaders("#ID","Title", "Price", "Category");
+        table.print();
     }
+}
 
 
 

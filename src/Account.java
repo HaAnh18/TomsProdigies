@@ -62,16 +62,16 @@ public class Account {
         pw.close();
     }
 
-    public boolean login()
+    public boolean login(String username, String password)
     // Login if he/she had account already
     {
         boolean isAuthentication = false;
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter username: ");
-        String username = scanner.nextLine();
-        System.out.println("Enter password: ");
-        String password = scanner.nextLine();
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.println("Enter username: ");
+//        String username = scanner.nextLine();
+//        System.out.println("Enter password: ");
+//        String password = scanner.nextLine();
 //        String hashing = this.hashingPassword(password);
         try {
             Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
@@ -526,6 +526,28 @@ public class Account {
         for (String[] obj : newDatabase) {
             Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending", String.join(",", obj));
         }
+    }
+
+    public void searchOrder(String oId) {
+        ArrayList<String[]> orders = new ArrayList<>();
+
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        for (int i = 1; i < database.size(); i++) {
+            if (database.get(i)[0].equals(oId))
+                /* If the system could find out the customer's ID in ordersHistory's file
+                 */
+            {
+                orders.add(database.get(i));
+            }
+        }
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("OID", "CID", "PID", "MEMBERSHIP", "TOTAL PAYMENT", "TIMESTAMP", "TOTAL SPENDING", "ORDER STATUS", "DELIVERING STATUS");
+        for (String[] order : orders) {
+            createTable.addRow(order[0], order[1], order[2], order[3],
+                    order[4], order[5], order[6], order[7], order[8]);
+        }
+        createTable.print();
     }
 
     public String getcID() {

@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,6 +81,29 @@ public class ReadDataFromTXTFile {
             }
         } catch (Exception e) {
             throw new RuntimeException();
+        }
+        return new String[0];
+    }
+
+    public static String[] getSpecificLine(String fetch, int column, String filePath, String delimiter) throws IOException {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        String currentLine;
+        String[] data;
+        try {
+            FileReader fr = new FileReader(filePath);
+            BufferedReader br = new BufferedReader(fr);
+
+            while ((currentLine = br.readLine()) != null) {
+                data = currentLine.split(delimiter);
+                if (data[column].equals(fetch)) {
+                    return data;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return new String[0];
     }
