@@ -65,6 +65,7 @@ public class Order {
         getOrderInfo(customer);
     }
 
+
     public void getOrderInfo(Customer customer) {
 
         ArrayList<String[]> orders = new ArrayList<>();
@@ -83,6 +84,19 @@ public class Order {
         for (String[] order : orders) {
             createTable.addRow(order[0], order[1], order[2], order[3],
                     order[4], order[5], order[6], order[7], order[8]);
+        }
+        createTable.print();
+    }
+
+    public void getAllOrderInfo() {
+        ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("OID", "CID", "PID", "MEMBERSHIP", "TOTAL PAYMENT", "TIMESTAMP", "TOTAL SPENDING", "ORDER STATUS", "DELIVERING STATUS");
+        for (int i=1; i<orders.size();i++) {
+            createTable.addRow(orders.get(i)[0], orders.get(i)[1], orders.get(i)[2],
+                    orders.get(i)[3], orders.get(i)[4], orders.get(i)[5],
+                    orders.get(i)[6], orders.get(i)[7], orders.get(i)[8]);
         }
         createTable.print();
     }
@@ -107,6 +121,8 @@ public class Order {
         }
         return this.oID;
     }
+
+
     public String getoID() {
         return oID;
     }

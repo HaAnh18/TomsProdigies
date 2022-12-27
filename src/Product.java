@@ -123,7 +123,7 @@ public class Product {
 //        createTable.setHeaders(new String[0]);
     }
 
-    public void getProductToCreateOrder() throws FileNotFoundException {
+    public void getProductHaveId() throws FileNotFoundException {
         ArrayList<String[]> user = new ArrayList<>();
         Scanner fileProducts = new Scanner(new File("./src/items.txt"));
 
