@@ -2,6 +2,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -265,7 +267,7 @@ public class Admin extends Account {
         }
 
 
-    public static void calculateRevenue(ArrayList<Long> moneyList){
+    public static ArrayList<Long> calculateRevenue(ArrayList<Long> moneyList){
         long sum = 0;
             for(int i = 0; i < moneyList.size(); i++) {
                 sum += moneyList.get(i);
@@ -275,7 +277,9 @@ public class Admin extends Account {
                 revenueTable.setHeaders("Total Revenue");
                 revenueTable.addRow(String.valueOf(sum));
                 revenueTable.print();
-        }
+        return moneyList;
+    }
+
 
     public static void getBestSeller() throws IOException {
         int count = 0;
@@ -310,7 +314,72 @@ public class Admin extends Account {
         table.setHeaders("#ID","Title", "Price", "Category");
         table.print();
     }
+    public static ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
+        String[] dailyRevenue = ReadDataFromTXTFile.readColString(4,"./src/ordersHistory.txt", ",");
+        String[] dateAndTime = ReadDataFromTXTFile.readColString(5,"./src/ordersHistory.txt",",");
+        ArrayList<Long> revenueList = new ArrayList<>(dailyRevenue.length);
+
+        Scanner inputObj = new Scanner(System.in);
+        System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy)");
+        String date = inputObj.nextLine();
+        while (dateValidate(date))
+        {
+            System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy)");
+            date = inputObj.nextLine();
+        }
+        date = dateInput(date);
+            for (int i = 1; i < dailyRevenue.length; i++) {
+        do revenueList.add(Long.valueOf(dailyRevenue[i]));
+            while (dateAndTime.equals(date));
+    }
+            return revenueList;
 }
+
+    public static boolean dateValidate(String date) throws ParseException {
+        String[] dateComponent = date.split("/");
+        String month = dateComponent[0].replaceFirst("^0*", "");
+        String day = dateComponent[1].replaceFirst("^0*", "");
+        String year = dateComponent[2].replaceFirst("^0*", "");
+        if (Integer.parseInt(day) < 10)
+        {
+            date = String.format("0%s" + "/" + "%s" + "/" + "%s", month, day, year);
+        } else if (Integer.parseInt(month) < 10)
+        {
+            date = String.format("%s" + "/" + "0%s" + "/" + "%s", month, day, year);
+        } else if (Integer.parseInt(day) < 10 && Integer.parseInt(month) < 10)
+        {
+            date = String.format("0%s" + "/" + "0%s" + "/" + "%s", month, day, year);
+        } else
+        {
+            date = String.format("%s" + "/" + "%s" + "/" + "%s", month, day, year);
+        }
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        format.setLenient(false);
+        try
+        {
+            format.parse(date);
+        } catch (ParseException e)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public static String dateInput(String date)
+    {
+        String[] dateComponent = date.split("/");
+        String month = dateComponent[0].replaceFirst("^0*", "");
+        String day = dateComponent[1].replaceFirst("^0*", "");
+        String year = dateComponent[2].replaceFirst("^0*", "");
+        date = month + "/" + day + "/" + year;
+        return date;
+    }
+
+
+    }
+
+
+
 
 
 
