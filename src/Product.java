@@ -123,6 +123,40 @@ public class Product {
 //        createTable.setHeaders(new String[0]);
     }
 
+    public void getProductToCreateOrder() throws FileNotFoundException {
+        ArrayList<String[]> user = new ArrayList<>();
+        Scanner fileProducts = new Scanner(new File("./src/items.txt"));
+
+        while (fileProducts.hasNext()) {
+//            ArrayList<String[]> user = null;
+            String[] productData = new String[3];
+            String line = fileProducts.nextLine();
+            StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
+            String ID = stringTokenizer.nextToken();
+            String title = stringTokenizer.nextToken();
+            String price = stringTokenizer.nextToken();
+            String category = stringTokenizer.nextToken();
+            productData = new String[]{ID, title, price, category};
+            user.add(productData);
+        }
+//        ArrayList<String[]> user = Read.readAllLine("users.txt");
+//        ArrayList<String[]> allProducts = Read.readAllLine("products.txt");
+
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("OPTION","ID", "TITLE", "PRICE", "CATEGORY");
+//        CreateTable.setShowVerticalLines(true);
+//        CreateTable.setHeaders("ID","NAME","USERNAME","EMAIL","ADDRESS","PHONE","MEMBERSHIP");
+
+        for (int i = 1; i < user.size(); i++) {
+//            CreateTable.addRow(user.get(i)[0], user.get(i)[1],user.get(i)[2],user.get(i)[3],user.get(i)[4],user.get(i)[5],user.get(i)[6]);
+            createTable.addRow(String.valueOf(i),user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3]);
+        }
+
+        createTable.print();
+//        createTable.setHeaders(new String[0]);
+    }
+
     public ArrayList<Long> getAllPrice() throws IOException {
         // Use the read column method to get prices
         String[] readPrices = ReadDataFromTXTFile.readColString(2, "./src/items.txt", ",");
@@ -133,15 +167,78 @@ public class Product {
         // Prepping the price list to be able to sort
         for (int i = 1; i < readPrices.length; i++) {
 
-
             pricesList.add(Long.parseLong(readPrices[i]));
-
 
         }
 
         return pricesList;
     }
 
+    public ArrayList<String[]> getMatchResult(String data) throws IOException {
+        String[] category = ReadDataFromTXTFile.readColString(3, "./src/items.txt", ",");
+        String[] title = ReadDataFromTXTFile.readColString(1, "./src/items.txt", ",");
+
+        ArrayList<String[]> matchResult = new ArrayList<>();
+
+        for (int i = 0; i < title.length; i++) {
+            //use Boyer Moore Searching Algorithm
+            SearchAlgorithm text = new SearchAlgorithm(data);
+            boolean isFound = text.boyerMooreSearch(category[i], data);
+
+            if (isFound) {
+                String[] specificLine = ReadDataFromTXTFile.getSpecificLine(title[i], 1, "./src/items.txt", ",");
+                matchResult.add(specificLine);
+            }
+        }
+        return matchResult;
+    }
+
+    public void findItemByPriceRange(String item) throws IOException {
+        String[] category = ReadDataFromTXTFile.readColString(1, "./src/items.txt", ",");
+
+        category = Arrays.stream(category).distinct().toArray(String[]::new);
+
+        String option = OptionInput.input();
+
+        ArrayList<String[]> matchResult = new ArrayList<>(this.getMatchResult(category[0]).size());
+
+        CreateTable table = new CreateTable();
+        switch (option) {
+            case "1":
+                matchResult = this.getMatchResult(category[0]);
+                System.out.println("this is 1");
+                break;
+            case "2":
+                matchResult = this.getMatchResult(category[1]);
+                System.out.println("this is 2");
+                break;
+            case "3":
+                matchResult = this.getMatchResult(category[2]);
+                System.out.println("this is 3");
+                break;
+            case "4":
+                matchResult = this.getMatchResult(category[3]);
+                System.out.println("this is 4");
+                break;
+            // for menu add 1 more but will be menu.something();
+        }
+        if (matchResult.size() == 0) {
+            System.out.println("Sorry, there is no found result");
+        }
+        if (matchResult.size() > 0) {
+            System.out.println("Available Products");
+            table.setShowVerticalLines(true);
+            table.setHeaders("PRODUCT_ID", "ITEM", "CATEGORY", "PRICE");
+
+            for (int i = 0; i < matchResult.size(); i++) {
+                table.addRow(matchResult.get(i)[0], matchResult.get(i)[1], matchResult.get(i)[3], matchResult.get(i)[2]);
+            }
+            table.print();
+
+            table.setHeaders(new String[0]);
+            table.setRows(new ArrayList<String[]>());
+        }
+    }
 
 
     public ArrayList<String> getCategories() {
