@@ -550,6 +550,16 @@ public class Account {
         createTable.print();
     }
 
+    public void getAllMembershipTypes() {
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("MEMBERSHIP", "MINIMUM SPENDING", "DISCOUNT");
+        createTable.addRow("Silver","5 millions VND","5%");
+        createTable.addRow("Gold","10 millions VND","10%");
+        createTable.addRow("Platinum", "25 millions VND", "15%");
+        createTable.print();
+    }
+
     public String getcID() {
         return cID;
     }

@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -13,10 +12,12 @@ public class CustomerMenu {
         System.out.println("3. List all product");
         System.out.println("4. Search product");
         System.out.println("5. Sort product");
+        System.out.println("6. List all membership types");
         System.out.println("6. Back to authentication menu");
         System.out.println("7. Exit");
 
         CustomerMenu customerMenu = new CustomerMenu();
+        AuthenticationSystem authenticationSystem = new AuthenticationSystem();
         Scanner scanner = new Scanner(System.in);
         String option = UserInput.rawInput();
 //        int option = Integer.parseInt(scanner.nextLine());
@@ -29,20 +30,23 @@ public class CustomerMenu {
                 System.out.println("Register Successfully");
                 customerMenu.view();
             case "2":
+                this.cookies = false;
                 System.out.println("Enter username: ");
                 String username = scanner.nextLine();
                 System.out.println("Enter password: ");
                 String password = scanner.nextLine();
                 if (!customer.login(username,password)) {
-                    System.out.println("Wrong password, try again !!!!");
-                    username = customer.registerUsername();
-                    password = customer.registerPassword();
+                    System.out.println("Wrong password, try again !!!!!");
+                    System.out.println("Enter username: ");
+                    username = scanner.nextLine();
+                    System.out.println("Enter password: ");
+                    password = scanner.nextLine();
                 }
                 this.cookies = true;
-                customerMenu.viewHomepage(username);
+                this.viewHomepage(username);
             case "3":
                 product.getAllProductInfo();
-                TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
             case "4":
                 System.out.println("1. Search product by category");
@@ -59,10 +63,15 @@ public class CustomerMenu {
                 System.out.println("2. Descending");
                 int sortOption = Integer.parseInt(scanner.nextLine());
                 customer.sortItems(sortOption);
-                TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
             case "6":
+                customer.getAllMembershipTypes();
+                TimeUnit.SECONDS.sleep(1);
+                customerMenu.view();
             case "7":
+                authenticationSystem.mainMenu();
+            case "8":
                 System.out.println("Thank you so much for using our system. See you soon !!!!");
                 System.out.println("COSC2081 GROUP ASSIGNMENT");
                 System.out.println("STORE ORDER MANAGEMENT SYSTEM");
@@ -82,7 +91,7 @@ public class CustomerMenu {
     }
 
     public void viewHomepage(String userName) throws IOException, InterruptedException {
-        System.out.println("Cookies (Login Status): " + this.cookies);
+        System.out.println("\nCookies (Login Status): " + this.cookies);
         String[] customerInfo = ReadDataFromTXTFile.readSpecificLine(userName,6,"./src/customers.txt",",");
         System.out.println("\nUsername:" + customerInfo[6]+ "\t\tName:" + customerInfo[1]
         + "\t\tEmail:" + customerInfo[2] + "\t\tAddress:" + customerInfo[3]
@@ -94,13 +103,13 @@ public class CustomerMenu {
         System.out.println("5. Search product");
         System.out.println("6. Search order");
         System.out.println("7. Sort product");
+        System.out.println("8. List all membership types");
         System.out.println("8. Log out");
         System.out.println("9. Exit");
 
         Order order = new Order();
         Scanner scanner = new Scanner(System.in);
         String[] obj = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
-//        String[] productInfo = ReadDataFromTXTFile.readSpecificLine("Dell XPS 17", 1, "./src/items.txt", ",");
         Customer member = new Customer(obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6], obj[7], Long.parseLong(obj[8]));
         CustomerMenu customerMenu = new CustomerMenu();
         Product product = new Product();
@@ -108,7 +117,7 @@ public class CustomerMenu {
         String option = UserInput.rawInput();
         switch (option) {
             case "1":
-                product.getProductToCreateOrder();
+                product.getProductHaveId();
                 String choiceOrder = UserInput.rawInput();
                 ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/items.txt");
                 String[] productInfo = new String[3];
@@ -122,7 +131,7 @@ public class CustomerMenu {
                 customerMenu.viewHomepage(userName);
             case "2":
                 order.getOrderInfo(member);
-                TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(1);
                 customerMenu.viewHomepage(userName);
             case "3":
                 System.out.println("Which information you want to update?");
@@ -156,7 +165,7 @@ public class CustomerMenu {
                 }
             case "4":
                 product.getAllProductInfo();
-                TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(1);
                 customerMenu.viewHomepage(userName);
             case "5":
                 System.out.println("1. Search product by category");
@@ -178,11 +187,15 @@ public class CustomerMenu {
                 System.out.println("2. Descending");
                 String sortOption = UserInput.rawInput();
                 member.sortItems(Integer.parseInt(sortOption));
-                TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(1);
                 customerMenu.viewHomepage(userName);
             case "8":
-                customerMenu.view();
+                member.getAllMembershipTypes();
+                TimeUnit.SECONDS.sleep(1);
+                customerMenu.viewHomepage(userName);
             case "9":
+                customerMenu.view();
+            case "10":
                 System.out.println("Thank you so much for using our system. See you soon !!!!");
                 System.out.println("COSC2081 GROUP ASSIGNMENT");
                 System.out.println("STORE ORDER MANAGEMENT SYSTEM");
