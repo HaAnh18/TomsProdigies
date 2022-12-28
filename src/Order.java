@@ -31,11 +31,11 @@ public class Order {
         String productID = product.getID();
         Long singleUnitPrice = product.getPrice();
         paymentPrice = product.getPrice() * quantity;
-        Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + paymentPrice);
-        productSales(String.valueOf(product));
+        Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + paymentPrice); // Updating the total spending value by adding in the paymentPrice total
+        productSales(String.valueOf(product), quantity); // Adding a sales value depending on the user order
         customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
-        customer.updateMembership("./src/customers.txt",customer.getUserName());
-        String membership = customer.getCustomerType();
+        customer.updateMembership("./src/customers.txt",customer.getUserName()); // Update the corresponding user membership by checking their total spending
+        String membership = customer.getCustomerType();// Assign new membership type
         orderDate = new SimpleDateFormat("MM/dd/yyyy_HH:mm").format(Calendar.getInstance().getTime());
         orderStatus = "SUCCESSFUL";
         deliveryStatus = "DELIVERING";
@@ -61,6 +61,7 @@ public class Order {
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
                 "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
+        // Adding the corresponding information into the createTable object
         for (String[] order : orders) {
             createTable.addRow(order[0], order[1], order[2], order[3],
                     order[4], order[5], order[6], order[7], order[9], order[10]);
@@ -69,13 +70,13 @@ public class Order {
     }
 
     public void getOrderInfoById(String oID) {
-
+        // Print out the order info by finding the corresponding oID
         ArrayList<String[]> orders = new ArrayList<>();
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(oID))
-                /* If the system could find out the customer's ID in ordersHistory's file
+                /* If the system could find out the oID
                  */ {
                 orders.add(database.get(i));
             }
@@ -84,6 +85,7 @@ public class Order {
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
                 "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
+        // Adding corresponding info
         for (String[] order : orders) {
             createTable.addRow(order[0], order[1], order[2], order[3],
                     order[4], order[5], order[6], order[7], order[9], order[10]);
@@ -92,12 +94,13 @@ public class Order {
     }
 
     public void getTotalPaymentEachOrderId(Customer customer, String oID) throws IOException {
+        // Print out the total payment needed for that oID and their total payment after membership discount with the corresponding membership
         ArrayList<String[]> orders = new ArrayList<>();
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(oID))
-                /* If the system could find out the customer's ID in ordersHistory's file
+                /* If the system could find out the orderID
                  */ {
                 orders.add(database.get(i));
             }
@@ -186,31 +189,36 @@ public class Order {
         return dailyOrder;}
 
     // Everytime a product is bought or ordered it will log in the productsSold file
-    public void productSales(String product) throws IOException {
+    public void productSales(String product, int quantity) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/productsSold.txt");
+        // Loop through the productsSold file to find the corresponding product
         for (int i = 1; i < database.size(); i++) {
+            // If found will start to change the quantities value based on ordered item
             if (database.get(i)[1].equals(product)) {
-                database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + 1);
+                // New value is calculate by adding in the new quantities that was ordered
+                database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + (1 * quantity));
                 File file = new File("./src/productsSold.txt");
                 PrintWriter pw = new PrintWriter(file);
                 pw.write("");
                 pw.close();
 
+                // A new list that contains the old + new data
                 ArrayList<String[]> newDatabase = database;
-
+                // Overide old file with new data
                 for (String[] obj : newDatabase) {
                     Write.rewriteFile("./src/productsSold.txt", "#ID,Category,Quantity", String.join(",", obj));
                 }
             }
         }
+        // Check whether the product existed or not if not will initiate createNewProductSale function and add that product sales in
         if (!checkProductSales(product)) {
-            createNewProductSale(product);
+            createNewProductSale(product, quantity);
         }
     }
 
     // This will read the productsSold file and check for existing product
     public boolean checkProductSales(String product) {
-        boolean found = false;
+        boolean found = false; //
         try {
             Scanner fileScanner = new Scanner(new File("./src/productsSold.txt"));
 
@@ -228,11 +236,11 @@ public class Order {
     }
 
     // If the checkProductSales return false, it will create a new line containing the pID of that product and start to log the amount of sales
-    public void createNewProductSale(String product) throws IOException {
-        Path path = Paths.get("./src/productsSold.txt");
+    public void createNewProductSale(String product, int quantity) throws IOException {
+        Path path = Paths.get("./src/productsSold.txt"); // Declare file path
         int id = (int) Files.lines(path).count();
-        PrintWriter writer = new PrintWriter(new FileWriter("./src/productsSold.txt", true));
-        writer.print("\n" + id + "," + product + "," + 1);
+        PrintWriter writer = new PrintWriter(new FileWriter("./src/productsSold.txt", true)); // printwriter use to append a new product
+        writer.print("\n" + id + "," + product + "," + (1 * quantity)); // adding a product info and amount that was ordered
         writer.close();
     }
 
