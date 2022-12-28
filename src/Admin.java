@@ -253,7 +253,7 @@ public class Admin extends Account {
 
         createTable.print();
     }
-
+        /*This method will give admin the total revenue of the store. */
     public static ArrayList<Long> getTotalRevenue() throws IOException {
         String[] revenue = ReadDataFromTXTFile.readColString(6, "./src/ordersHistory.txt", ",");
         // Creating an arraylist of prices
@@ -266,7 +266,7 @@ public class Admin extends Account {
             return revenueList;
         }
 
-
+        /* This method will calculate the revenue*/
     public static ArrayList<Long> calculateRevenue(ArrayList<Long> moneyList){
         long sum = 0;
             for(int i = 0; i < moneyList.size(); i++) {
@@ -314,6 +314,7 @@ public class Admin extends Account {
         table.setHeaders("#ID","Title", "Price", "Category");
         table.print();
     }
+    /* This method allow admin to calculate daily revenue base on the timestamp of the purchase.*/
     public static ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
         String[] dailyRevenue = ReadDataFromTXTFile.readColString(4,"./src/ordersHistory.txt", ",");
         String[] dateAndTime = ReadDataFromTXTFile.readColString(5,"./src/ordersHistory.txt",",");
@@ -322,7 +323,7 @@ public class Admin extends Account {
         Scanner inputObj = new Scanner(System.in);
         System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy)");
         String date = inputObj.nextLine();
-        while (dateValidate(date))
+        while (dateValidate(date)) /* validate if the timestamp is match to the user's input */
         {
             System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy)");
             date = inputObj.nextLine();

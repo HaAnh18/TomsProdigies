@@ -239,12 +239,13 @@ public class Product {
             table.setRows(new ArrayList<String[]>());
         }
     }
+    /* This method will help user to search by category */
   public static void searchByCategory(String category) throws IOException{
         ArrayList<String[]> categories = new ArrayList<>();
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
       for (int i = 1; i < database.size(); i++) {
           if (database.get(i)[3].equals(category))
-              /* If the system could find out the customer's ID in ordersHistory's file
+              /* If the system could find out the category in items.txt file
                */
           {
               categories.add(database.get(i));
