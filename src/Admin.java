@@ -229,7 +229,7 @@ public class Admin extends Account {
         pw.close();
 
         for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password,total spending", String.join(","));
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password,total spending", String.join(",",obj));
         }
     }
 
