@@ -58,23 +58,62 @@ public class Admin extends Account {
             String phone = stringTokenizer.nextToken();
             String membership = stringTokenizer.nextToken();
             String username = stringTokenizer.nextToken();
-            data = new String[]{ID, name, username, email, address, phone, membership};
+            String password = stringTokenizer.nextToken();
+            String totalSpending = String.valueOf(stringTokenizer.nextToken());
+            data = new String[]{ID, name, username, email, address, phone, membership,totalSpending};
             // Add one customer's information to an array
             user.add(data); // Add one customer's information in an arraylist
         }
 
         CreateTable createTable = new CreateTable(); // Create table to display customers' information
         createTable.setShowVerticalLines(true);
-        createTable.setHeaders("ID", "NAME", "USERNAME", "EMAIL", "ADDRESS", "PHONE", "MEMBERSHIP"); // Set header for the table
+        createTable.setHeaders("CID", "NAME", "USERNAME", "EMAIL", "ADDRESS", "PHONE", "MEMBERSHIP", "TOTAL SPENDING"); // Set header for the table
 
         for (int i = 1; i < user.size(); i++)
         // This for loop will add every single customer's information in the table to display
         {
-            createTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3], user.get(i)[4], user.get(i)[5], user.get(i)[6]);
+            createTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3],
+                    user.get(i)[4], user.get(i)[5], user.get(i)[6], user.get(i)[7]);
         }
 
         createTable.print(); // Print the table
-        createTable.setHeaders(new String[0]);
+//        createTable.setHeaders(new String[0]);
+
+    }
+
+        public void getAllCategory() throws FileNotFoundException
+        // This method will display all the customers' information that existed in customers' file
+        {
+            ArrayList<String[]> categpryList = new ArrayList<>(); // Create an arraylist to contain all customers' information
+            Scanner fileScanner = new Scanner(new File("./src/categories.txt"));
+
+            while (fileScanner.hasNext())
+            // While customers' file has next line
+            {
+                String[] data; // Create an array to store one customer's information
+                String line = fileScanner.nextLine();
+                StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
+                // Separate the line's information by comma
+                String ID = stringTokenizer.nextToken();
+                String category = stringTokenizer.nextToken();
+                String quantity = stringTokenizer.nextToken();
+                data = new String[]{ID, category,quantity};
+                // Add one customer's information to an array
+                categpryList.add(data); // Add one customer's information in an arraylist
+            }
+
+        CreateTable createTable = new CreateTable(); // Create table to display customers' information
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("ID", "CATEGORY", "QUANTITY"); // Set header for the table
+
+        for (int i = 1; i < categpryList.size(); i++)
+        // This for loop will add every single customer's information in the table to display
+        {
+            createTable.addRow(categpryList.get(i)[0], categpryList.get(i)[1], categpryList.get(i)[2]);
+        }
+
+        createTable.print(); // Print the table
+//        createTable.setHeaders(new String[0]);
     }
 
     public void addProduct() throws IOException
@@ -125,7 +164,7 @@ public class Admin extends Account {
 
         for (int i = 0; i < newDatabase.size(); i++) {
             System.out.println(Arrays.toString(newDatabase.get(i)));
-            Write.rewriteFile(filepath, "#ID,Title, Price, Catetory", String.join(",", newDatabase.get(i)));
+            Write.rewriteFile(filepath, "#ID,Title, Price, Category", String.join(",", newDatabase.get(i)));
             // This method would allow system to write all data including new data into the items' file
         }
     }
@@ -137,7 +176,7 @@ public class Admin extends Account {
             /** If the system could find out the oID in ordersHistory's file
              * then the system allow admin to update the order delivery status
              */ {
-                database.get(i)[2] = newData; // Modify the product's price
+                database.get(i)[8] = newData; // Modify the product's price
             }
         }
         File file = new File(filepath);
@@ -171,7 +210,7 @@ public class Admin extends Account {
 
 
         for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Title, Price, Catetory", String.join(",", obj));
+            Write.rewriteFile(filepath, "#ID,Title, Price, Category", String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
     }
@@ -216,7 +255,7 @@ public class Admin extends Account {
     }
 
 
-    public static void getMostSpender() throws IOException {
+    public void getMostSpender() throws IOException {
         CreateTable createTable = new CreateTable();
 
         // Get total spending column
@@ -231,11 +270,11 @@ public class Admin extends Account {
             spendingList.add(Long.parseLong(readSpendings[i]));
         }
         // Sort the product from min to max
-        SortProduct.sortAscending(spendingList);
+        SortProduct.sortDescending(spendingList);
 
         // Creating and printing out the information
         createTable.setShowVerticalLines(true);
-        createTable.setHeaders("#ID", "Name", "Email", "Address", "Phone", "Membership", "Username", "Password", "Total Spending");
+        createTable.setHeaders("CID", "NAME", "USERNAME", "EMAIL", "ADDRESS", "PHONE", "MEMBERSHIP",  "TOTAL SPENDING");
 
         // Get the first person on the list (Max spenders as the list have been sorted to Ascend from Max)
         String[] mostSpender = ReadDataFromTXTFile.readSpecificLine(Long.toString(spendingList.get(0)), 8, "./src/customers.txt", ",");
@@ -243,16 +282,19 @@ public class Admin extends Account {
         // Add that person into an ArrayList so it can be displayed on the table
         createTable.addRow(mostSpender[0],
                 mostSpender[1],
+                mostSpender[6],
                 mostSpender[2],
                 mostSpender[3],
                 mostSpender[4],
                 mostSpender[5],
-                mostSpender[6],
-                mostSpender[7],
                 mostSpender[8]);
 
         createTable.print();
     }
+
+
+    public ArrayList<Long> getTotalRevenue() throws IOException {
+=======
         /*This method will give admin the total revenue of the store. */
     public static ArrayList<Long> getTotalRevenue() throws IOException {
         String[] revenue = ReadDataFromTXTFile.readColString(6, "./src/ordersHistory.txt", ",");
@@ -266,22 +308,28 @@ public class Admin extends Account {
             return revenueList;
         }
 
+
+
+    public ArrayList<Long> calculateRevenue(ArrayList<Long> moneyList){
+
+
         /* This method will calculate the revenue*/
     public static ArrayList<Long> calculateRevenue(ArrayList<Long> moneyList){
+
         long sum = 0;
             for(int i = 0; i < moneyList.size(); i++) {
                 sum += moneyList.get(i);
             }
             CreateTable revenueTable = new CreateTable();
                 revenueTable.setShowVerticalLines(true);
-                revenueTable.setHeaders("Total Revenue");
+                revenueTable.setHeaders("TOTAL REVENUE");
                 revenueTable.addRow(String.valueOf(sum));
                 revenueTable.print();
         return moneyList;
     }
 
 
-    public static void getBestSeller() throws IOException {
+    public void getBestSeller() throws IOException {
         int count = 0;
         int maxCount = 0;
         int minCount = 1;
@@ -311,7 +359,7 @@ public class Admin extends Account {
             }
         }
         table.setShowVerticalLines(true);
-        table.setHeaders("#ID","Title", "Price", "Category");
+        table.setHeaders("#ID","TITLE", "PRICE", "CATEGORY");
         table.print();
     }
     /* This method allow admin to calculate daily revenue base on the timestamp of the purchase.*/
