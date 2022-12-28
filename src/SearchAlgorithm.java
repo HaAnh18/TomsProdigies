@@ -1,4 +1,5 @@
 //https://algs4.cs.princeton.edu/53substring/BoyerMoore.java.html
+/* The algorithm is being used to enhance the search function. */
 public class SearchAlgorithm {
     private int R;
     private int[] right;

@@ -127,7 +127,7 @@ public class CustomerMenu {
                     }
                 }
                 Product product1 = new Product((productInfo[0]), productInfo[1], Long.parseLong((productInfo[2])), productInfo[3]);
-                order.createNewOrder(member,product1);
+//                order.createNewOrder(member,product1);
                 customerMenu.viewHomepage(userName);
             case "2":
                 order.getOrderInfo(member);
