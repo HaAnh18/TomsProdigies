@@ -26,7 +26,7 @@ public class Product {
 
     public void registerCategory(String category) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
-        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        String capital = category.substring(0, 1).toUpperCase() + category.substring(1); // Format
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(capital)) {
                 database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + 1);
@@ -84,57 +84,69 @@ public class Product {
         return found;
     }
 
-    public void getAllProductInfo() throws FileNotFoundException {
+    public void getAllProductInfo() throws FileNotFoundException { // This method is used to display all the products available
         ArrayList<String[]> user = new ArrayList<>();
         Scanner fileProducts = new Scanner(new File("./src/items.txt"));
 
+        // Read lines in the item file
         while (fileProducts.hasNext()) {
             String[] productData = new String[3];
             String line = fileProducts.nextLine();
             StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
+            // Split each element in the line into its own separate variable
             String ID = stringTokenizer.nextToken();
             String title = stringTokenizer.nextToken();
             String price = stringTokenizer.nextToken();
             String category = stringTokenizer.nextToken();
+            // Put variables into an ArrayList
             productData = new String[]{ID, title, price, category};
             user.add(productData);
         }
 
+        // Setting up table
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
 
+        // Add row of information into table
         for (int i = 1; i < user.size(); i++) {
             createTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3]);
         }
 
+        // Print table
         createTable.print();
     }
 
-    public void getProductHaveId() throws FileNotFoundException {
+    public void getProductHaveId() throws FileNotFoundException { // This method is used to display a product list with options to select a product
         ArrayList<String[]> user = new ArrayList<>();
         Scanner fileProducts = new Scanner(new File("./src/items.txt"));
 
+        // Read lines in the item file
         while (fileProducts.hasNext()) {
             String[] productData = new String[3];
             String line = fileProducts.nextLine();
             StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
+            // Split each element in the line into its own separate variable
             String ID = stringTokenizer.nextToken();
             String title = stringTokenizer.nextToken();
             String price = stringTokenizer.nextToken();
             String category = stringTokenizer.nextToken();
+            // Put variables into an ArrayList
             productData = new String[]{ID, title, price, category};
             user.add(productData);
         }
 
+        // Setting up table
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("OPTION","ID", "TITLE", "PRICE", "CATEGORY");
 
+        // Add row of information into table
         for (int i = 1; i < user.size(); i++) {
             createTable.addRow(String.valueOf(i),user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3]);
         }
 
+        // Print table
         createTable.print();
     }
 
@@ -149,6 +161,7 @@ public class Product {
         for (int i = 1; i < readPrices.length; i++) {
             pricesList.add(Long.parseLong(readPrices[i]));
         }
+
         return pricesList;
     }
 
@@ -159,9 +172,10 @@ public class Product {
         ArrayList<String[]> matchResult = new ArrayList<>();
 
         for (int i = 0; i < title.length; i++) {
-            //use Boyer Moore Searching Algorithm
+            // use Boyer Moore Searching Algorithm
             SearchAlgorithm text = new SearchAlgorithm(data);
             boolean isFound = text.boyerMooreSearch(category[i], data);
+
 
             if (isFound) {
                 String[] specificLine = ReadDataFromTXTFile.getSpecificLine(title[i], 1, "./src/items.txt", ",");
