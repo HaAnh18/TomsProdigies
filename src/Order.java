@@ -189,6 +189,8 @@ public class Order {
         return this.oID;
     }
 
+
+    /* This method will help to get the order date out of ordersHistory.txt */
     public static ArrayList<Order> getOrderByDate(String date){
         ArrayList<Order> dailyOrder = new ArrayList<>();
         for (Order strings : Order.getOrderByDate(date)) {
