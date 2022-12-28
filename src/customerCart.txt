@@ -1,0 +1,3 @@
+#CID,Product's title,Single unit price,Quantity,Total payment
+C003,Macbook Pro 15,60000000,1,51000000
+C003,Marshall,6000000,2,10200000
