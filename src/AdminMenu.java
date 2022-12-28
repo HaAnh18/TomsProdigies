@@ -221,7 +221,7 @@ public class AdminMenu {
             case "2" :
                 adminMenu.viewStatistic();
             case "3":
-                admin.getBestSeller();
+//                admin.getBestSeller();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
             case "4":
