@@ -61,8 +61,8 @@ public class CustomerMenu {
             case "5":
                 System.out.println("1. Ascending");
                 System.out.println("2. Descending");
-                int sortOption = Integer.parseInt(scanner.nextLine());
-                customer.sortItems(sortOption);
+                String sortOption = UserInput.rawInput();
+                SortProduct.sortItems(Integer.parseInt(sortOption));
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
             case "6":
@@ -186,7 +186,7 @@ public class CustomerMenu {
                 System.out.println("1. Ascending");
                 System.out.println("2. Descending");
                 String sortOption = UserInput.rawInput();
-                member.sortItems(Integer.parseInt(sortOption));
+                SortProduct.sortItems(Integer.parseInt(sortOption));
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.viewHomepage(userName);
             case "8":
