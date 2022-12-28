@@ -62,16 +62,16 @@ public class Account {
         pw.close();
     }
 
-    public boolean login()
+    public boolean login(String username, String password)
     // Login if he/she had account already
     {
         boolean isAuthentication = false;
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter username: ");
-        String username = scanner.nextLine();
-        System.out.println("Enter password: ");
-        String password = scanner.nextLine();
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.println("Enter username: ");
+//        String username = scanner.nextLine();
+//        System.out.println("Enter password: ");
+//        String password = scanner.nextLine();
 //        String hashing = this.hashingPassword(password);
         try {
             Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
@@ -535,7 +535,8 @@ public class Account {
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(oId))
                 /* If the system could find out the customer's ID in ordersHistory's file
-                 */ {
+                 */
+            {
                 orders.add(database.get(i));
             }
         }
@@ -546,6 +547,16 @@ public class Account {
             createTable.addRow(order[0], order[1], order[2], order[3],
                     order[4], order[5], order[6], order[7], order[8]);
         }
+        createTable.print();
+    }
+
+    public void getAllMembershipTypes() {
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("MEMBERSHIP", "MINIMUM SPENDING", "DISCOUNT");
+        createTable.addRow("Silver","5 millions VND","5%");
+        createTable.addRow("Gold","10 millions VND","10%");
+        createTable.addRow("Platinum", "25 millions VND", "15%");
         createTable.print();
     }
 
