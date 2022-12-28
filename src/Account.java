@@ -421,45 +421,7 @@ public class Account {
         System.out.println("Membership: " + database[5]); // Print the membership status of this customer
     }
 
-    public void sortItems(int input) throws IOException {
-        // Create an product object
-        Product product = new Product();
 
-        // Use the get all prices method to create a prices list
-        ArrayList<Long> prices = product.getAllPrice();
-
-        // Create an createTable object
-        CreateTable createTable = new CreateTable();
-
-        // Check for user inputs whether to sort ascend or descend
-        if (input == 1) {
-            // Create an arraylist that sorted the prices in an ascending order
-            ArrayList<Long> priceAscend = SortProduct.sortAscending(prices);
-
-            // Create the headers and lines
-            createTable.setShowVerticalLines(true);
-            createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
-
-            // Loop to add items description into a table
-            for (int a = 0; a < prices.size(); a++) {
-                // Use the given prices to determine the correct item then adding them into an array list
-                String[] sortProducts = ReadDataFromTXTFile.readSpecificLine(Long.toString(priceAscend.get(a)), 2, "./src/items.txt", ",");
-                createTable.addRow(sortProducts[0], sortProducts[1], sortProducts[2], sortProducts[3]);
-            }
-        } else if (input == 2) {
-            ArrayList<Long> priceDescend = SortProduct.sortDescending(prices);
-
-            createTable.setShowVerticalLines(true);
-
-            createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
-
-            for (int a = 0; a < prices.size(); a++) {
-                String[] sortProducts = ReadDataFromTXTFile.readSpecificLine(Long.toString(priceDescend.get(a)), 2, "./src/items.txt", ",");
-                createTable.addRow(sortProducts[0], sortProducts[1], sortProducts[2], sortProducts[3]);
-            }
-        }
-        createTable.print();
-    }
 
     public void updateTotalSpending(String filepath, String newData, String userName) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");

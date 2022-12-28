@@ -13,7 +13,7 @@ public class Main {
 //        CustomerMenu customerMenu = new CustomerMenu();
 //        customerMenu.view();
 //        Product.searchByCategory("Laptop");
-            Admin.calculateRevenue(Admin.getDailyRevenue());
+//            Admin.calculateRevenue(Admin.getDailyRevenue());
 //        Product product = new Product();
 //        product.getProductToCreateOrder();
 //        account.searchOrder("0289");

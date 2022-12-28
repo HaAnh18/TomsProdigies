@@ -1,4 +1,7 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -26,27 +29,10 @@ public class Order {
 
         String customerID = customer.getcID();
         String productID = product.getID();
-//        String membership = customer.getCustomerType();
-//        Random rd = new Random();
-//        int i = rd.nextInt(999);
-//        oID = oIDDataForValidate(String.format("0%03d", i));
         Long singleUnitPrice = product.getPrice();
         paymentPrice = product.getPrice() * quantity;
-        //Set discount level for each membership level
-//        switch (customer.getCustomerType()) {
-//            case "Silver":
-//                this.paymentPrice = (long)(this.paymentPrice * (1 - 0.05));
-//                break;
-//            case "Gold":
-//                this.paymentPrice = (long)(this.paymentPrice * (1 - 0.1));
-//                break;
-//            case "Platinum":
-//                this.paymentPrice = (long)(this.paymentPrice * (1 - 0.15));
-//                break;
-//            case "Regular":
-//                break;
-//        }
         Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + paymentPrice);
+        productSales(String.valueOf(product));
         customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
         customer.updateMembership("./src/customers.txt",customer.getUserName());
         String membership = customer.getCustomerType();
@@ -57,8 +43,6 @@ public class Order {
         pw.println( oID + "," + customerID +"," + membership + "," + productID + "," +
                 singleUnitPrice +"," + quantity + ","+ paymentPrice + "," + orderDate + "," + totalSpending + "," + orderStatus + "," + deliveryStatus);
         pw.close();
-
-//        getOrderInfo(customer);
     }
 
     public void getOrderInfo(Customer customer) {
@@ -200,6 +184,57 @@ public class Order {
             }
         }
         return dailyOrder;}
+
+    // Everytime a product is bought or ordered it will log in the productsSold file
+    public void productSales(String product) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/productsSold.txt");
+        for (int i = 1; i < database.size(); i++) {
+            if (database.get(i)[1].equals(product)) {
+                database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + 1);
+                File file = new File("./src/productsSold.txt");
+                PrintWriter pw = new PrintWriter(file);
+                pw.write("");
+                pw.close();
+
+                ArrayList<String[]> newDatabase = database;
+
+                for (String[] obj : newDatabase) {
+                    Write.rewriteFile("./src/productsSold.txt", "#ID,Category,Quantity", String.join(",", obj));
+                }
+            }
+        }
+        if (!checkProductSales(product)) {
+            createNewProductSale(product);
+        }
+    }
+
+    // This will read the productsSold file and check for existing product
+    public boolean checkProductSales(String product) {
+        boolean found = false;
+        try {
+            Scanner fileScanner = new Scanner(new File("./src/productsSold.txt"));
+
+            while (fileScanner.hasNext()) {
+                String line = fileScanner.nextLine();
+                String[] values = line.split(",");
+                if (product.equals(values[1])) {
+                    found = true;
+                }
+            }
+        } catch (FileNotFoundException fe) {
+            fe.printStackTrace();
+        }
+        return found;
+    }
+
+    // If the checkProductSales return false, it will create a new line containing the pID of that product and start to log the amount of sales
+    public void createNewProductSale(String product) throws IOException {
+        Path path = Paths.get("./src/productsSold.txt");
+        int id = (int) Files.lines(path).count();
+        PrintWriter writer = new PrintWriter(new FileWriter("./src/productsSold.txt", true));
+        writer.print("\n" + id + "," + product + "," + 1);
+        writer.close();
+    }
 
     public String getoID() {
         return oID;
