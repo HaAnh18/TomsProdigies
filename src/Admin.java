@@ -327,39 +327,7 @@ public class Admin extends Account {
     }
 
 
-    public void getBestSeller() throws IOException {
-        int count = 0;
-        int maxCount = 0;
-        int minCount = 1;
-        String[] productList = ReadDataFromTXTFile.readColString(2, "./src/ordersHistory.txt", ",");
-        ArrayList<String> countProduct = new ArrayList<>();
-        CreateTable table = new CreateTable();
 
-        for (int a = 1; a < productList.length; a++) {
-            countProduct.add(productList[a]);
-        }
-
-        for (int i = 0; i < countProduct.size(); i++) {
-            count = 1;
-
-            for (int j = i + 1; j < countProduct.size(); j++) {
-                if (countProduct.get(i).equals(countProduct.get(j)))
-                    count++;
-            }
-            if(count > maxCount){
-                maxCount = count;
-                String popularProduct = countProduct.get(i);
-                String[] displayProduct = ReadDataFromTXTFile.readSpecificLine(popularProduct, 0, "./src/items.txt", ",");
-                table.addRow(displayProduct[0],
-                        displayProduct[1],
-                        displayProduct[2],
-                        displayProduct[3]);
-            }
-        }
-        table.setShowVerticalLines(true);
-        table.setHeaders("#ID","TITLE", "PRICE", "CATEGORY");
-        table.print();
-    }
     /* This method allow admin to calculate daily revenue base on the timestamp of the purchase.*/
     public  ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
         String[] dailyRevenue = ReadDataFromTXTFile.readColString(2,"./src/billingHistory.txt", ",");

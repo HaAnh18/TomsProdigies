@@ -26,7 +26,6 @@ public class Product {
 
     public void registerCategory(String category) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
-        PrintWriter writer = new PrintWriter(new FileWriter("./src/categories.txt", true));
         String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(capital)) {
@@ -39,7 +38,7 @@ public class Product {
                 ArrayList<String[]> newDatabase = database;
 
                 for (String[] obj : newDatabase) {
-                    Write.rewriteFile("./src/categories.txt", "#ID,Category,Quantity", String.join(",", obj));
+                    Write.rewriteFile("./src/productsSold.txt", "#ID,pID,Quantities", String.join(",", obj));
                 }
             }
         }

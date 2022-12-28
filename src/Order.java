@@ -1,4 +1,7 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -200,6 +203,54 @@ public class Order {
             }
         }
         return dailyOrder;}
+
+    public void productSales(String product) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/productsSold.txt");
+        for (int i = 1; i < database.size(); i++) {
+            if (database.get(i)[1].equals(product)) {
+                database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + 1);
+                File file = new File("./src/productsSold.txt");
+                PrintWriter pw = new PrintWriter(file);
+                pw.write("");
+                pw.close();
+
+                ArrayList<String[]> newDatabase = database;
+
+                for (String[] obj : newDatabase) {
+                    Write.rewriteFile("./src/productsSold.txt", "#ID,Category,Quantity", String.join(",", obj));
+                }
+            }
+        }
+        if (!checkProductSales(product)) {
+            createNewProductSale(product);
+        }
+    }
+
+    public boolean checkProductSales(String product) {
+        boolean found = false;
+        try {
+            Scanner fileScanner = new Scanner(new File("./src/productsSold.txt"));
+
+            while (fileScanner.hasNext()) {
+                String line = fileScanner.nextLine();
+                String[] values = line.split(",");
+                if (product.equals(values[1])) {
+                    found = true;
+                }
+            }
+        } catch (FileNotFoundException fe) {
+            fe.printStackTrace();
+        }
+        return found;
+    }
+
+    public void createNewProductSale(String category) throws IOException {
+        Path path = Paths.get("./src/productsSold.txt");
+        int id = (int) Files.lines(path).count();
+        PrintWriter writer = new PrintWriter(new FileWriter("./src/productsSold.txt", true));
+        writer.print("\n" + id + "," + category + "," + 1);
+        writer.close();
+    }
 
     public String getoID() {
         return oID;
