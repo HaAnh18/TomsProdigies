@@ -190,7 +190,7 @@ public class Product {
 
         category = Arrays.stream(category).distinct().toArray(String[]::new);
 
-        String option = OptionInput.input();
+        String option = UserInput.rawInput();
 
         ArrayList<String[]> matchResult = new ArrayList<>(this.getMatchResult(category[0]).size());
 

@@ -1,8 +1,5 @@
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 
 public class Main {
@@ -110,7 +107,13 @@ public class Main {
 //        admin.addProduct();
 //        Product product =new Product();
 //        product.registerCategory("laptop");
+        //create FAQ file
+//                try {
+//                    File file = new File("./src/FAQ.txt");
+//                    file.createNewFile();
+//                    System.out.println("File: " + file);
+//                } catch(Exception e) {
+//                    e.printStackTrace();
+//                }
     }
-
-
 }
