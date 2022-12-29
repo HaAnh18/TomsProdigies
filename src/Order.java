@@ -34,8 +34,8 @@ public class Order {
         String productID = product.getID();
         Long singleUnitPrice = product.getPrice();
         paymentPrice = product.getPrice() * quantity;
+        productSales(String.valueOf(product.getTitle()), quantity);
 //        Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + paymentPrice);
-        productSales(String.valueOf(product.getTitle()));
 //        customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
 //        customer.updateMembership("./src/customers.txt", customer.getUserName());
         String membership = customer.getCustomerType();
@@ -115,6 +115,7 @@ public class Order {
             totalPayment += (long) Integer.parseInt(order[6]);
             membership = order[2];
         }
+
         switch (membership) {
             case "Silver":
                 totalPaymentAfterDiscount = (long) (totalPayment * (1 - 0.05));
@@ -231,11 +232,11 @@ public class Order {
         return dailyOrder;}
 
     // Everytime a product is bought or ordered it will log in the productsSold file
-    public void productSales(String product) throws IOException {
+    public void productSales(String product, int quantity) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/productsSold.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(product)) {
-                database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + 1);
+                database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + (quantity));
                 File file = new File("./src/productsSold.txt");
                 PrintWriter pw = new PrintWriter(file);
                 pw.write("");
@@ -249,7 +250,7 @@ public class Order {
             }
         }
         if (!checkProductSales(product)) {
-            createNewProductSale(product);
+            createNewProductSale(product, quantity);
         }
     }
 
@@ -273,11 +274,11 @@ public class Order {
     }
 
     // If the checkProductSales return false, it will create a new line containing the pID of that product and start to log the amount of sales
-    public void createNewProductSale(String product) throws IOException {
+    public void createNewProductSale(String product, int quantity) throws IOException {
         Path path = Paths.get("./src/productsSold.txt");
         int id = (int) Files.lines(path).count();
         PrintWriter writer = new PrintWriter(new FileWriter("./src/productsSold.txt", true));
-        writer.print(id + "," + product + "," + 1);
+        writer.print(id + "," + product + "," + quantity);
         writer.close();
     }
 
