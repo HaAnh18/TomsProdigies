@@ -1,0 +1,5 @@
+Discount code,Minimum spending,Discount amount
+Earbud2023,10000000,100000
+Headset2023,20000000,200000
+Phone2023,30000000,500000
+Laptop2023,50000000,1000000

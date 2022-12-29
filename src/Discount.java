@@ -1,7 +1,7 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Discount {
     private String discountCode;
@@ -16,6 +16,9 @@ public class Discount {
     public void giveDiscountCode(Customer customer, Long totalPayment) throws IOException {
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/customerDiscountCode.txt", true));
+        Random rd = new Random();
+        int i = rd.nextInt(999);
+        String code = validateDiscountCode(String.format("%03d", i));
         String cID = customer.getcID();
         String discountCode = new String();
         Long discountAmount = (long) 0;
@@ -34,9 +37,30 @@ public class Discount {
             discountAmount = Long.parseLong(discountType.get(4)[2]);
         }
         if (!(discountCode == null)) {
-            pw.println(cID + "," + discountCode + "," + discountAmount);
+            pw.println(cID + "," + code + "," + discountCode + "," + discountAmount);
             pw.close();
         }
+    }
+
+    public String validateDiscountCode(String id) {
+        try {
+            Scanner fileScanner = new Scanner(new File("./src/ordersHistory.txt"));
+
+            while (fileScanner.hasNext()) {
+                String line = fileScanner.nextLine();
+                String[] helo = line.split(",");
+                if (helo[0].equals(id)) {
+                    Random random = new Random();
+                    id = String.format("0%03d", random.nextInt(999));
+                    validateDiscountCode(id);
+                } else {
+                    this.discountCode = id;
+                }
+            }
+        } catch (FileNotFoundException err) {
+            err.printStackTrace();
+        }
+        return this.discountCode;
     }
 
     public void displayCustomerDiscountCode(Customer customer) {
@@ -52,9 +76,9 @@ public class Discount {
         }
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
-        createTable.setHeaders("OPTION", "DISCOUNT CODE", "DISCOUNT AMOUNT");
+        createTable.setHeaders("OPTION", "ID", "DISCOUNT CODE", "DISCOUNT AMOUNT");
         for (int i = 0; i < discountCode.size(); i++) {
-            createTable.addRow(String.valueOf(i + 1), discountCode.get(i)[1], discountCode.get(i)[2]);
+            createTable.addRow(String.valueOf(i + 1), discountCode.get(i)[1], discountCode.get(i)[2], discountCode.get(i)[3]);
         }
         createTable.print();
     }
@@ -76,13 +100,13 @@ public class Discount {
         return discountCode;
     }
 
-    public void deleteDiscountCode(String filepath, String delCode) throws IOException
+    public void deleteDiscountCode(String filepath, String id) throws IOException
     // This method allow admin to delete a customer that had existed in customers' file
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
         for (int i = 0; i < database.size(); i++) {
-            if (!database.get(i)[1].equals(delCode)) {
+            if (!database.get(i)[1].equals(id)) {
                 newDatabase.add(database.get(i)); // Add all customers except the deleted customer
             }
         }
