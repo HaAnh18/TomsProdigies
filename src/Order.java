@@ -3,7 +3,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Order {
     private String oID;
@@ -31,17 +34,17 @@ public class Order {
         String productID = product.getID();
         Long singleUnitPrice = product.getPrice();
         paymentPrice = product.getPrice() * quantity;
-        Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + paymentPrice);
+//        Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + paymentPrice);
         productSales(String.valueOf(product.getTitle()));
-        customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
-        customer.updateMembership("./src/customers.txt", customer.getUserName());
+//        customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
+//        customer.updateMembership("./src/customers.txt", customer.getUserName());
         String membership = customer.getCustomerType();
         orderDate = new SimpleDateFormat("MM/dd/yyyy_HH:mm").format(Calendar.getInstance().getTime());
         orderStatus = "SUCCESSFUL";
         deliveryStatus = "DELIVERING";
 
         pw.println(oID + "," + customerID + "," + membership + "," + productID + "," +
-                singleUnitPrice + "," + quantity + "," + paymentPrice + "," + orderDate + "," + totalSpending + "," + orderStatus + "," + deliveryStatus);
+                singleUnitPrice + "," + quantity + "," + paymentPrice + "," + orderDate + "," + orderStatus + "," + deliveryStatus);
         pw.close();
         Cart cart = new Cart();
         cart.deleteItemInCart("./src/customerCart.txt", customer.getcID(), product);
@@ -104,6 +107,7 @@ public class Order {
                 orders.add(database.get(i));
             }
         }
+
         Long totalPayment = (long) 0;
         Long totalPaymentAfterDiscount = (long) 0;
         String membership = "";
@@ -124,8 +128,9 @@ public class Order {
             case "Regular":
                 break;
         }
-        Discount discount = new Discount();
-//        discount.giveDiscountCode(customer,totalPaymentAfterDiscount);
+        Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + totalPaymentAfterDiscount);
+        customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
+        customer.updateMembership("./src/customers.txt", customer.getUserName());
 
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
@@ -141,37 +146,42 @@ public class Order {
         pw.close();
     }
 
-    public void getTotalPaymentAfterApplyDiscountCode(String oID, String discountCode) throws IOException {
+    public void getTotalPaymentAfterApplyDiscountCode(String oID, String id, Customer customer) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
         ArrayList<String[]> orderInfo = ReadDataFromTXTFile.readAllLines("./src/billingHistory.txt");
-        String finalPrice = new String();
+        Long finalPrice = (long) 0;
         for (int i = 1; i < database.size(); i++) {
-            if (database.get(i)[1].equals(discountCode)) {
-                if (Objects.equals(orderInfo.get(i - 1)[0], oID)) {
-                    long discountAmount = Long.parseLong(database.get(i)[2]);
-                    orderInfo.get(i)[2] = String.valueOf(Long.parseLong(orderInfo.get(i)[2]) - discountAmount);
-                    finalPrice = (orderInfo.get(i)[2]);
+            for (int a = 0; a < orderInfo.size(); a++) {
+                if (database.get(i)[1].equals(id)) {
+                    if (orderInfo.get(a)[0].equals(oID)) {
+                        long discountAmount = Long.parseLong(database.get(i)[3]);
+                        orderInfo.get(a)[2] = String.valueOf(Long.parseLong(orderInfo.get(a)[2]) - discountAmount);
+                        finalPrice = Long.parseLong(orderInfo.get(a)[2]);
+                    }
+                }
+                PrintWriter pw = new PrintWriter("./src/billingHistory.txt");
+
+                pw.write("");
+                pw.close();
+
+                for (String[] obj : orderInfo) {
+                    Write.rewriteFile("./src/billingHistory.txt", "#OID,CID,Total payment after discount,Order date",
+                            String.join(",", obj));
                 }
             }
-            PrintWriter pw = new PrintWriter("./src/billingHistory.txt");
+            Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + (finalPrice));
+            customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
+            customer.updateMembership("./src/customers.txt", customer.getUserName());
+//            System.out.println(finalPrice);
+            CreateTable createTable = new CreateTable();
+            createTable.setShowVerticalLines(true);
+            createTable.setHeaders("FINAL TOTAL PAYMENT");
+            createTable.addRow(String.valueOf(finalPrice));
+            createTable.print();
 
-            pw.write("");
-            pw.close();
-
-            for (String[] obj : orderInfo) {
-                Write.rewriteFile("./src/billingHistory.txt", "#OID,CID,Total payment after discount,Order date",
-                        String.join(",", obj));
-            }
+            Discount discount = new Discount();
+            discount.deleteDiscountCode("./src/customerDiscountCode.txt", id);
         }
-        System.out.println(finalPrice);
-//        CreateTable createTable = new CreateTable();
-//        createTable.setShowVerticalLines(true);
-//        createTable.setHeaders("FINAL TOTAL PAYMENT");
-//        createTable.addRow(String.valueOf(finalPrice));
-//        createTable.print();
-
-        Discount discount = new Discount();
-        discount.deleteDiscountCode("./src/customerDiscountCode.txt", discountCode);
     }
 
     public void getAllOrderInfo() {
