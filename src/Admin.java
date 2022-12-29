@@ -243,6 +243,7 @@ public class Admin extends Account {
     public void deleteCategory(String filepath, String delCategory) throws IOException {
         ArrayList<String[]> categoryList = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
         ArrayList<String[]> newCategoryList = new ArrayList<>();
+
         // Loop through all the categories
         for (int i = 0; i < categoryList.size(); i++) {
             // If a category matches the delCategory it put, it will be skipped and not added to the newCategoryList (Arraylist)
@@ -260,8 +261,33 @@ public class Admin extends Account {
             Write.rewriteFile(filepath, "#ID,Category,Quantity", String.join(",", obj));
             // This method would allow system to write all data including new data into the file from the newCategoryList (Arraylist)
         }
-        deleteProduct("./src/items.txt",delCategory,3);
+        deleteProductCategory("./src/items.txt",delCategory);
     }
+
+
+    public void deleteProductCategory(String filepath, String delCategory) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+
+        // Loop through all the product ID
+        for (int i = 0; i < database.size(); i++) {
+
+            // If a category is the same, it will change the category of that product to None
+            if (database.get(i)[3].equals(delCategory)) {
+                database.get(i)[3] = "None";
+            }
+        }
+
+        PrintWriter pw = new PrintWriter("./src/items.txt");
+
+        pw.write(""); // The file would erase all the data in products file
+        pw.close();
+
+        // This method would allow system to write all data including new data into the customers' file
+        for (String[] obj : database) {
+            Write.rewriteFile(filepath, "#ID,Title, Price, Category", String.join(",", obj));
+        }
+    }
+
 
     /* All the methods deleteCustomer and deleteCategory and deleteProduct basically works in the same logic
     * First it finds the corresponding customer ID or name for category or product ID and exclude the information belong to
