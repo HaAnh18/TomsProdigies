@@ -18,6 +18,8 @@ public class Admin extends Account {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter admin username: ");
         String adminUsername = scanner.nextLine();
+
+        // If username is not admin it will prompt to try again
         if (!adminUsername.equals("admin")) {
             System.out.println("This admin account is not existed! Please try again");
         }
@@ -29,11 +31,12 @@ public class Admin extends Account {
     {
         String hashPassword = this.hashing(password); // Hash the input password
         if (username.equals("admin") && hashPassword.equals("751cb3f4aa17c36186f4856c8982bf27"))
-        /**
+        /*
          * If the username and hash password are correct
          */ {
             return true;
         }
+        // If the username and hash password are incorrect
         return false;
     }
 
@@ -50,7 +53,7 @@ public class Admin extends Account {
             String[] data; // Create an array to store one customer's information
             String line = fileScanner.nextLine();
             StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
-            // Separate the line's information by comma
+            // Separate the input line's information by comma
             String ID = stringTokenizer.nextToken();
             String name = stringTokenizer.nextToken();
             String email = stringTokenizer.nextToken();
@@ -77,14 +80,12 @@ public class Admin extends Account {
         }
 
         createTable.print(); // Print the table
-//        createTable.setHeaders(new String[0]);
-
     }
 
         public void getAllCategory() throws FileNotFoundException
         // This method will display all the customers' information that existed in customers' file
         {
-            ArrayList<String[]> categpryList = new ArrayList<>(); // Create an arraylist to contain all customers' information
+            ArrayList<String[]> categoryList = new ArrayList<>(); // Create an arraylist to contain all customers' information
             Scanner fileScanner = new Scanner(new File("./src/categories.txt"));
 
             while (fileScanner.hasNext())
@@ -99,17 +100,17 @@ public class Admin extends Account {
                 String quantity = stringTokenizer.nextToken();
                 data = new String[]{ID, category,quantity};
                 // Add one customer's information to an array
-                categpryList.add(data); // Add one customer's information in an arraylist
+                categoryList.add(data); // Add one customer's information in an arraylist
             }
 
         CreateTable createTable = new CreateTable(); // Create table to display customers' information
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("ID", "CATEGORY", "QUANTITY"); // Set header for the table
 
-        for (int i = 1; i < categpryList.size(); i++)
+        for (int i = 1; i < categoryList.size(); i++)
         // This for loop will add every single customer's information in the table to display
         {
-            createTable.addRow(categpryList.get(i)[0], categpryList.get(i)[1], categpryList.get(i)[2]);
+            createTable.addRow(categoryList.get(i)[0], categoryList.get(i)[1], categoryList.get(i)[2]);
         }
 
         createTable.print(); // Print the table
@@ -176,7 +177,7 @@ public class Admin extends Account {
             /** If the system could find out the oID in ordersHistory's file
              * then the system allow admin to update the order delivery status
              */ {
-                database.get(i)[8] = newData; // Modify the product's price
+                database.get(i)[8] = newData; // Modify the delivery status
             }
         }
         File file = new File(filepath);
@@ -187,10 +188,10 @@ public class Admin extends Account {
 
         ArrayList<String[]> newDatabase = database;
 
+        // This method would allow system to write all data including new data into the items' file
         for (int i = 0; i < newDatabase.size(); i++) {
             System.out.println(Arrays.toString(newDatabase.get(i)));
             Write.rewriteFile(filepath, "#OID,CID,PID,Membership,Total payment,Timestamp,Total spending,Order status,Delivery status", String.join(",", newDatabase.get(i)));
-            // This method would allow system to write all data including new data into the items' file
         }
     }
 
@@ -198,36 +199,42 @@ public class Admin extends Account {
     public void deleteProduct(String filepath, String delProduct, int col) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
+
+        // Loop through all the product ID
         for (int i = 0; i < database.size(); i++) {
+            // If a delProduct (pID) is detected it will skip that line in turn will not put in a newDataBase (Arraylist)
             if (!database.get(i)[col].equals(delProduct)) {
-                newDatabase.add(database.get(i)); // The customer's information is changed
+                newDatabase.add(database.get(i)); // If the delProduct (pID) is not detected it will add the product info into a newDataBase (Arraylist)
             }
         }
         PrintWriter pw = new PrintWriter("./src/items.txt");
 
-        pw.write(""); // The file would erase all the data in customers' file
+        pw.write(""); // The file would erase all the data in products file
         pw.close();
 
-
+        // This method would allow system to write all data including new data into the customers' file
         for (String[] obj : newDatabase) {
             Write.rewriteFile(filepath, "#ID,Title, Price, Category", String.join(",", obj));
-            // This method would allow system to write all data including new data into the customers' file
         }
     }
 
     public void deleteCustomer(String filepath, String delCustomer, int col) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
+
+        // Loop through all the customer ID
         for (int i = 0; i < database.size(); i++) {
+            // If a delCustomer (cID) is detected it will skip that line in turn will not put in a newDataBase (Arraylist)
             if (!database.get(i)[col].equals(delCustomer)) {
-                newDatabase.add(database.get(i));
+                newDatabase.add(database.get(i)); // If the delCustomer (cID) is not detected it will add the customer info into a newDataBase (Arraylist)
             }
         }
         PrintWriter pw = new PrintWriter("./src/customers.txt");
 
-        pw.write("");
+        pw.write(""); // The function would erase all the data in target file
         pw.close();
 
+        // The newDataBase (Arraylist) is used to rewrite the file with the new data which does not include the deleted info
         for (String[] obj : newDatabase) {
             Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password,total spending", String.join(",",obj));
         }
@@ -236,23 +243,32 @@ public class Admin extends Account {
     public void deleteCategory(String filepath, String delCategory) throws IOException {
         ArrayList<String[]> categoryList = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
         ArrayList<String[]> newCategoryList = new ArrayList<>();
+        // Loop through all the categories
         for (int i = 0; i < categoryList.size(); i++) {
+            // If a category matches the delCategory it put, it will be skipped and not added to the newCategoryList (Arraylist)
             if (!categoryList.get(i)[1].equals(delCategory)) {
                 newCategoryList.add(categoryList.get(i));
             }
         }
         PrintWriter pw = new PrintWriter("./src/categories.txt");
 
-        pw.write(""); // The file would erase all the data in customers' file
+        pw.write(""); // The function would erase all the data in target file
         pw.close();
 
 
         for (String[] obj : newCategoryList) {
             Write.rewriteFile(filepath, "#ID,Category,Quantity", String.join(",", obj));
-            // This method would allow system to write all data including new data into the customers' file
+            // This method would allow system to write all data including new data into the file from the newCategoryList (Arraylist)
         }
         deleteProduct("./src/items.txt",delCategory,3);
     }
+
+    /* All the methods deleteCustomer and deleteCategory and deleteProduct basically works in the same logic
+    * First it finds the corresponding customer ID or name for category or product ID and exclude the information belong to
+    * that specific input, then it adds all the remaining info into a temporary ArrayList (newDataBase) and deletes all the content in .txt file
+    * and rewrite the file with the data in the newDataBase which will not have the "deleted data" since that has been excluded from the newDataBase
+    */
+
 
 
     public void getMostSpender() throws IOException {
@@ -310,14 +326,13 @@ public class Admin extends Account {
 
 
     public ArrayList<Long> calculateRevenue(ArrayList<Long> moneyList){
-
-
         /* This method will calculate the revenue*/
-
         long sum = 0;
+            // Looping through all the totalPayment
             for(int i = 0; i < moneyList.size(); i++) {
-                sum += moneyList.get(i);
+                sum += moneyList.get(i); // Adding each value
             }
+            // Setting up the table and adding element into table to print total revenue
             CreateTable revenueTable = new CreateTable();
                 revenueTable.setShowVerticalLines(true);
                 revenueTable.setHeaders("TOTAL REVENUE");
@@ -348,7 +363,7 @@ public class Admin extends Account {
             while (dateAndTime.equals(date));
     }
             return revenueList;
-}
+    }
 
     public static boolean dateValidate(String date) throws ParseException {
         String[] dateComponent = date.split("/");
@@ -390,8 +405,7 @@ public class Admin extends Account {
         return date;
     }
 
-
-    }
+}
 
 
 
