@@ -2,8 +2,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-// Link code https://www.logicbig.com/how-to/code-snippets/jcode-java-cmd-command-line-table.html
+// Link code
+// https://www.logicbig.com/how-to/code-snippets/jcode-java-cmd-command-line-table.html
 public class CreateTable {
+    // Attributes
     private static final String HORIZONTAL_SEP = "-";
     private String verticalSep;
     private String joinSep;
@@ -11,28 +13,35 @@ public class CreateTable {
     private ArrayList<String[]> rows = new ArrayList<>();
     private boolean rightAlign;
 
+    // Constructor
     public CreateTable() {
         setShowVerticalLines(false);
     }
 
-    public void setRightAlign(boolean rightAlign) {
-        this.rightAlign = rightAlign;
-    }
+//    public void setRightAlign(boolean rightAlign) {
+//        this.rightAlign = rightAlign;
+//    }
 
     public void setShowVerticalLines(boolean showVerticalLines) {
         verticalSep = showVerticalLines ? "|" : "";
         joinSep = showVerticalLines ? "*" : " ";
     }
 
-    public void setHeaders(String... headers) {
+    public void setHeaders(String... headers)
+    // Set header for the table
+    {
         this.headers = headers;
     }
 
-    public void addRow(String... cells) {
+    public void addRow(String... cells)
+    // Add new row for the table
+    {
         rows.add(cells);
     }
 
-    public void print() {
+    public void print()
+    // Print the table
+    {
         int[] maxWidths = headers != null ?
                 Arrays.stream(headers).mapToInt(String::length).toArray() : null;
 

@@ -1,1 +1,1 @@
-#OID,CID,Membership,PID,Single unit price,Quantity,Total payment,Order date,Total spending,Order status,Delivery status
+#OID,CID,Membership,PID,Single unit price,Quantity,Total payment,Order date,Order status,Delivery status

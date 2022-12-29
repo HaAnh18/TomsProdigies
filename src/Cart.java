@@ -1,14 +1,16 @@
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Cart {
+    // Constructor
     public Cart() {
     }
 
-    public ArrayList<String[]> cartList(Customer customer) {
+    public ArrayList<String[]> cartList(Customer customer)
+    // Get all the product that have in that customer's cart
+    {
         ArrayList<String[]> products = new ArrayList<>();
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerCart.txt");
@@ -29,21 +31,21 @@ public class Cart {
         String productTitle = product.getTitle();
         Long singleUnitPrice = product.getPrice();
         Long paymentPrice = product.getPrice() * quantity;
-        switch (customer.getCustomerType()) {
-            case "Silver":
-                paymentPrice = (long)(paymentPrice * (1 - 0.05));
-                break;
-            case "Gold":
-                paymentPrice = (long)(paymentPrice * (1 - 0.1));
-                break;
-            case "Platinum":
-                paymentPrice = (long)(paymentPrice * (1 - 0.15));
-                break;
-            case "Regular":
-                break;
-        }
-        pw.println(customerID + "," + productTitle +","+ singleUnitPrice + ","+
-                quantity +","+ paymentPrice);
+//        switch (customer.getCustomerType()) {
+//            case "Silver":
+//                paymentPrice = (long)(paymentPrice * (1 - 0.05));
+//                break;
+//            case "Gold":
+//                paymentPrice = (long)(paymentPrice * (1 - 0.1));
+//                break;
+//            case "Platinum":
+//                paymentPrice = (long)(paymentPrice * (1 - 0.15));
+//                break;
+//            case "Regular":
+//                break;
+//        }
+        pw.println(customerID + "," + productTitle + "," + singleUnitPrice + "," +
+                quantity + "," + paymentPrice);
         pw.close();
     }
 
