@@ -1,1 +1,2 @@
-#OID,CID,Membership,PID,Single unit price,Quantity,Total payment,Order date,Total spending,Order status,Delivery status
+#OID,CID,Membership,PID,Single unit price,Quantity,Payment price,Order date,Order status,Delivery status
+O842,C413,Platinum,I001-2001,50000000,2,100000000,12/29/2022_19:14,SUCCESSFUL,DELIVERING

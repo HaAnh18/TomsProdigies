@@ -3,13 +3,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class SortProduct{
-    public static ArrayList<Long> sortAscending(ArrayList<Long> prices) { // This method takes in an ArrayList<Long> and sort it ascending
+    public static ArrayList<Long> sortAscending(ArrayList<Long> prices) {
         Collections.sort(prices);
+
         return prices;
     }
 
-    public static ArrayList<Long> sortDescending(ArrayList<Long> prices) { // This method takes in an ArrayList<Long> and sort it descending
+    public static ArrayList<Long> sortDescending(ArrayList<Long> prices) {
         prices.sort(Collections.reverseOrder());
+
         return prices;
     }
 
@@ -25,10 +27,10 @@ public class SortProduct{
 
         // Check for user inputs whether to sort ascend or descend
         if (input == 1) {
-            // Create an arraylist that sorted the prices in ascending order
+            // Create an arraylist that sorted the prices in an ascending order
             ArrayList<Long> priceAscend = SortProduct.sortAscending(prices);
 
-            // Setting up the table
+            // Create the headers and lines
             createTable.setShowVerticalLines(true);
             createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
 
@@ -39,17 +41,13 @@ public class SortProduct{
                 createTable.addRow(sortProducts[0], sortProducts[1], sortProducts[2], sortProducts[3]);
             }
         } else if (input == 2) {
-            // Create an arraylist that sorted the prices in descending order
             ArrayList<Long> priceDescend = SortProduct.sortDescending(prices);
 
-            // Setting up the table
             createTable.setShowVerticalLines(true);
+
             createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
 
-            // Loop to add items description into a table
             for (int a = 0; a < prices.size(); a++) {
-
-                // Use the given prices to determine the correct item then adding them into an array list
                 String[] sortProducts = ReadDataFromTXTFile.readSpecificLine(Long.toString(priceDescend.get(a)), 2, "./src/items.txt", ",");
                 createTable.addRow(sortProducts[0], sortProducts[1], sortProducts[2], sortProducts[3]);
             }
@@ -60,46 +58,37 @@ public class SortProduct{
     public void getBestSeller() throws IOException {
         // Initialise maxCount
         int maxCount = 0;
-
         // Reading column quantities in productsSold file
         String[] productList = ReadDataFromTXTFile.readColString(2, "./src/productsSold.txt", ",");
-
         // Read all products in productsSold
         ArrayList<String[]> allProduct = ReadDataFromTXTFile.readAllLines("./src/productsSold.txt");
-
-        // Initialise countProduct ArrayList
+        //
         ArrayList<Integer> countProduct = new ArrayList<>();
 
-        // Adding each element in the Array of column into an ArrayList
         for (int a = 1; a < productList.length; a++) {
             int m = Integer.parseInt(productList[a]);
             countProduct.add(m);
         }
 
-        // Getting the max value as a variable to compare
         for (int i = 0; i < countProduct.size(); i++) {
             if (countProduct.get(i) > maxCount) {
                 maxCount = countProduct.get(i);
             }
         }
-
-        // This is to determine whether there are multiple bestSeller products (i.e: same number of sales)
-        ArrayList<String[]> bestSeller = new ArrayList<>(); // create a bestSeller Arraylist
+        ArrayList<String[]> bestSeller = new ArrayList<>();
         for (int p = 1; p < allProduct.size(); p++) {
             if (allProduct.get(p)[2].equals(String.valueOf(maxCount))) {
                 bestSeller.add(allProduct.get(p));
             }
         }
-
-        // Based on the list of bestSeller products it's used to extract the info of each item in that list
         ArrayList<String[]> bestSellerInfo = new ArrayList<>();
-        CreateTable createTable = new CreateTable();                                // Setting
-        createTable.setShowVerticalLines(true);                                     // up
-        createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY","NUMBER SOLD");   // table
-        for (int y = 0; y< bestSeller.size();y++) {
-            String[] info = ReadDataFromTXTFile.readSpecificLine(bestSeller.get(y)[1],0,"./src/items.txt",",");
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY", "NUMBER SOLD");
+        for (int y = 0; y < bestSeller.size(); y++) {
+            String[] info = ReadDataFromTXTFile.readSpecificLine(bestSeller.get(y)[1], 0, "./src/items.txt", ",");
             bestSellerInfo.add(info);
-            createTable.addRow(bestSellerInfo.get(y)[0],bestSellerInfo.get(y)[1],bestSellerInfo.get(y)[2],bestSellerInfo.get(y)[3],String.valueOf(maxCount));
+            createTable.addRow(bestSellerInfo.get(y)[0], bestSellerInfo.get(y)[1], bestSellerInfo.get(y)[2], bestSellerInfo.get(y)[3], String.valueOf(maxCount));
         }
         createTable.print();
     }
@@ -109,43 +98,35 @@ public class SortProduct{
         int minCount = 100;
         // Reading column quantities in productsSold file
         String[] productList = ReadDataFromTXTFile.readColString(2, "./src/productsSold.txt", ",");
-
         // Read all products in productsSold
         ArrayList<String[]> allProduct = ReadDataFromTXTFile.readAllLines("./src/productsSold.txt");
-
-        // Initialise countProduct ArrayList
+        //
         ArrayList<Integer> countProduct = new ArrayList<>();
 
-        // Adding each element in the Array of column into an ArrayList
         for (int a = 1; a < productList.length; a++) {
             int m = Integer.parseInt(productList[a]);
             countProduct.add(m);
         }
 
-        // Getting the max value as a variable to compare
         for (int i = 0; i < countProduct.size(); i++) {
             if (countProduct.get(i) < minCount) {
                 minCount = countProduct.get(i);
             }
         }
-
-        // This is to determine whether there are multiple leastSeller products (i.e: same number of sales)
-        ArrayList<String[]> leastSeller = new ArrayList<>();
+        ArrayList<String[]> bestSeller = new ArrayList<>();
         for (int p = 1; p < allProduct.size(); p++) {
             if (allProduct.get(p)[2].equals(String.valueOf(minCount))) {
-                leastSeller.add(allProduct.get(p));
+                bestSeller.add(allProduct.get(p));
             }
         }
-
-        // Based on the list of bestSeller products it's used to extract the info of each item in that list
         ArrayList<String[]> bestSellerInfo = new ArrayList<>();
-        CreateTable createTable = new CreateTable();                                // Setting
-        createTable.setShowVerticalLines(true);                                     // up
-        createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY","NUMBER SOLD");   // table
-        for (int y = 0; y< leastSeller.size();y++) {
-            String[] info = ReadDataFromTXTFile.readSpecificLine(leastSeller.get(y)[1],0,"./src/items.txt",",");
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY", "NUMBER SOLD");
+        for (int y = 0; y < bestSeller.size(); y++) {
+            String[] info = ReadDataFromTXTFile.readSpecificLine(bestSeller.get(y)[1], 0, "./src/items.txt", ",");
             bestSellerInfo.add(info);
-            createTable.addRow(bestSellerInfo.get(y)[0],bestSellerInfo.get(y)[1],bestSellerInfo.get(y)[2],bestSellerInfo.get(y)[3],String.valueOf(minCount));
+            createTable.addRow(bestSellerInfo.get(y)[0], bestSellerInfo.get(y)[1], bestSellerInfo.get(y)[2], bestSellerInfo.get(y)[3], String.valueOf(minCount));
         }
         createTable.print();
     }

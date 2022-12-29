@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b59d6ee-aa29-4a11-b8a2-8534055ce4a6" name="Changes" comment="Done update information, add product, create write class, get all information, read data class">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Admin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Product.java" afterDir="false" />
-    </list>
+    <list default="true" id="9b59d6ee-aa29-4a11-b8a2-8534055ce4a6" name="Changes" comment="Backing up my branch" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -123,7 +118,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671782603546</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Backing up my branch">
+      <created>1672311479915</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1672311479915</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -147,7 +149,8 @@
     <MESSAGE value="Update hashing password" />
     <MESSAGE value="Add CreateTable, Admin" />
     <MESSAGE value="Done update information, add product, create write class, get all information, read data class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Done update information, add product, create write class, get all information, read data class" />
+    <MESSAGE value="Backing up my branch" />
+    <option name="LAST_COMMIT_MESSAGE" value="Backing up my branch" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

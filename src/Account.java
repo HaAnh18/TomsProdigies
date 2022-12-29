@@ -1,15 +1,14 @@
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Account {
+    // Attributes
     private String cID;
     private String name;
     private String email;
@@ -20,12 +19,10 @@ public class Account {
     private String password;
     private Long totalSpending;
 
-    Path path = Paths.get("./src/customers.txt");
-    int id = (int) Files.lines(path).count();
-
+    // Constructor
     public Account(String cID, String name, String email,
                    String address, String phone, String customerType,
-                   String userName, String password, Long totalSpending) throws IOException {
+                   String userName, String password, Long totalSpending) {
         this.cID = cID;
         this.name = name;
         this.email = email;
@@ -37,7 +34,8 @@ public class Account {
         this.totalSpending = totalSpending;
     }
 
-    public Account() throws IOException {
+    // Constructor
+    public Account() {
     }
 
     public void register() throws IOException
@@ -45,21 +43,49 @@ public class Account {
     {
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/customers.txt", true));
-//        Path path = Paths.get("./src/customers.txt");
-//        int id = (int) Files.lines(path).count() - 1;
-        cID = String.format("C%03d", id);
+        Random rd = new Random();
+        int id = rd.nextInt(999);
+        cID = validateCId(String.format("C%03d", id));
         userName = registerUsername();
         name = registerName();
         email = registerEmail();
         address = registerAddress();
         phone = registerPhoneNumber();
-        customerType = "Regular";
+        customerType = "Regular"; // When customer register his/her account, their membership will be set to "Regular"
         password = registerPassword();
-        totalSpending = (long)0;
+        totalSpending = (long) 0; // When customer register his/her account, their total spending will be set to 0
         pw.println("\n" + cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + ","
                 + userName + "," + password + "," + totalSpending);
         // Write customer's information to customers file
         pw.close();
+    }
+
+    public String validateCId(String cID)
+    // Validate customer ID to make sure that CID of each customer will be unique
+    {
+        try {
+            Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
+
+            while (fileScanner.hasNext())
+            // The system will read the file and while it has next line, it will do following steps
+            {
+                String line = fileScanner.nextLine();
+                String[] customerInfo = line.split(","); // Split each value in each line by comma
+                if (customerInfo[0].equals(cID))
+                /* If this customer ID had already existed in customers' file,
+                new customer ID will be generated randomly and validate again
+                 */ {
+                    Random random = new Random();
+                    cID = String.format("0%03d", random.nextInt(999));
+                    validateCId(cID);
+                } else {
+                    this.cID = cID;
+                }
+            }
+        } catch (FileNotFoundException err) {
+            err.printStackTrace();
+        }
+        return this.cID;
     }
 
     public boolean login(String username, String password)
@@ -82,9 +108,9 @@ public class Account {
                 if (values[6].equals(username))
                 // If the username already had in customer file continue to check the password
                 {
-//                    if (values[7].equals(hashing(password)))
-                    if (values[7].equals(password))
-//                    // If the password match
+                    if (values[7].equals(hashing(password)))
+//                    if (values[7].equals(password))
+//                    // If the password match, it will return true
                     {
                         isAuthentication = true;
                     }
@@ -109,7 +135,7 @@ public class Account {
 
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
-                String[] values = line.split(",");
+                String[] values = line.split(","); // Split each value in each line by comma
                 if (username.equals(values[6]))
                 // If the username had been existed, the customer had to create another username
                 {
@@ -132,7 +158,7 @@ public class Account {
         System.out.println("Enter your name: ");
         String name = scanner.nextLine();
         if (validateName(name))
-        // If the name is satisfied the name's rules
+        // If the name is satisfied the name's rules, the name will be saved in customer's information
         {
             this.name = name;
         } else {
@@ -159,12 +185,14 @@ public class Account {
         System.out.println("Enter email: ");
         String email = scanner.nextLine();
         if (validateEmail(email))
-        // If the email satisfy the email's rules
+        // If the email satisfy the email's rules, the email will be saved in customer's information
         {
             this.email = email;
-        } else {
+        } else
+        // If email is incorrect, customer has to register email again
+        {
             System.out.println("Invalid email!");
-            registerEmail(); // If email is incorrect, customer has to register email again
+            registerEmail();
         }
         return this.email;
     }
@@ -189,12 +217,14 @@ public class Account {
         System.out.println("Enter address: ");
         String address = scanner.nextLine();
         if (validateAddress(address))
-        // If the address satisfy the address's rules
+        // If the address satisfy the address's rules, the address will be saved in customer's information
         {
             this.address = address;
-        } else {
+        } else
+        // If address is incorrect, customer has to register address again
+        {
             System.out.println("Invalid address");
-            registerAddress(); // If address is incorrect, customer has to register address again
+            registerAddress();
         }
         return this.address;
     }
@@ -215,12 +245,14 @@ public class Account {
         System.out.println("Enter phone number: ");
         String phone = scanner.nextLine();
         if (validatePhoneNumber(phone))
-        // If the phone number satisfy the phone number's rules
+        // If the phone number satisfy the phone number's rules, the phone number will be saved in customer's information
         {
             this.phone = phone;
-        } else {
+        } else
+        // If phone number is incorrect, customer has to register phone number again
+        {
             System.out.println("Invalid phone number!");
-            registerPhoneNumber(); // If phone number is incorrect, customer has to register phone number again
+            registerPhoneNumber();
         }
         return this.phone;
     }
@@ -241,12 +273,14 @@ public class Account {
         System.out.println("Enter password: ");
         String password = scanner.nextLine();
         if (validatePassword(password))
-        // If the password satisfy the password's rules
+        // If the password satisfy the password's rules, the password will be saved in customer's information
         {
             this.password = hashing(password);
-        } else {
+        } else
+        // If password is not strong enough, customer has to register password again
+        {
             System.out.println("Your password is too weak!");
-            registerPassword(); // If password is not strong enough, customer has to register password again
+            registerPassword();
         }
         return this.password;
     }
@@ -292,14 +326,17 @@ public class Account {
     }
 
 
-    public void updateName(String filepath, String newData, String userName) throws IOException {
+    public void updateName(String filepath, String newData, String userName) throws IOException
+    // Update a new name in customer's information
+    {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        // Read all line in customers.txt file and put all data in arraylist
         for (int i = 0; i < database.size(); i++) {
             if (database.get(i)[6].equals(userName) && validateName(newData))
-            /** If the system could find out the username in customers' file and the new name is validated
-             * then the system allow customer to update their information
-             */ {
-                database.get(i)[1] = newData; // The customer's information is changed
+                /* If the system could find out the username in customers' file and the new name is validated
+                 * then the system allow customer to update their information
+                 */ {
+                database.get(i)[1] = newData; // The customer's information is changed in arraylist
             }
         }
         File file = new File(filepath);
@@ -308,22 +345,24 @@ public class Account {
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
-        ArrayList<String[]> newDatabase = database;
-
-        for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+        for (String[] obj : database) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending",
+                    String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
     }
 
-    public void updateEmail(String filepath, String newData, String userName) throws IOException {
+    public void updateEmail(String filepath, String newData, String userName) throws IOException
+    // Update a new email in customer's information
+    {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        // Read all line in customers.txt file and put all data in arraylist
         for (int i = 0; i < database.size(); i++) {
             if (database.get(i)[6].equals(userName) && validateEmail(newData))
-            /** If the system could find out the username in customers' file and the new email is validated
-             * then the system allow customer to update their information
-             */ {
-                database.get(i)[2] = newData; // The customer's information is changed
+                /* If the system could find out the username in customers' file and the new email is validated
+                 * then the system allow customer to update their information
+                 */ {
+                database.get(i)[2] = newData; // The customer's information is changed in arraylist
             }
         }
         File file = new File(filepath);
@@ -332,22 +371,26 @@ public class Account {
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
-        ArrayList<String[]> newDatabase = database;
+//        ArrayList<String[]> newDatabase = database;
 
-        for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+        for (String[] obj : database) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending",
+                    String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
     }
 
-    public void updateAddress(String filepath, String newData, String userName) throws IOException {
+    public void updateAddress(String filepath, String newData, String userName) throws IOException
+    // Update a new address in customer's information
+    {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        // Read all line in customers.txt file and put all data in arraylist
         for (int i = 0; i < database.size(); i++) {
             if (database.get(i)[6].equals(userName) && validateAddress(newData))
             /** If the system could find out the username in customers' file and the new address is validated
              * then the system allow customer to update their information
              */ {
-                database.get(i)[3] = newData; // The customer's information is changed
+                database.get(i)[3] = newData; // The customer's information is changed in arraylist
             }
         }
         File file = new File(filepath);
@@ -356,16 +399,20 @@ public class Account {
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
-        ArrayList<String[]> newDatabase = database;
+//        ArrayList<String[]> newDatabase = database;
 
-        for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+        for (String[] obj : database) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending",
+                    String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
     }
 
-    public void updatePhone(String filepath, String newData, String userName) throws IOException {
+    public void updatePhone(String filepath, String newData, String userName) throws IOException
+    // Update a new phone number in customer's information
+    {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        // Read all line in customers.txt file and put all data in arraylist
         for (int i = 0; i < database.size(); i++) {
             if (database.get(i)[6].equals(userName) && validatePhoneNumber(newData))
             /** If the system could find out the username in customers' file and the new phone number is validated
@@ -380,16 +427,20 @@ public class Account {
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
-        ArrayList<String[]> newDatabase = database;
+//        ArrayList<String[]> newDatabase = database;
 
-        for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+        for (String[] obj : database) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending",
+                    String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
     }
 
-    public void updatePassword(String filepath, String newData, String userName) throws IOException {
+    public void updatePassword(String filepath, String newData, String userName) throws IOException
+    // Update a new password in customer's information
+    {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        // Read all line in customers.txt file and put all data in arraylist
         for (int i = 0; i < database.size(); i++) {
             if (database.get(i)[6].equals(userName) && validatePassword(newData))
             /** If the system could find out the username in customers' file and the new password is validated
@@ -404,17 +455,18 @@ public class Account {
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
-        ArrayList<String[]> newDatabase = database;
+//        ArrayList<String[]> newDatabase = database;
 
-        for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,membership,username,password", String.join(",", obj));
+        for (String[] obj : database) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending",
+                    String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
     }
 
 
     public void checkMembership(String userName) throws IOException
-    // This method would show the customer's membership status
+    // Display the customer's membership status
     {
         String[] database = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
         // Read all information of this customer
@@ -422,9 +474,11 @@ public class Account {
     }
 
 
-
-    public void updateTotalSpending(String filepath, String newData, String userName) throws IOException {
+    public void updateTotalSpending(String filepath, String newData, String userName) throws IOException
+    // Update total spending of customer after he/she finished every order
+    {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        // Read all line in customers.txt file and put all data in arraylist
         for (int i = 0; i < database.size(); i++) {
             if (database.get(i)[6].equals(userName))
             /** If the system could find out the username in customers' file and the new password is validated
@@ -439,22 +493,25 @@ public class Account {
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
-        ArrayList<String[]> newDatabase = database;
+//        ArrayList<String[]> newDatabase = database;
 
-        for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending", String.join(",", obj));
+        for (String[] obj : database) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending",
+                    String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
     }
 
 
-    public void updateMembership(String filepath,String userName) throws IOException {
+    public void updateMembership(String filepath, String userName) throws IOException
+    // Update customer's membership when he/she reached the minimum spending in every membership's requirement
+    {
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        // Read all line in customers.txt file and put all data in arraylist
 
         // Loop through all customers
         for (int i = 0; i < database.size(); i++) {
-
             // Find corresponding user
             if (database.get(i)[6].equals(userName)) {
                 long compareNum = Long.parseLong(database.get(i)[8]);
@@ -482,114 +539,81 @@ public class Account {
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
-        ArrayList<String[]> newDatabase = database;
+//        ArrayList<String[]> newDatabase = database;
 
         // Rewrite the whole file with new updated information
-        for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending", String.join(",", obj));
+        for (String[] obj : database) {
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending",
+                    String.join(",", obj));
+            // This method would allow system to write all data including new data into the customers' file
         }
     }
 
     public void searchOrder(String oId) {
-        ArrayList<String[]> orders = new ArrayList<>();
+        ArrayList<String[]> orders = new ArrayList<>(); // Create a new arraylist to store order information
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        // Read all line in ordersHistory.txt file and put all data in arraylist
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(oId))
                 /* If the system could find out the customer's ID in ordersHistory's file
-                 */
-            {
+
+                 */ {
                 orders.add(database.get(i));
             }
         }
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
-        createTable.setHeaders("OID", "CID", "PID", "MEMBERSHIP", "TOTAL PAYMENT", "TIMESTAMP", "TOTAL SPENDING", "ORDER STATUS", "DELIVERING STATUS");
+        createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
+                "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
+        /* Set header for the order information table */
         for (String[] order : orders) {
             createTable.addRow(order[0], order[1], order[2], order[3],
-                    order[4], order[5], order[6], order[7], order[8]);
+                    order[4], order[5], order[6], order[7], order[8], order[9]);
+            /* Add information to each row in table */
         }
         createTable.print();
     }
 
-    public void getAllMembershipTypes() {
+    public void getAllMembershipTypes()
+        /* Create table to display all types of customer's membership,
+        minimum spending in each membership's type
+        and discount for each membership's type */ {
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("MEMBERSHIP", "MINIMUM SPENDING", "DISCOUNT");
-        createTable.addRow("Silver","5 millions VND","5%");
-        createTable.addRow("Gold","10 millions VND","10%");
+        createTable.addRow("Silver", "5 millions VND", "5%");
+        createTable.addRow("Gold", "10 millions VND", "10%");
         createTable.addRow("Platinum", "25 millions VND", "15%");
         createTable.print();
     }
 
+    // Getter method for customer ID
     public String getcID() {
         return cID;
     }
 
-    public void setcID(String cID) {
-        this.cID = cID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
+    // Getter method for customer type
     public String getCustomerType() {
         return customerType;
     }
 
+    // Setter method for customer type
     public void setCustomerType(String customerType) {
         this.customerType = customerType;
     }
 
+    // Getter method for username
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
+    // Getter method for customer's total spending
     public double getTotalSpending() {
         return totalSpending;
     }
 
+    // Setter method for customer's total spending
     public Long setTotalSpending(double totalSpending) {
         this.totalSpending = (long) totalSpending;
         return (long) totalSpending;
