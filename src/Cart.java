@@ -31,19 +31,7 @@ public class Cart {
         String productTitle = product.getTitle();
         Long singleUnitPrice = product.getPrice();
         Long paymentPrice = product.getPrice() * quantity;
-//        switch (customer.getCustomerType()) {
-//            case "Silver":
-//                paymentPrice = (long)(paymentPrice * (1 - 0.05));
-//                break;
-//            case "Gold":
-//                paymentPrice = (long)(paymentPrice * (1 - 0.1));
-//                break;
-//            case "Platinum":
-//                paymentPrice = (long)(paymentPrice * (1 - 0.15));
-//                break;
-//            case "Regular":
-//                break;
-//        }
+       
         pw.println(customerID + "," + productTitle + "," + singleUnitPrice + "," +
                 quantity + "," + paymentPrice);
         pw.close();

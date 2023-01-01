@@ -127,7 +127,7 @@ public class Account {
     // Register the username
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter username: ");
+        System.out.print("Enter username: ");
         String username = scanner.nextLine();
 
         try {
@@ -155,7 +155,7 @@ public class Account {
     // Register the customer's name
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter your name: ");
+        System.out.print("Enter your name: ");
         String name = scanner.nextLine();
         if (validateName(name))
         // If the name is satisfied the name's rules, the name will be saved in customer's information
@@ -182,7 +182,7 @@ public class Account {
     // Register the customer's email
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter email: ");
+        System.out.print("Enter email: ");
         String email = scanner.nextLine();
         if (validateEmail(email))
         // If the email satisfy the email's rules, the email will be saved in customer's information
@@ -214,7 +214,7 @@ public class Account {
     // Register the customer's address
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter address: ");
+        System.out.print("Enter address: ");
         String address = scanner.nextLine();
         if (validateAddress(address))
         // If the address satisfy the address's rules, the address will be saved in customer's information
@@ -242,7 +242,7 @@ public class Account {
     // Register the phone number
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter phone number: ");
+        System.out.print("Enter phone number: ");
         String phone = scanner.nextLine();
         if (validatePhoneNumber(phone))
         // If the phone number satisfy the phone number's rules, the phone number will be saved in customer's information
@@ -270,7 +270,7 @@ public class Account {
     // Register the password
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter password: ");
+        System.out.print("Enter password: ");
         String password = scanner.nextLine();
         if (validatePassword(password))
         // If the password satisfy the password's rules, the password will be saved in customer's information
@@ -557,22 +557,26 @@ public class Account {
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(oId))
                 /* If the system could find out the customer's ID in ordersHistory's file
-
                  */ {
                 orders.add(database.get(i));
             }
         }
-        CreateTable createTable = new CreateTable();
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
-                "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
-        /* Set header for the order information table */
-        for (String[] order : orders) {
-            createTable.addRow(order[0], order[1], order[2], order[3],
-                    order[4], order[5], order[6], order[7], order[8], order[9]);
-            /* Add information to each row in table */
+        if (!(orders == null)) {
+            CreateTable createTable = new CreateTable();
+            createTable.setShowVerticalLines(true);
+            createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
+                    "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
+            /* Set header for the order information table */
+            for (String[] order : orders) {
+                createTable.addRow(order[0], order[1], order[2], order[3],
+                        order[4], order[5], order[6], order[7], order[8], order[9]);
+                /* Add information to each row in table */
+            }
+            createTable.print();
+        } else {
+            System.out.println("There is no order that have this ID!");
         }
-        createTable.print();
+
     }
 
     public void getAllMembershipTypes()
