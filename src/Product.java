@@ -147,7 +147,7 @@ public class Product {
 
         // Prepping the price list to be able to sort
         for (int i = 1; i < readPrices.length; i++) {
-            pricesList.add(Long.parseLong(readPrices[i]));
+            pricesList.add(Long.parseLong(readPrices[i])); // Created an ArrayList of Long value for prices
         }
         return pricesList;
     }
