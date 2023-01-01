@@ -24,15 +24,19 @@ public class Discount {
         Long discountAmount = (long) 0;
         ArrayList<String[]> discountType = ReadDataFromTXTFile.readAllLines("./src/discountType.txt");
         if (totalPayment > Long.parseLong(discountType.get(1)[1]) && totalPayment < Long.parseLong(discountType.get(2)[1])) {
+            System.out.println("Your bill have 1 voucher");
             discountCode = discountType.get(1)[0];
             discountAmount = Long.parseLong(discountType.get(1)[2]);
         } else if (totalPayment >= Long.parseLong(discountType.get(2)[1]) && totalPayment < Long.parseLong(discountType.get(3)[1])) {
+            System.out.println("Your bill have 1 voucher");
             discountCode = discountType.get(2)[0];
             discountAmount = Long.parseLong(discountType.get(2)[2]);
         } else if (totalPayment >= Long.parseLong(discountType.get(3)[1]) && totalPayment < Long.parseLong(discountType.get(4)[1])) {
+            System.out.println("Your bill have 1 voucher");
             discountCode = discountType.get(3)[0];
             discountAmount = Long.parseLong(discountType.get(3)[2]);
         } else if (totalPayment >= Long.parseLong(discountType.get(4)[1])) {
+            System.out.println("Your bill have 1 voucher");
             discountCode = discountType.get(4)[0];
             discountAmount = Long.parseLong(discountType.get(4)[2]);
         }
@@ -74,13 +78,15 @@ public class Discount {
                 discountCode.add(database.get(i));
             }
         }
-        CreateTable createTable = new CreateTable();
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("OPTION", "ID", "DISCOUNT CODE", "DISCOUNT AMOUNT");
-        for (int i = 0; i < discountCode.size(); i++) {
-            createTable.addRow(String.valueOf(i + 1), discountCode.get(i)[1], discountCode.get(i)[2], discountCode.get(i)[3]);
+        if (!(discountCode.size() == 0)) {
+            CreateTable createTable = new CreateTable();
+            createTable.setShowVerticalLines(true);
+            createTable.setHeaders("OPTION", "ID", "DISCOUNT CODE", "DISCOUNT AMOUNT");
+            for (int i = 0; i < discountCode.size(); i++) {
+                createTable.addRow(String.valueOf(i + 1), discountCode.get(i)[1], discountCode.get(i)[2], discountCode.get(i)[3]);
+            }
+            createTable.print();
         }
-        createTable.print();
     }
 
     public ArrayList<String[]> discountCodeList(Customer customer)
@@ -89,7 +95,6 @@ public class Discount {
         ArrayList<String[]> discountCode = new ArrayList<>();
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
-        discountCode.add(database.get(0));
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(customer.getcID()))
                 /* If the system could find out the customer's ID in ordersHistory's file

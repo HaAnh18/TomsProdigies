@@ -1,2 +1,2 @@
-#CID,ID,Discount code,Discount amount
-C978,123,Laptop2023,1000000
+#CID,Discount code,Discount amount
+C978,367,Phone2023,500000

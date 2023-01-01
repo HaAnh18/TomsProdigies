@@ -1,2 +1,1 @@
-#ID,pID,Quantities
-1,Dell XPS 17,18
+#ID,Category,Quantity
