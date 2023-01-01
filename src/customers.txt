@@ -1,5 +1,5 @@
 #ID,Name,Email,Address,Phone,membership,username,password,total spending
-C978,Minh Hoang,minh.hoang@gmail.com,18 Irwin Street,0421473243,Platinum,minhhoang,e10adc3949ba59abbe56e057f20f883e,278750000
+C978,Minh Hoang,minh.hoang@gmail.com,18 Irwin Street,0421473243,Platinum,minhhoang,e10adc3949ba59abbe56e057f20f883e,3097150000
 C324,Hong Wang,hong.wang@gmail.com,20 Irwin Street,0424173255,Regular,wanghong98,6c44e5cd17f0019c64b042e4a745412a,10000000
 C413,Linh Nguyen,linh.nguyen22@yahoomail.com,12 Brunswick Street,0424173255,Platinum,linhtb,bcd4fbde6d3c14d087b78301a1cd38c1,350000000
 C845,Antony Zinc,antony97@gmail.com,114 Fraser Avenue,0424512345,Silver,abookworm,56e5aa023235b331e828f612c88d8ba5,9400000

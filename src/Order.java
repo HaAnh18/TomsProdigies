@@ -241,9 +241,7 @@ public class Order {
                 pw.write("");
                 pw.close();
 
-                ArrayList<String[]> newDatabase = database;
-
-                for (String[] obj : newDatabase) {
+                for (String[] obj : database) {
                     Write.rewriteFile("./src/productsSold.txt", "#ID,Category,Quantity", String.join(",", obj));
                 }
             }
@@ -277,51 +275,14 @@ public class Order {
         Path path = Paths.get("./src/productsSold.txt");
         int id = (int) Files.lines(path).count();
         PrintWriter writer = new PrintWriter(new FileWriter("./src/productsSold.txt", true));
-        writer.print(id + "," + product + "," + 1);
+        writer.print("\n" + id + "," + product + "," + 1);
         writer.close();
-    }
-
-    public String getoID() {
-        return oID;
-    }
-
-    public void setoID(String oID) {
-        this.oID = oID;
-    }
-
-    public double getPaymentPrice() {
-        return paymentPrice;
-    }
-
-    public void setPaymentPrice(Long paymentPrice) {
-        this.paymentPrice = paymentPrice;
     }
 
     public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public String getDeliveryStatus() {
-        return deliveryStatus;
-    }
-
-    public void setDeliveryStatus(String deliveryStatus) {
-        this.deliveryStatus = deliveryStatus;
-    }
-
-
-        }
+}
 
 

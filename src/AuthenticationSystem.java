@@ -7,11 +7,11 @@ public class AuthenticationSystem {
         System.out.println("3. Exit");
 
         AdminMenu adminMenu = new AdminMenu();
-        CustomerMenu customerMenu = new CustomerMenu();
+//        CustomerMenu1 customerMenu = new CustomerMenu1();
         String option = UserInput.rawInput();
         switch (option) {
             case "1":
-                customerMenu.view();
+//                customerMenu.view();
             case "2":
                 adminMenu.view();
             case "3":
