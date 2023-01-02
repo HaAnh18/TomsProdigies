@@ -152,7 +152,7 @@ public class Product {
         return pricesList;
     }
 
-
+//find items by price range.
     public static void findItemByPriceRange() throws IOException {
         ArrayList<String[]> items = ReadDataFromTXTFile.readAllLines("./src/items.txt");
 
@@ -162,7 +162,7 @@ public class Product {
 //        ArrayList<String[]> matchResult = new ArrayList<>(this.getMatchResult(category[0]).size());
 
         CreateTable table = new CreateTable();
-
+//case 1: find the product between the price of 0 to 25000000.
         switch (option) {
             case "1":
                 for (int i = 1; i < items.size(); i++) {
@@ -173,6 +173,7 @@ public class Product {
                 }
                 System.out.println("Price range: 0 --> 25 mil");
                 break;
+            //case 2: find the product between the price of 25000000 to 50000000.
             case "2":
 
                 for (int i = 1; i < items.size(); i++) {
@@ -183,6 +184,7 @@ public class Product {
                 }
                 System.out.println("Price range: 25 mil --> 50 mil");
                 break;
+            //case 3: find the product between the price of 50000000 to 75000000.
             case "3":
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
@@ -192,6 +194,7 @@ public class Product {
                 }
                 System.out.println("Price range: 50 mil --> 75 mil");
                 break;
+            //case 4: find the product between the price of 75000000 to 100000000.
             case "4":
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
