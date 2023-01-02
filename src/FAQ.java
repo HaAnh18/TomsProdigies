@@ -56,6 +56,19 @@ public static void createDefaultFAQ(int qaaID, String question, String answer) t
                 matchResult = getMatchResult(faq[3]);
 
                 break;
+            case "4":
+                matchResult = getMatchResult(faq[4]);
+
+                break;
+            case "5":
+                matchResult = getMatchResult(faq[5]);
+
+                break;
+
+            case "6":
+                matchResult = getMatchResult(faq[6]);
+
+                break;
 
             // for menu add 1 more but will be menu.something();
         }
@@ -65,7 +78,7 @@ public static void createDefaultFAQ(int qaaID, String question, String answer) t
         }
         //set this condition for when user input a number that is within choices range
         if (matchResult.size() > 0) {
-            System.out.println("Available Question");
+            System.out.println("Here is your answer:");
             table.setShowVerticalLines(true);
             table.setHeaders("Answer");
 

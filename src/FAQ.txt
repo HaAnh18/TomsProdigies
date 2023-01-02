@@ -1,4 +1,7 @@
 #QID,QUESTION,ANSWER
-1,1.Q11111111111111111111111111111111111111111111111111111,A12234235342342342312313
-2,2.Q22222222222222222222222,A2231234224545352342342
-3,3.Q3333333333333333333,A32146578890-0986754
+1,1.What are the coupons that are preserved in my membership package ?, Your discount codes are saved in Customer's discount code.
+2,2.How to convert my reward points into bonuses ?, Your Reward points is base on your total payment with the exchange rate of 1 point per 10.000 VND.
+3,3.What I can do with my reward points ?, Your points can be used to exchange our special gift when your point requirement is met.
+4,4.How can I register for a membership ?, When creating an account. Your primary account is already registered as a member; however it is listed as "Regular." Based on the sum you have spent; you can raise your membership level.
+5,5.How to sign up for an account ?, By choosing 1.Register in the customer menu.
+6,6.Where to find the Magical journey of the monkeys ?, go to this coordinates 3.4653° S; 62.2159° W.
