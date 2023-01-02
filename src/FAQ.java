@@ -20,7 +20,7 @@ public class FAQ {
     }
 
 //This method create FAQ text file.
-public static void createDefaultFAQ(int qaaID, String question, String answer) throws IOException {
+public static void createFAQ(int qaaID, String question, String answer) throws IOException {
     PrintWriter pw;
 
     pw = new PrintWriter(new FileWriter("./src/FAQ.txt", true));
@@ -42,7 +42,7 @@ public static void createDefaultFAQ(int qaaID, String question, String answer) t
 
 
         CreateTable table = new CreateTable();
-
+        //base on the question ID this will then read that specific row on that specific column
         switch (option) {
             case "1":
                 matchResult = getMatchResult(faq[1]);
