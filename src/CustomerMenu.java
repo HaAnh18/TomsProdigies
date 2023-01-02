@@ -114,7 +114,7 @@ public class CustomerMenu {
         Order order = new Order();
         Scanner scanner = new Scanner(System.in);
         String[] obj = ReadDataFromTXTFile.readSpecificLine(username, 6, "./src/customers.txt", ",");
-        Customer member = new Customer(obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6], obj[7], Long.parseLong(obj[8]));
+        Customer member = new Customer(obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6], obj[7], Long.parseLong(obj[8]), Long.parseLong(obj[9]));
         CustomerMenu customerMenu = new CustomerMenu();
         Product product = new Product();
         Cart cart = new Cart();
@@ -433,12 +433,23 @@ public class CustomerMenu {
                 String userChoice = UserInput.rawInput();
                 ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/prizeItems.txt");
                 String[] prizeInfo = new String[3];
+                boolean displayMsg = false;
+
                 for (int i = 0; i < productList.size(); i++) {
                     if (i == Integer.parseInt(userChoice)) {
                         prizeInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1],
                                 1, "./src/prizeItems.txt", ",");
+                        displayMsg = true;
                     }
                 }
+                if (displayMsg) {
+                    PointsSystem.exchangeItem(username, String.valueOf(prizeInfo[0]));
+                } else {
+                    System.out.println("Invalid input please try again later, you will now return to the main menu.");
+                    customerMenu.viewHomepage(username);
+                }
+
+
             case "10":
             case "11":
                 if (!(cartList.size() == 0)) {

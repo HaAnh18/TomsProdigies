@@ -68,11 +68,11 @@ public class PointsSystem {
         for (int i = 1; i < prizeItems.size(); i++) {
             createTable.addRow(String.valueOf(i), prizeItems.get(i)[0], prizeItems.get(i)[1], prizeItems.get(i)[2], prizeItems.get(i)[3]);
         }
-
         createTable.print();
+        System.out.println("Please enter an option to exchange: ");
     }
 
-    public void exchangeItem(String user, String itemID) throws IOException {
+    public static void exchangeItem(String user, String itemID) throws IOException {
         // Update total points earned for customer after he/she finished every order
         ArrayList<String[]> pointCost = ReadDataFromTXTFile.readAllLines("./src/prizeItems.txt");
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
@@ -121,7 +121,7 @@ public class PointsSystem {
         }
     }
 
-    public void logExchange(String user, String itemID, String Cost) throws IOException {
+    public static void logExchange(String user, String itemID, String Cost) throws IOException {
         Order order = new Order();
         PrintWriter pw = new PrintWriter(new FileWriter("./src/prizeExHistory.txt", true));
         String exchangeDate = new SimpleDateFormat("MM/dd/yyyy_HH:mm").format(Calendar.getInstance().getTime());
@@ -135,5 +135,24 @@ public class PointsSystem {
         pw.println(oID + "," + user + "," + itemID + "," + Cost + ","
                 + exchangeDate + "," + exchangeStatus + "," + pickupStatus);
         pw.close();
+
+        PointsSystem.printConfirmation(oID);
+    }
+
+    public static void printConfirmation(String oID) throws IOException {
+        // Set up table
+        CreateTable table = new CreateTable();
+        table.setShowVerticalLines(true);
+        table.setHeaders("Order ID", "cID", "prizeID", "Point Cost", "Date Exchanged", "Exchanged Status", "Pickup Status");
+
+        // Get line in .txt file with parameter oID
+        String[] exchangeConfirmation = ReadDataFromTXTFile.readSpecificLine(oID, 0, "./src/prizeExHistory.txt", ",");
+
+        // Add content to table
+        table.addRow(exchangeConfirmation[0], exchangeConfirmation[1], exchangeConfirmation[2], exchangeConfirmation[3],
+                exchangeConfirmation[4], exchangeConfirmation[5], exchangeConfirmation[6]);
+
+        // Print out the table
+        table.print();
     }
 }
