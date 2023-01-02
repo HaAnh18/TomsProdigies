@@ -198,6 +198,7 @@ public class CustomerMenu {
                                                     }
                                                 }
                                                 order.getTotalPaymentAfterApplyDiscountCode(oID, discountCodeCustomer, member);
+                                                PointsSystem.pointsConversion(oID, member.getcID());
                                                 customerMenu.viewHomepage(username);
 //                                                    discount.deleteDiscountCode("./customerDiscountCode.txt",discountCodeCustomer);
                                             case "2":
@@ -207,12 +208,14 @@ public class CustomerMenu {
                                                 discount.giveDiscountCode(member, totalPayment);
                                                 discount.displayCustomerDiscountCode(member);
                                                 TimeUnit.SECONDS.sleep(1);
+                                                PointsSystem.pointsConversion(oID, member.getcID());
                                                 customerMenu.viewHomepage(username);
                                         }
                                     } else {
                                         String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
                                                 "./src/billingHistory.txt", ",");
                                         Long totalPayment = Long.parseLong(orderInfo[2]);
+                                        PointsSystem.pointsConversion(oID, member.getcID());
                                         discount.giveDiscountCode(member, totalPayment);
                                     }
                             }
@@ -300,6 +303,7 @@ public class CustomerMenu {
                                                         }
                                                     }
                                                     order.getTotalPaymentAfterApplyDiscountCode(oID, discountCodeCustomer, member);
+                                                    PointsSystem.pointsConversion(oID, member.getcID());
                                                     TimeUnit.SECONDS.sleep(1);
                                                     customerMenu.viewHomepage(username);
                                                 case "2":
@@ -308,6 +312,7 @@ public class CustomerMenu {
                                                     Long totalPayment = Long.parseLong(orderInfo[2]);
                                                     discount.giveDiscountCode(member, totalPayment);
                                                     discount.displayCustomerDiscountCode(member);
+                                                    PointsSystem.pointsConversion(oID, member.getcID());
                                                     TimeUnit.SECONDS.sleep(1);
                                                     customerMenu.viewHomepage(username);
                                             }
@@ -317,6 +322,7 @@ public class CustomerMenu {
                                             Long totalPayment = Long.parseLong(orderInfo[2]);
                                             System.out.println(totalPayment);
                                             discount.giveDiscountCode(member, totalPayment);
+                                            PointsSystem.pointsConversion(oID, member.getcID());
                                             customerMenu.viewHomepage(username);
                                         }
                                 }
@@ -349,12 +355,15 @@ public class CustomerMenu {
                                             }
                                         }
                                         order.getTotalPaymentAfterApplyDiscountCode(oID, discountCodeCustomer, member);
+                                        PointsSystem.pointsConversion(oID, member.getcID());
+                                        customerMenu.viewHomepage(username);
                                     case "2":
                                         String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
                                                 "./src/billingHistory.txt", ",");
                                         Long totalPayment = Long.parseLong(orderInfo[2]);
                                         discount.giveDiscountCode(member, totalPayment);
                                         discount.displayCustomerDiscountCode(member);
+                                        PointsSystem.pointsConversion(oID, member.getcID());
                                         TimeUnit.SECONDS.sleep(1);
                                         customerMenu.viewHomepage(username);
                                 }
@@ -364,6 +373,7 @@ public class CustomerMenu {
                                 Long totalPayment = Long.parseLong(orderInfo[2]);
                                 System.out.println(totalPayment);
                                 discount.giveDiscountCode(member, totalPayment);
+                                PointsSystem.pointsConversion(oID, member.getcID());
                                 customerMenu.viewHomepage(username);
                             }
                         }
@@ -419,6 +429,16 @@ public class CustomerMenu {
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.viewHomepage(username);
             case "9":
+                PointsSystem.viewPrizes();
+                String userChoice = UserInput.rawInput();
+                ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/prizeItems.txt");
+                String[] prizeInfo = new String[3];
+                for (int i = 0; i < productList.size(); i++) {
+                    if (i == Integer.parseInt(userChoice)) {
+                        prizeInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1],
+                                1, "./src/prizeItems.txt", ",");
+                    }
+                }
             case "10":
             case "11":
                 if (!(cartList.size() == 0)) {

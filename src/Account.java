@@ -18,11 +18,12 @@ public class Account {
     private String userName;
     private String password;
     private Long totalSpending;
+    private Long totalPoint;
 
     // Constructor
-    public Account(String cID, String name, String email,
-                   String address, String phone, String customerType,
-                   String userName, String password, Long totalSpending) {
+
+
+    public Account(String cID, String name, String email, String address, String phone, String customerType, String userName, String password, Long totalSpending, Long totalPoint) {
         this.cID = cID;
         this.name = name;
         this.email = email;
@@ -32,6 +33,7 @@ public class Account {
         this.userName = userName;
         this.password = password;
         this.totalSpending = totalSpending;
+        this.totalPoint = totalPoint;
     }
 
     // Constructor
@@ -54,8 +56,9 @@ public class Account {
         customerType = "Regular"; // When customer register his/her account, their membership will be set to "Regular"
         password = registerPassword();
         totalSpending = (long) 0; // When customer register his/her account, their total spending will be set to 0
+        totalPoint = (long) 0;
         pw.println("\n" + cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + ","
-                + userName + "," + password + "," + totalSpending);
+                + userName + "," + password + "," + totalSpending + "," + totalPoint);
         // Write customer's information to customers file
         pw.close();
     }
