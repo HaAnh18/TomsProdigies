@@ -5,7 +5,7 @@ public class testIdCounter {
 //        System.out.println(IdCounter.nextId());
 //        Product.searchByCategory("Laptop");
 //        FAQ.searchQNA();
-//        FAQ.FAQPrint();
-        Product.findItemByPriceRange();
+        FAQ.FAQPrint();
+//        Product.findItemByPriceRange();
     }
 }

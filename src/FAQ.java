@@ -19,25 +19,30 @@ public class FAQ {
     public FAQ() {
     }
 
-    public static void createDefaultFAQ(int qaaID, String question, String answer) throws IOException {
-        PrintWriter pw;
+//This method create FAQ text file.
+public static void createDefaultFAQ(int qaaID, String question, String answer) throws IOException {
+    PrintWriter pw;
 
-        pw = new PrintWriter(new FileWriter("./src/FAQ.txt", true));
+    pw = new PrintWriter(new FileWriter("./src/FAQ.txt", true));
 
-        pw.println(qaaID + "," + question + "," + answer);
-        pw.close();
-    }
+    pw.println(qaaID + "," + question + "," + answer);
+    pw.close();
+}
 
 
     public static void searchQNA() throws IOException {
+        //using method ReadDataFromTXTFile to read specific column which is QID in the text file
         String[] faq = ReadDataFromTXTFile.readColString(0, "./src/FAQ.txt", ",");
         faq = Arrays.stream(faq).distinct().toArray(String[]::new);
 
-        String option = UserInput.rawInput();
+        String option = UserInput.rawInput(); // using rawInput method to input a string that ask user to choose an option
 
+        //Using matchResult method to put all the data that this method get from specific columns to put into an arraylist
         ArrayList<String[]> matchResult = new ArrayList<>(getMatchResult(faq[0]).size());
 
+
         CreateTable table = new CreateTable();
+
         switch (option) {
             case "1":
                 matchResult = getMatchResult(faq[1]);
@@ -51,17 +56,33 @@ public class FAQ {
                 matchResult = getMatchResult(faq[3]);
 
                 break;
+            case "4":
+                matchResult = getMatchResult(faq[4]);
+
+                break;
+            case "5":
+                matchResult = getMatchResult(faq[5]);
+
+                break;
+
+            case "6":
+                matchResult = getMatchResult(faq[6]);
+
+                break;
 
             // for menu add 1 more but will be menu.something();
         }
+        //set this condition for when user input a number that is out of choices range
         if (matchResult.size() == 0) {
             System.out.println("Sorry, there is no answer for this question");
         }
+        //set this condition for when user input a number that is within choices range
         if (matchResult.size() > 0) {
-            System.out.println("Available Question");
+            System.out.println("Here is your answer:");
             table.setShowVerticalLines(true);
             table.setHeaders("Answer");
 
+            //using this for loop read and adding the next rows into a table from a specific column
             for (int i = 0; i < matchResult.size(); i++) {
                 table.addRow(matchResult.get(i)[2]);
             }
@@ -74,7 +95,9 @@ public class FAQ {
     }
 
     public static ArrayList<String[]> getMatchResult(String data) throws IOException {
+        // using Read method that will read a specific column which is QID form FAQ text file
         String[] faq = ReadDataFromTXTFile.readColString(0, "./src/FAQ.txt", ",");
+        // using Read method that will read a specific column which is Question form FAQ text file
         String[] question = ReadDataFromTXTFile.readColString(1, "./src/FAQ.txt", ",");
 
         ArrayList<String[]> matchResult = new ArrayList<>();
@@ -93,6 +116,7 @@ public class FAQ {
         return matchResult;
     }
 
+    //This method will print the question from a FAQ text file and the function into the terminal
     public static void FAQPrint() throws IOException {
 
         //read data from text file
