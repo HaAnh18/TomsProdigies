@@ -152,80 +152,71 @@ public class Product {
         return pricesList;
     }
 
-    public ArrayList<String[]> getMatchResult(String data) throws IOException {
-        String[] category = ReadDataFromTXTFile.readColString(3, "./src/items.txt", ",");
-        String[] title = ReadDataFromTXTFile.readColString(1, "./src/items.txt", ",");
 
-        ArrayList<String[]> matchResult = new ArrayList<>();
-
-        for (int i = 0; i < title.length; i++) {
-            //use Boyer Moore Searching Algorithm
-            SearchAlgorithm text = new SearchAlgorithm(data);
-            boolean isFound = text.boyerMooreSearch(category[i], data);
-
-            if (isFound) {
-                String[] specificLine = ReadDataFromTXTFile.getSpecificLine(title[i], 1, "./src/items.txt", ",");
-                matchResult.add(specificLine);
-            }
-        }
-        return matchResult;
-    }
-
-    public void findItemByPriceRange(String item) throws IOException {
-        String[] category = ReadDataFromTXTFile.readColString(1, "./src/items.txt", ",");
-
-        category = Arrays.stream(category).distinct().toArray(String[]::new);
+    public static void findItemByPriceRange() throws IOException {
+        ArrayList<String[]> items = ReadDataFromTXTFile.readAllLines("./src/items.txt");
 
         String option = UserInput.rawInput();
 
-        ArrayList<String[]> matchResult = new ArrayList<>(this.getMatchResult(category[0]).size());
+
+//        ArrayList<String[]> matchResult = new ArrayList<>(this.getMatchResult(category[0]).size());
 
         CreateTable table = new CreateTable();
+
         switch (option) {
             case "1":
-                matchResult = this.getMatchResult(category[0]);
-                System.out.println("this is 1");
+                for (int i = 1; i < items.size(); i++) {
+                    Long priceItem = Long.parseLong(items.get(i)[2]);
+                    if (0 < priceItem && priceItem < 25000000) {
+                        table.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
+                    }
+                }
+                System.out.println("Price range: 0 --> 25 mil");
                 break;
             case "2":
-                matchResult = this.getMatchResult(category[1]);
-                System.out.println("this is 2");
+
+                for (int i = 1; i < items.size(); i++) {
+                    Long priceItem = Long.parseLong(items.get(i)[2]);
+                    if (25000000 < priceItem && priceItem < 50000000) {
+                        table.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
+                    }
+                }
+                System.out.println("Price range: 25 mil --> 50 mil");
                 break;
             case "3":
-                matchResult = this.getMatchResult(category[2]);
-                System.out.println("this is 3");
+                for (int i = 1; i < items.size(); i++) {
+                    Long priceItem = Long.parseLong(items.get(i)[2]);
+                    if (5000000 < priceItem && priceItem < 75000000) {
+                        table.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
+                    }
+                }
+                System.out.println("Price range: 50 mil --> 75 mil");
                 break;
             case "4":
-                matchResult = this.getMatchResult(category[3]);
-                System.out.println("this is 4");
+                for (int i = 1; i < items.size(); i++) {
+                    Long priceItem = Long.parseLong(items.get(i)[2]);
+                    if (75000000 < priceItem && priceItem < 100000000) {
+                        table.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
+                    }
+                }
+                System.out.println("Price range: 75 mil --> 100 mil");
                 break;
             // for menu add 1 more but will be menu.something();
         }
-        if (matchResult.size() == 0) {
-            System.out.println("Sorry, there is no found result");
-        }
-        if (matchResult.size() > 0) {
-            System.out.println("Available Products");
-            table.setShowVerticalLines(true);
-            table.setHeaders("PRODUCT_ID", "ITEM", "CATEGORY", "PRICE");
-
-            for (int i = 0; i < matchResult.size(); i++) {
-                table.addRow(matchResult.get(i)[0], matchResult.get(i)[1], matchResult.get(i)[3], matchResult.get(i)[2]);
-            }
-            table.print();
-
-//            table.setHeaders(new String[0]);
-//            table.setRows(new ArrayList<String[]>());
-        }
+        table.setShowVerticalLines(true);
+        table.setHeaders("ID", "Title", "Prices", "Category");
+        table.print();
     }
+
     /* This method will help user to search by category */
   public static void searchByCategory(String category) throws IOException{
-        ArrayList<String[]> categories = new ArrayList<>();
+      String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+      ArrayList<String[]> categories = new ArrayList<>();
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
       for (int i = 1; i < database.size(); i++) {
-          if (database.get(i)[3].equals(category))
+          if (database.get(i)[3].equals(capital))
               /* If the system could find out the category in items.txt file
-               */
-          {
+               */ {
               categories.add(database.get(i));
           }
       }
