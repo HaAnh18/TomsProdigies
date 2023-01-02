@@ -28,29 +28,6 @@ public class FAQ {
         pw.close();
     }
 
-//    public static void searchQNA(String qaaID) throws IOException{
-//        ArrayList<String[]> FAQ = new ArrayList<>();
-//        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/FAQ.txt");
-//
-//        for (int i = 1; i < database.size(); i++) {
-//            if (database.get(i)[0].equals(qaaID))
-//                /* If the system could find out the category in items.txt file
-//                 */
-//            {
-//                FAQ.add(database.get(i));
-//            }
-//        }
-//        CreateTable createTable = new CreateTable();
-//
-//        createTable.setShowVerticalLines(true);
-//        createTable.setHeaders( "Question", "Answer");
-//        for (String[] categoryOutput : FAQ) {
-//            createTable.addRow(categoryOutput[1], categoryOutput[2]);
-//        }
-//        createTable.print();
-//    }
-
-    //
 
     public static void searchQNA() throws IOException {
         String[] faq = ReadDataFromTXTFile.readColString(0, "./src/FAQ.txt", ",");
@@ -64,20 +41,17 @@ public class FAQ {
         switch (option) {
             case "1":
                 matchResult = getMatchResult(faq[1]);
-                System.out.println("this is 1");
+
                 break;
             case "2":
                 matchResult = getMatchResult(faq[2]);
-                System.out.println("this is 2");
+
                 break;
             case "3":
                 matchResult = getMatchResult(faq[3]);
-                System.out.println("this is 3");
+
                 break;
-//            case "4":
-//                matchResult = getMatchResult(faq[4]);
-//                System.out.println("this is 4");
-//                break;
+
             // for menu add 1 more but will be menu.something();
         }
         if (matchResult.size() == 0) {

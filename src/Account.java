@@ -346,7 +346,7 @@ public class Account {
         pw.close();
 
         for (String[] obj : database) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending",
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
@@ -374,7 +374,7 @@ public class Account {
 //        ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : database) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending",
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
@@ -402,7 +402,7 @@ public class Account {
 //        ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : database) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending",
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
@@ -430,7 +430,7 @@ public class Account {
 //        ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : database) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending",
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
@@ -458,7 +458,7 @@ public class Account {
 //        ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : database) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending",
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
@@ -496,7 +496,7 @@ public class Account {
 //        ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : database) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending",
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
@@ -543,7 +543,7 @@ public class Account {
 
         // Rewrite the whole file with new updated information
         for (String[] obj : database) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending",
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }

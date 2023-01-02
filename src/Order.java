@@ -35,7 +35,7 @@ public class Order {
         Long singleUnitPrice = product.getPrice();
         paymentPrice = product.getPrice() * quantity;
 //        Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + paymentPrice);
-        productSales(String.valueOf(product.getTitle()));
+        productSales(String.valueOf(product.getTitle()), quantity);
 //        customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
 //        customer.updateMembership("./src/customers.txt", customer.getUserName());
         String membership = customer.getCustomerType();
@@ -231,11 +231,11 @@ public class Order {
         return dailyOrder;}
 
     // Everytime a product is bought or ordered it will log in the productsSold file
-    public void productSales(String product) throws IOException {
+    public void productSales(String product, int quantity) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/productsSold.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(product)) {
-                database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + 1);
+                database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + quantity);
                 File file = new File("./src/productsSold.txt");
                 PrintWriter pw = new PrintWriter(file);
                 pw.write("");
@@ -247,7 +247,7 @@ public class Order {
             }
         }
         if (!checkProductSales(product)) {
-            createNewProductSale(product);
+            createNewProductSale(product, quantity);
         }
     }
 
@@ -271,11 +271,11 @@ public class Order {
     }
 
     // If the checkProductSales return false, it will create a new line containing the pID of that product and start to log the amount of sales
-    public void createNewProductSale(String product) throws IOException {
+    public void createNewProductSale(String product, int quantity) throws IOException {
         Path path = Paths.get("./src/productsSold.txt");
         int id = (int) Files.lines(path).count();
         PrintWriter writer = new PrintWriter(new FileWriter("./src/productsSold.txt", true));
-        writer.print("\n" + id + "," + product + "," + 1);
+        writer.print("\n" + id + "," + product + "," + quantity);
         writer.close();
     }
 

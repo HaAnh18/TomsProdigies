@@ -27,7 +27,7 @@ public class SortProduct{
 
         // Check for user inputs whether to sort ascend or descend
         if (input == 1) {
-            // Create an arraylist that sorted the prices in an ascending order
+            // Create an arraylist that sorted the prices in ascending order
             ArrayList<Long> priceAscend = SortProduct.sortAscending(prices);
 
             // Create the headers and lines
@@ -44,7 +44,6 @@ public class SortProduct{
             ArrayList<Long> priceDescend = SortProduct.sortDescending(prices);
 
             createTable.setShowVerticalLines(true);
-
             createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
 
             for (int a = 0; a < prices.size(); a++) {

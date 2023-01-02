@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -85,7 +84,7 @@ public class Main {
         }
 ////        System.out.println(discountCodeCustomer[1]);
 ////        order.getOrderInfoById(oID);
-        order.getTotalPaymentAfterApplyDiscountCode("O579", discountCodeCustomer[1]);
+//        order.getTotalPaymentAfterApplyDiscountCode("O579", discountCodeCustomer[1]);
 //        cart.deleteAllItemsInCart("./src/customerCart.txt","C003");
 //        CreateTable createTable = new CreateTable();
 //        createTable.setShowVerticalLines(true);
