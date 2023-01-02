@@ -1,20 +1,99 @@
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
+
 
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, InterruptedException, ParseException {
-//        Account account = new Customer();
-//        Admin admin = new Admin();
-//        CustomerMenu customerMenu = new CustomerMenu();
+    public static void main(String[] args) throws IOException, InterruptedException {
+        Scanner scanner = new Scanner(System.in);
+        Account account = new Customer();
+        Admin admin = new Admin();
+        CustomerMenu customerMenu = new CustomerMenu();
 //        customerMenu.view();
-//        Product.searchByCategory("Laptop");
-//            Admin.calculateRevenue(Admin.getDailyRevenue());
-//        Product product = new Product();
+        Product product = new Product();
+        Order order = new Order();
+//        System.out.println(account.hashing("2222222"));
+        String userName = "linhtb";
+        String[] obj = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
+////        System.out.println(Arrays.toString(obj));
+////        String[] productInfo = ReadDataFromTXTFile.readSpecificLine("Dell XPS 17", 1, "./src/items.txt", ",");
+        Customer member = new Customer(obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6], obj[7], Long.parseLong(obj[8]));
+        Discount discount = new Discount();
+
+        product.getProductHaveId();
+        String choiceOrder = UserInput.rawInput();
+        System.out.println("Please enter a quantity that you want to add: ");
+        int quantity = Integer.parseInt(scanner.nextLine());
+        ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+
+        String[] productInfo = new String[3];
+        for (int i = 0; i < productList.size(); i++) {
+            if (i == Integer.parseInt(choiceOrder)) {
+                productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1], 1, "./src/items.txt", ",");
+            }
+        }
+        Product product1 = new Product((productInfo[0]), productInfo[1], Long.parseLong((productInfo[2])), productInfo[3]);
+//
+////        order.getCustomerCart(member);
+        Cart cart = new Cart();
+        cart.addToCart(member, product1, quantity);
+//        cart.getCustomerCart(member);
+//        System.out.println("Delete: ");
+//        String choiceOrder = UserInput.rawInput();
+////        System.out.println("Please enter a quantity that you want to add: ");
+////        int quantity = Integer.parseInt(scanner.nextLine());
+//        ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/customerCart.txt");
+//
+//        String[] productInfo = new String[3];
+//        for (int i = 0; i< productList.size(); i++) {
+//            if (i == Integer.parseInt(choiceOrder)) {
+//                productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1],1,"./src/items.txt",",");
+//            }
+//        }
+//        Product product1 = new Product((productInfo[0]), productInfo[1], Long.parseLong((productInfo[2])), productInfo[3]);
+//        cart.deleteItemInCart("./src/customerCart.txt",member.getcID(),product1);
+//        cart.addToCart(member,product1,quantity);
+//        Cart cart = new Cart();
+
+        ArrayList<String[]> discountCode = discount.discountCodeList(member);
+        String[] discountCodeCustomer = new String[0];
+        Random rd = new Random();
+        int i = rd.nextInt(999);
+        String oID = order.oIDDataForValidate(String.format("O%03d", i));
+        ArrayList<String[]> cartList = cart.cartList(member);
+        for (int a = 0; a < cartList.size(); a++) {
+            String[] productInfo1 = new String[3];
+            productInfo1 = ReadDataFromTXTFile.readSpecificLine(cartList.get(a)[1], 1, "./src/items.txt", ",");
+            Product product2 = new Product(productInfo1[0], productInfo1[1], Long.parseLong(productInfo1[2]), productInfo1[3]);
+            order.createNewOrder(member, product2, oID, Integer.parseInt(cartList.get(a)[3]));
+        }
+        order.getTotalPaymentEachOrderId(member, oID);
+        discount.displayCustomerDiscountCode(member);
+//
+//
+////
+        String choiceOrder1 = UserInput.rawInput();
+//        System.out.println(Arrays.toString(ReadDataFromTXTFile.readSpecificLine(discountCode.get(0)[1], 1, "./src/customerDiscountCode.txt", ",")));
+        for (int m = 0; m < discountCode.size(); m++) {
+            if (m == Integer.parseInt(choiceOrder1)) {
+                discountCodeCustomer = ReadDataFromTXTFile.readSpecificLine(discountCode.get(m)[1], 1, "./src/customerDiscountCode.txt", ",");
+            }
+        }
+////        System.out.println(discountCodeCustomer[1]);
+////        order.getOrderInfoById(oID);
+        order.getTotalPaymentAfterApplyDiscountCode("O579", discountCodeCustomer[1]);
+//        cart.deleteAllItemsInCart("./src/customerCart.txt","C003");
+//        CreateTable createTable = new CreateTable();
+//        createTable.setShowVerticalLines(true);
+//        createTable.setHeaders("TOTAL SPENDING");
+//        createTable.addRow(String.valueOf(spending));
+//        order.getOrderInfo(member);
+//        createTable.print();
+//        order.createNewOrder(member,product1);
 //        product.getProductToCreateOrder();
 //        account.searchOrder("0289");
 //        Scanner scanner = new Scanner(System.in);
@@ -110,7 +189,13 @@ public class Main {
 //        admin.addProduct();
 //        Product product =new Product();
 //        product.registerCategory("laptop");
+        //create FAQ file
+//                try {
+//                    File file = new File("./src/FAQ.txt");
+//                    file.createNewFile();
+//                    System.out.println("File: " + file);
+//                } catch(Exception e) {
+//                    e.printStackTrace();
+//                }
     }
-
-
 }
