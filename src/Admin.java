@@ -249,7 +249,7 @@ public class Admin extends Account {
         pw.close();
 
         for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending",
+            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }

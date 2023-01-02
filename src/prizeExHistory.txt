@@ -1,0 +1,2 @@
+#oID, cID, prizeID, Points Cost, Date Exchanged, Exchanged Status, Pickup Status
+
