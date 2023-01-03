@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -58,6 +59,48 @@ public class Product {
         }
     }
 
+    /* This method will help user to search by category */
+    public static void searchByCategory() throws IOException {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Please enter the category:");
+        String category = sc.nextLine();
+        boolean loop = true;
+        do {
+            try {
+                // Transforming user input to the right format.
+
+                String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+
+                // Create a empty Arraylist to store data after searching.
+                ArrayList<String[]> categories = new ArrayList<>();
+
+                // Temporary database to store data.
+                ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+                for (int i = 1; i < database.size(); i++) {
+                    if (database.get(i)[3].equals(capital))
+                    // If the system could find out the category in items.txt file
+                    {
+                        categories.add(database.get(i));
+
+                    }
+                    CreateTable createTable = new CreateTable();
+                    createTable.setShowVerticalLines(true);
+                    createTable.setHeaders("ID", "Title", "Prices", "Category");
+                    for (String[] categoryOutput : categories) {
+                        createTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
+                    }
+                    createTable.print();
+                    loop = false;
+                }
+            } catch (InputMismatchException er) {
+                System.out.println("Please enter the category again:");
+                category = sc.nextLine();
+            }
+        }
+        while (loop);
+    }
+
+    //This method is used to create new category and add to the categories.txt file.
     public void createNewCategory(String category) throws IOException {
         Path path = Paths.get("./src/categories.txt");
         int id = (int) Files.lines(path).count();
@@ -66,12 +109,17 @@ public class Product {
         writer.close();
     }
 
+    //This method is used to check if the category belongs to the category list in categories.txt file.
     public boolean checkCategory(String category) {
+
+        //Reformat the input to suitable for matching values.
+
         String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
         boolean found = false;
         try {
             Scanner fileScanner = new Scanner(new File("./src/categories.txt"));
 
+            // while loop to check if the category belong to exist categories list.
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
                 String[] values = line.split(",");
@@ -83,33 +131,6 @@ public class Product {
             fe.printStackTrace();
         }
         return found;
-    }
-
-    public void getAllProductInfo() throws FileNotFoundException {
-        ArrayList<String[]> user = new ArrayList<>();
-        Scanner fileProducts = new Scanner(new File("./src/items.txt"));
-
-        while (fileProducts.hasNext()) {
-            String[] productData = new String[3];
-            String line = fileProducts.nextLine();
-            StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
-            String ID = stringTokenizer.nextToken();
-            String title = stringTokenizer.nextToken();
-            String price = stringTokenizer.nextToken();
-            String category = stringTokenizer.nextToken();
-            productData = new String[]{ID, title, price, category};
-            user.add(productData);
-        }
-
-        CreateTable createTable = new CreateTable();
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
-
-        for (int i = 1; i < user.size(); i++) {
-            createTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3]);
-        }
-
-        createTable.print();
     }
 
     public void getProductHaveId() throws FileNotFoundException {
@@ -157,8 +178,6 @@ public void findItemByPriceRange() throws IOException {
         ArrayList<String[]> items = ReadDataFromTXTFile.readAllLines("./src/items.txt");
 
         String option = UserInput.rawInput();
-
-
 
         CreateTable table = new CreateTable();
 //case 1: find the product between the price of 0 to 25000000.
@@ -210,30 +229,33 @@ public void findItemByPriceRange() throws IOException {
         table.print();
     }
 
-    /* This method will help user to search by category */
-  public void searchByCategory(String category) throws IOException{
+    //This method is used to gather and print all the product information.
+    public void getAllProductInfo() throws FileNotFoundException {
+        ArrayList<String[]> user = new ArrayList<>();
+        Scanner fileProducts = new Scanner(new File("./src/items.txt"));
 
-      // Transforming user input to the right format.
-      String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+//The while loop is used to get info of each product in the scanner.
 
-      // Create a empty Arraylist to store data after searching.
-      ArrayList<String[]> categories = new ArrayList<>();
-
-      // Temporary database to store data.
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
-        for (int i = 1; i < database.size(); i++) {
-            if (database.get(i)[3].equals(capital))
-            // If the system could find out the category in items.txt file
-            {
-                categories.add(database.get(i));
-            }
+        while (fileProducts.hasNext()) {
+            String[] productData = new String[3];
+            String line = fileProducts.nextLine();
+            StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
+            String ID = stringTokenizer.nextToken();
+            String title = stringTokenizer.nextToken();
+            String price = stringTokenizer.nextToken();
+            String category = stringTokenizer.nextToken();
+            productData = new String[]{ID, title, price, category};
+            user.add(productData);
         }
+//Print out the table contain all the product information.
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
-        createTable.setHeaders("ID", "Title", "Prices", "Category");
-        for (String[] categoryOutput : categories) {
-            createTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
+        createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
+
+        for (int i = 1; i < user.size(); i++) {
+            createTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3]);
         }
+
         createTable.print();
     }
 
