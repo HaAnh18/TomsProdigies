@@ -6,10 +6,6 @@ import java.util.Scanner;
 public class Discount {
     private String discountCode;
 
-    public Discount(String discountCode) {
-        this.discountCode = discountCode;
-    }
-
     public Discount() {
     }
 
@@ -20,7 +16,6 @@ public class Discount {
         int i = rd.nextInt(999);
         String code = validateDiscountCode(String.format("%03d", i));
         String cID = customer.getcID();
-        String discountCode = new String();
         Long discountAmount = (long) 0;
         ArrayList<String[]> discountType = ReadDataFromTXTFile.readAllLines("./src/discountType.txt");
         if (totalPayment > Long.parseLong(discountType.get(1)[1]) && totalPayment < Long.parseLong(discountType.get(2)[1])) {
@@ -73,8 +68,7 @@ public class Discount {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(customer.getcID()))
-                /* If the system could find out the customer's ID in ordersHistory's file
-                 */ {
+            {
                 discountCode.add(database.get(i));
             }
         }
@@ -95,6 +89,7 @@ public class Discount {
         ArrayList<String[]> discountCode = new ArrayList<>();
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
+
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(customer.getcID()))
                 /* If the system could find out the customer's ID in ordersHistory's file
@@ -110,9 +105,9 @@ public class Discount {
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
-        for (int i = 0; i < database.size(); i++) {
-            if (!database.get(i)[1].equals(id)) {
-                newDatabase.add(database.get(i)); // Add all customers except the deleted customer
+        for (String[] strings : database) {
+            if (!strings[1].equals(id)) {
+                newDatabase.add(strings); // Add all customers except the deleted customer
             }
         }
         PrintWriter pw = new PrintWriter("./src/customerDiscountCode.txt");
@@ -121,7 +116,7 @@ public class Discount {
         pw.close();
 
         for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#CID,Discount code,Discount amount",
+            Write.rewriteFile(filepath, "#CID,ID,Discount code,Discount amount",
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }

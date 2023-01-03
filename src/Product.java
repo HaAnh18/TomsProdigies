@@ -2,13 +2,13 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Product {
-    ArrayList<String> categories = new ArrayList<>(Arrays.asList(ReadDataFromTXTFile.readColString(3, "./src/items.txt", ",")));
+    // Attributes
     private String ID;
     private String title;
     private Long price;
@@ -24,9 +24,10 @@ public class Product {
     public Product() throws IOException {
     }
 
-    public void registerCategory(String category) throws IOException {
+    public void registerCategory(String category) throws IOException, ParseException, InterruptedException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
         String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        AdminMenu adminMenu = new AdminMenu();
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(capital)) {
                 database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + 1);
@@ -35,9 +36,7 @@ public class Product {
                 pw.write("");
                 pw.close();
 
-                ArrayList<String[]> newDatabase = database;
-
-                for (String[] obj : newDatabase) {
+                for (String[] obj : database) {
                     Write.rewriteFile("./src/productsSold.txt", "#ID,pID,Quantities", String.join(",", obj));
                 }
             }
@@ -48,11 +47,13 @@ public class Product {
             System.out.println("Please choose your option: ");
             System.out.println("1. Create new category automatically");
             System.out.println("2. Exit");
-            int option = Integer.parseInt(scanner.nextLine());
+            String option = UserInput.rawInput();
             switch (option) {
-                case 1:
+                case "1":
                     createNewCategory(category);
                     break;
+                case "2":
+                    adminMenu.viewHomepage();
             }
         }
     }
@@ -151,15 +152,13 @@ public class Product {
         }
         return pricesList;
     }
-
 //find items by price range.
-    public static void findItemByPriceRange() throws IOException {
+public void findItemByPriceRange() throws IOException {
         ArrayList<String[]> items = ReadDataFromTXTFile.readAllLines("./src/items.txt");
 
         String option = UserInput.rawInput();
 
 
-//        ArrayList<String[]> matchResult = new ArrayList<>(this.getMatchResult(category[0]).size());
 
         CreateTable table = new CreateTable();
 //case 1: find the product between the price of 0 to 25000000.
@@ -212,67 +211,63 @@ public class Product {
     }
 
     /* This method will help user to search by category */
-  public static void searchByCategory(String category) throws IOException{
-      //transforming user input to the right format.
+  public void searchByCategory(String category) throws IOException{
+
+      // Transforming user input to the right format.
       String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
-      //create a empty Arraylist to store data after searching.
+
+      // Create a empty Arraylist to store data after searching.
       ArrayList<String[]> categories = new ArrayList<>();
-      //temporary database to store data.
+
+      // Temporary database to store data.
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
-      for (int i = 1; i < database.size(); i++) {
-          if (database.get(i)[3].equals(capital))
-              /* If the system could find out the category in items.txt file
-               */ {
-              categories.add(database.get(i));
-          }
-      }
-      CreateTable createTable = new CreateTable();
-      createTable.setShowVerticalLines(true);
-      createTable.setHeaders("ID", "Title", "Prices", "Category");
-      for (String[] categoryOutput : categories) {
-          createTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
-      }
-      createTable.print();
-  }
-
-    public ArrayList<String> getCategories() {
-        return categories;
+        for (int i = 1; i < database.size(); i++) {
+            if (database.get(i)[3].equals(capital))
+            // If the system could find out the category in items.txt file
+            {
+                categories.add(database.get(i));
+            }
+        }
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("ID", "Title", "Prices", "Category");
+        for (String[] categoryOutput : categories) {
+            createTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
+        }
+        createTable.print();
     }
 
-    public void setCategories(ArrayList<String> categories) {
-        this.categories = categories;
-    }
-
-
-
+    // Getter method for ID
     public String getID() {
         return ID;
     }
 
+    // Setter method for ID
     public void setID(String ID) {
         this.ID = ID;
     }
 
+    // Getter method for title
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
+    // Getter method for price
     public Long getPrice() {
         return price;
     }
 
+    // Setter method for price
     public void setPrice(Long price) {
         this.price = price;
     }
 
+    // Getter method for category
     public String getCategory() {
         return category;
     }
 
+    // Setter method for category
     public void setCategory(String category) {
         this.category = category;
     }

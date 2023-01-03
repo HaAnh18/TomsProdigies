@@ -9,12 +9,14 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Order {
+    // Attributes
     private String oID;
     private Long paymentPrice;
     private String orderDate;
     private String orderStatus;
     private String deliveryStatus;
 
+    // Constructor
     public Order(String oID, Long paymentPrice, String orderDate, String orderStatus, String deliveryStatus) {
         this.oID = oID;
         this.paymentPrice = paymentPrice;
@@ -23,6 +25,7 @@ public class Order {
         this.deliveryStatus = deliveryStatus;
     }
 
+    // Constructor
     public Order() {
     }
 
@@ -34,10 +37,7 @@ public class Order {
         String productID = product.getID();
         Long singleUnitPrice = product.getPrice();
         paymentPrice = product.getPrice() * quantity;
-//        Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + paymentPrice);
         productSales(String.valueOf(product.getTitle()), quantity);
-//        customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
-//        customer.updateMembership("./src/customers.txt", customer.getUserName());
         String membership = customer.getCustomerType();
         orderDate = new SimpleDateFormat("MM/dd/yyyy_HH:mm").format(Calendar.getInstance().getTime());
         orderStatus = "SUCCESSFUL";
@@ -50,60 +50,38 @@ public class Order {
         cart.deleteItemInCart("./src/customerCart.txt", customer.getcID(), product);
     }
 
-    public void getOrderInfo(Customer customer) {
+    public void getOrderInfo(String cID) {
 
         ArrayList<String[]> orders = new ArrayList<>();
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
         for (int i = 1; i < database.size(); i++) {
-            if (database.get(i)[1].equals(customer.getcID()))
-                /* If the system could find out the customer's ID in ordersHistory's file
-                 */ {
+            if (database.get(i)[1].equals(cID))
+            {
                 orders.add(database.get(i));
             }
         }
-        CreateTable createTable = new CreateTable();
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
-                "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
-        for (String[] order : orders) {
-            createTable.addRow(order[0], order[1], order[2], order[3],
-                    order[4], order[5], order[6], order[7], order[9], order[10]);
+        if (orders.size() == 0) {
+            System.out.println("This customer does not make order yet!");
+        } else {
+            CreateTable createTable = new CreateTable();
+            createTable.setShowVerticalLines(true);
+            createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
+                    "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
+            for (String[] order : orders) {
+                createTable.addRow(order[0], order[1], order[2], order[3],
+                        order[4], order[5], order[6], order[7], order[9], order[10]);
+            }
+            createTable.print();
         }
-        createTable.print();
     }
-
-//    public void getOrderInfoById(String oID) {
-//
-//        ArrayList<String[]> orders = new ArrayList<>();
-//
-//        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
-//        for (int i = 1; i < database.size(); i++) {
-//            if (database.get(i)[0].equals(oID))
-//                /* If the system could find out the customer's ID in ordersHistory's file
-//                 */ {
-//                orders.add(database.get(i));
-//            }
-//        }
-//        CreateTable createTable = new CreateTable();
-//        createTable.setShowVerticalLines(true);
-//        createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
-//                "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
-//        for (String[] order : orders) {
-//            createTable.addRow(order[0], order[1], order[2], order[3],
-//                    order[4], order[5], order[6], order[7], order[9], order[10]);
-//        }
-//        createTable.print();
-//    }
 
     public void getTotalPaymentEachOrderId(Customer customer, String oID) throws IOException {
         ArrayList<String[]> orders = new ArrayList<>();
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
         for (int i = 1; i < database.size(); i++) {
-            if (database.get(i)[0].equals(oID))
-                /* If the system could find out the customer's ID in ordersHistory's file
-                 */ {
+            if (database.get(i)[0].equals(oID)) {
                 orders.add(database.get(i));
             }
         }
@@ -151,14 +129,16 @@ public class Order {
         ArrayList<String[]> orderInfo = ReadDataFromTXTFile.readAllLines("./src/billingHistory.txt");
         Long finalPrice = (long) 0;
         for (int i = 1; i < database.size(); i++) {
-            for (int a = 0; a < orderInfo.size(); a++) {
+            for (String[] strings : orderInfo) {
                 if (database.get(i)[1].equals(id)) {
-                    if (orderInfo.get(a)[0].equals(oID)) {
+                    if (strings[0].equals(oID)) {
                         long discountAmount = Long.parseLong(database.get(i)[3]);
-                        orderInfo.get(a)[2] = String.valueOf(Long.parseLong(orderInfo.get(a)[2]) - discountAmount);
-                        finalPrice = Long.parseLong(orderInfo.get(a)[2]);
+                        strings[2] = String.valueOf(Long.parseLong(strings[2]) - discountAmount);
+                        finalPrice = Long.parseLong(strings[2]);
                     }
                 }
+            }
+        }
                 PrintWriter pw = new PrintWriter("./src/billingHistory.txt");
 
                 pw.write("");
@@ -168,7 +148,6 @@ public class Order {
                     Write.rewriteFile("./src/billingHistory.txt", "#OID,CID,Total payment after discount,Order date",
                             String.join(",", obj));
                 }
-            }
             Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + (finalPrice));
             customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
             customer.updateMembership("./src/customers.txt", customer.getUserName());
@@ -181,7 +160,6 @@ public class Order {
 
             Discount discount = new Discount();
             discount.deleteDiscountCode("./src/customerDiscountCode.txt", id);
-        }
     }
 
     public void getAllOrderInfo() {
@@ -279,6 +257,7 @@ public class Order {
         writer.close();
     }
 
+    // Getter method for order date
     public String getOrderDate() {
         return orderDate;
     }
