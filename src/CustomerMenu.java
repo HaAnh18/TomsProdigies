@@ -364,6 +364,7 @@ public class CustomerMenu {
                 member.getAllMembershipTypes();
                 TimeUnit.SECONDS.sleep(1);
                 this.viewHomepage(username);
+
             case "9":
                 PointsSystem.viewPrizes();
                 String userChoice = UserInput.rawInput();
@@ -385,7 +386,6 @@ public class CustomerMenu {
                     customerMenu.viewHomepage(username);
                 }
 
-
             case "10":
                 FAQ.FAQPrint();
                 System.out.print("\n" + "Press '=' to confirm exit or 1 to display the Questions again" + "\n");
@@ -396,6 +396,7 @@ public class CustomerMenu {
                     System.out.println(" ");
                     FAQ.FAQPrint();
                 }
+
             case "11":
                 if (!(cartList.size() == 0)) {
                     System.out.println("\n================================================= WARNING =================================================");
@@ -530,6 +531,7 @@ public class CustomerMenu {
                     // Display the final total payment after customer apply discount voucher
                     TimeUnit.SECONDS.sleep(1);
                     this.viewHomepage(member.getUserName());
+                    PointsSystem.pointsConversion(member.getUserName(), oID);
                 case "2":
                     /* If customer doesn't want to use voucher,
                     then the system will base on order's total spending after discount by membership to give customer discount voucher
@@ -541,6 +543,7 @@ public class CustomerMenu {
                     discount.displayCustomerDiscountCode(member);
                     TimeUnit.SECONDS.sleep(1);
                     this.viewHomepage(member.getUserName());
+                    PointsSystem.pointsConversion(member.getUserName(), oID);
                 default:
                     System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                     TimeUnit.SECONDS.sleep(1);
@@ -555,6 +558,7 @@ public class CustomerMenu {
             Long totalPayment = Long.parseLong(orderInfo[2]);
             discount.giveDiscountCode(member, totalPayment);
             this.viewHomepage(member.getUserName());
+            PointsSystem.pointsConversion(member.getUserName(), oID);
         }
     }
 }
