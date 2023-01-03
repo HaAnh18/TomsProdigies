@@ -23,15 +23,15 @@ public class FAQ {
     }
 
     //This method create FAQ text file to store questions and answers for the FAQ session.
-public static void createDefaultFAQ(int qaaID, String question, String answer) throws IOException {
+    public static void createDefaultFAQ(int qnaID, String question, String answer) throws IOException {
 
-    PrintWriter pw;
+        PrintWriter pw;
 
-    pw = new PrintWriter(new FileWriter("./src/FAQ.txt", true));
+        pw = new PrintWriter(new FileWriter("./src/FAQ.txt", true));
 
-    pw.println(qnaID + "," + question + "," + answer);
-    pw.close();
-}
+        pw.println(qnaID + "," + question + "," + answer);
+        pw.close();
+    }
 
 
     //This method create a menu for customer to select their FAQ option.
