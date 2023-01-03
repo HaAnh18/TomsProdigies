@@ -160,4 +160,6 @@ public class PointsSystem {
         // Print out the table
         table.print();
     }
+
+
 }
