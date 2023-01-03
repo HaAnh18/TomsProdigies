@@ -7,7 +7,7 @@ import java.util.*;
 
 public class PointsSystem {
 
-    public void pointsConversion(String cID, String oID) throws IOException
+    public static void pointsConversion(String cID, String oID) throws IOException
     // Update total points earned for customer after he/she finished every order
     {
         ArrayList<String[]> paymentConversion = ReadDataFromTXTFile.readAllLines("./src/billingHistory.txt");
@@ -46,10 +46,10 @@ public class PointsSystem {
         }
     }
 
-    public void viewPrizes() throws IOException {
+    public static void viewPrizes() throws IOException {
         ArrayList<String[]> prizeItems = new ArrayList<>();
         Scanner fileProducts = new Scanner(new File("./src/prizeItems.txt"));
-        while (fileProducts.hasNext()) {
+        while (fileProducts.hasNext()) { // Read all lines in .txt file
             String[] productData;
             String line = fileProducts.nextLine();
             StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
@@ -57,27 +57,31 @@ public class PointsSystem {
             String title = stringTokenizer.nextToken();
             String price = stringTokenizer.nextToken();
             String category = stringTokenizer.nextToken();
-            productData = new String[]{ID, title, price, category};
-            prizeItems.add(productData);
+            productData = new String[]{ID, title, price, category}; // Put all split String into an Array
+            prizeItems.add(productData); // Add that Array into an ArrayList
         }
 
+        // Set up table
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("OPTION", "ID", "TITLE", "POINTS", "CATEGORY");
 
+        // Add all lines into table with options
         for (int i = 1; i < prizeItems.size(); i++) {
             createTable.addRow(String.valueOf(i), prizeItems.get(i)[0], prizeItems.get(i)[1], prizeItems.get(i)[2], prizeItems.get(i)[3]);
         }
-
         createTable.print();
+        System.out.println("Please enter an option to exchange: ");
     }
 
-    public void exchangeItem(String user, String itemID) throws IOException {
+    public static void exchangeItem(String user, String itemID) throws IOException {
         // Update total points earned for customer after he/she finished every order
         ArrayList<String[]> pointCost = ReadDataFromTXTFile.readAllLines("./src/prizeItems.txt");
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         Long newData = null;
-        Long newPoints = null;
+        Long newPoints;
+        Long pointWallet;
+        boolean completeExchange = false;
 
         // Read all line in prizeItems.txt file and take out pointCost
         for (int j = 1; j < pointCost.size(); j++) {
@@ -87,43 +91,73 @@ public class PointsSystem {
         }
 
         // Read all line in customers.txt file and put all data in arraylist
-        for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[0].equals(user)) {
-                /** If the system could find out the username in customers' file
+        for (int i = 1; i < database.size(); i++) {
+            pointWallet = Long.parseLong(database.get(i)[9]);
+            if (database.get(i)[0].equals(user) && pointWallet >= newData) {
+                /* If the system could find out the username in customers' file
                  * then the system update their information
                  */
-                newPoints = (Long.parseLong(database.get(i)[9]) - newData); // Deduct points
+                newPoints = pointWallet - newData; // Deduct points
                 database.get(i)[9] = (String.valueOf(newPoints));  // The customer's information is changed (assigning new points)
+
+                completeExchange = true;
+            } else if (database.get(i)[0].equals(user) && !(pointWallet >= newData)) {
+                System.out.println("You don't have enough points to exchange for that product!");
             }
         }
-        File file = new File("./src/customers.txt");
-        PrintWriter pw = new PrintWriter(file);
 
-        pw.write(""); // The file would erase all the data in customers' file
-        pw.close();
+        if (completeExchange) {
+            File file = new File("./src/customers.txt");
+            PrintWriter pw = new PrintWriter(file);
 
-        for (String[] obj : database) {
-            Write.rewriteFile("./src/customers.txt", "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending,Total Points",
-                    String.join(",", obj));
-            // This method would allow system to write all data including new data into the customers' file
+            pw.write(""); // The file would erase all the data in customers' file
+            pw.close();
+
+            for (String[] obj : database) {
+                Write.rewriteFile("./src/customers.txt", "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending,Total Points",
+                        String.join(",", obj));
+                // This method would allow system to write all data including new data into the customers' file
+            }
+
+            logExchange(user, itemID, String.valueOf(newData));
         }
-
-        logExchange(user, itemID, String.valueOf(newData));
     }
 
-    public void logExchange(String user, String itemID, String Cost) throws IOException {
+    public static void logExchange(String user, String itemID, String Cost) throws IOException {
         Order order = new Order();
         PrintWriter pw = new PrintWriter(new FileWriter("./src/prizeExHistory.txt", true));
+
+        // log Exchange date and assign status and pickup notifications
         String exchangeDate = new SimpleDateFormat("MM/dd/yyyy_HH:mm").format(Calendar.getInstance().getTime());
         String exchangeStatus = "SUCCESSFUL";
         String pickupStatus = "PENDING";
 
+        // Create oID for each exchange
         Random rd = new Random();
         int randNum = rd.nextInt(999);
-        String oID = order.oIDDataForValidate(String.format("0%03d", randNum));
+        String oID = order.oIDDataForValidate(String.format("O%03d", randNum));
 
         pw.println(oID + "," + user + "," + itemID + "," + Cost + ","
                 + exchangeDate + "," + exchangeStatus + "," + pickupStatus);
         pw.close();
+
+        PointsSystem.printConfirmation(oID);
+    }
+
+    public static void printConfirmation(String oID) throws IOException {
+        // Set up table
+        CreateTable table = new CreateTable();
+        table.setShowVerticalLines(true);
+        table.setHeaders("Order ID", "cID", "prizeID", "Point Cost", "Date Exchanged", "Exchanged Status", "Pickup Status");
+
+        // Get line in .txt file with parameter oID
+        String[] exchangeConfirmation = ReadDataFromTXTFile.readSpecificLine(oID, 0, "./src/prizeExHistory.txt", ",");
+
+        // Add content to table
+        table.addRow(exchangeConfirmation[0], exchangeConfirmation[1], exchangeConfirmation[2], exchangeConfirmation[3],
+                exchangeConfirmation[4], exchangeConfirmation[5], exchangeConfirmation[6]);
+
+        // Print out the table
+        table.print();
     }
 }

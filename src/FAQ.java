@@ -11,7 +11,7 @@ public class FAQ {
     private String question;
     private String answer;
 
-    // Constructor
+    //Constructor for FAQ class.
     public FAQ(int qaaID, String question, String answer) {
         this.qaaID = qaaID;
         this.question = question;
@@ -22,16 +22,19 @@ public class FAQ {
     public FAQ() {
     }
 
-//This method create FAQ text file.
+    //This method create FAQ text file to store questions and answers for the FAQ session.
 public static void createDefaultFAQ(int qaaID, String question, String answer) throws IOException {
+
     PrintWriter pw;
 
     pw = new PrintWriter(new FileWriter("./src/FAQ.txt", true));
 
-    pw.println(qaaID + "," + question + "," + answer);
+    pw.println(qnaID + "," + question + "," + answer);
     pw.close();
 }
 
+
+    //This method create a menu for customer to select their FAQ option.
 
     public static void searchQNA() throws IOException {
         //using method ReadDataFromTXTFile to read specific column which is QID in the text file
@@ -43,6 +46,7 @@ public static void createDefaultFAQ(int qaaID, String question, String answer) t
         //Using matchResult method to put all the data that this method get from specific columns to put into an arraylist
         ArrayList<String[]> matchResult = new ArrayList<>(getMatchResult(faq[0]).size());
 
+        boolean run = true;
 
         CreateTable table = new CreateTable();
 
@@ -59,31 +63,48 @@ public static void createDefaultFAQ(int qaaID, String question, String answer) t
                 matchResult = getMatchResult(faq[3]);
 
                 break;
+            case "4":
+                matchResult = getMatchResult(faq[4]);
+
+                break;
+            case "5":
+                matchResult = getMatchResult(faq[5]);
+
+                break;
+
+            case "6":
+                matchResult = getMatchResult(faq[6]);
+
+                break;
+
+            case "=":
+                run = false; // This will not print out msg for no message found and give option to exit
+                break;
 
             // for menu add 1 more but will be menu.something();
         }
         //set this condition for when user input a number that is out of choices range
-        if (matchResult.size() == 0) {
-            System.out.println("Sorry, there is no answer for this question");
-        }
-        //set this condition for when user input a number that is within choices range
-        if (matchResult.size() > 0) {
-            System.out.println("Available Question");
-            table.setShowVerticalLines(true);
-            table.setHeaders("Answer");
-
-            //using this for loop read and adding the next rows into a table from a specific column
-            for (int i = 0; i < matchResult.size(); i++) {
-                table.addRow(matchResult.get(i)[2]);
+        if (run) {
+            if (matchResult.size() == 0) {
+                System.out.println("Sorry, there is no answer for this question");
             }
-            table.print();
+            //set this condition for when user input a number that is within choices range
+            if (matchResult.size() > 0) {
+                System.out.println("Here is your answer:");
+                table.setShowVerticalLines(true);
+                table.setHeaders("Answer");
 
-            table.setHeaders(new String[0]);
-            table.setRows(new ArrayList<String[]>());
+                //using this for loop read and adding the next rows into a table from a specific column
+                for (int i = 0; i < matchResult.size(); i++) {
+                    table.addRow(matchResult.get(i)[2]);
+                }
+                table.print();
+
+                table.setHeaders(new String[0]);
+                table.setRows(new ArrayList<String[]>());
+            }
         }
-
     }
-
     public static ArrayList<String[]> getMatchResult(String data) throws IOException {
         // using Read method that will read a specific column which is QID form FAQ text file
         String[] faq = ReadDataFromTXTFile.readColString(0, "./src/FAQ.txt", ",");
@@ -111,10 +132,12 @@ public static void createDefaultFAQ(int qaaID, String question, String answer) t
 
         //read data from text file
         String[] readQuestionList = ReadDataFromTXTFile.readColString(1, "./src/FAQ.txt", ",");
-//        ArrayList<String[]> questionList = new ArrayList<>();
         for (int i = 1; i < readQuestionList.length; i++) {
             System.out.println(readQuestionList[i]);
         }
+        System.out.println("=.Exit");
+//        System.out.println(" ");
+
         FAQ.searchQNA();
     }
 

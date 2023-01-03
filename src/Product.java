@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 
 public class Product {
     // Attributes
-//    ArrayList<String> categories = new ArrayList<>(Arrays.asList(ReadDataFromTXTFile.readColString(3, "./src/items.txt", ",")));
+    // ArrayList<String> categories = new ArrayList<>(Arrays.asList(ReadDataFromTXTFile.readColString(3, "./src/items.txt", ",")));
     private String ID;
     private String title;
     private Long price;
@@ -209,9 +209,16 @@ public class Product {
     }
 
     /* This method will help user to search by category */
-    public void searchByCategory(String category) throws IOException {
-        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
-        ArrayList<String[]> categories = new ArrayList<>();
+
+  public void searchByCategory(String category) throws IOException{
+  
+      //transforming user input to the right format.
+      String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+      
+      //create a empty Arraylist to store data after searching.
+      ArrayList<String[]> categories = new ArrayList<>();
+      
+      //temporary database to store data.
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[3].equals(capital))
@@ -229,14 +236,6 @@ public class Product {
         createTable.print();
     }
 
-//    public ArrayList<String> getCategories() {
-//        return categories;
-//    }
-//
-//    public void setCategories(ArrayList<String> categories) {
-//        this.categories = categories;
-//    }
-
     public String getID() {
         return ID;
     }
@@ -248,10 +247,6 @@ public class Product {
     public String getTitle() {
         return title;
     }
-
-//    public void setTitle(String title) {
-//        this.title = title;
-//    }
 
     public Long getPrice() {
         return price;

@@ -133,7 +133,8 @@ public class CustomerMenu {
 
         Scanner scanner = new Scanner(System.in);
         String[] obj = ReadDataFromTXTFile.readSpecificLine(username, 6, "./src/customers.txt", ",");
-        Customer member = new Customer(obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6], obj[7], Long.parseLong(obj[8]));
+        Customer member = new Customer(obj[0], obj[1], obj[2], obj[3], obj[4], obj[5], obj[6], obj[7], Long.parseLong(obj[8]), Long.parseLong(obj[9]));
+        CustomerMenu customerMenu = new CustomerMenu();
         Product product = new Product();
         Cart cart = new Cart();
         ArrayList<String[]> cartList = cart.cartList(member);
@@ -216,54 +217,6 @@ public class CustomerMenu {
                                     this.viewHomepage(username);
                                 case "1":
                                     createOrder(member);
-//                                    Random rd = new Random();
-//                                    int i = rd.nextInt(999);
-//                                    String oID = order.oIDDataForValidate(String.format("O%03d", i));
-//                                    order.createNewOrder(member, product1, oID, quantity);
-//                                    member.searchOrder(oID);
-//                                    order.getTotalPaymentEachOrderId(member, oID);
-//                                    ArrayList<String[]> discountCode = discount.discountCodeList(member);
-//                                    if (!(discountCode.size() == 0)) {
-//                                        System.out.println("\n================================================= USE DISCOUNT VOUCHER ? =================================================");
-////                                        System.out.println("You have discount voucher, do you want to use it?");
-//                                        System.out.println("1. Yes");
-//                                        System.out.println("2. No");
-//                                        String discountOption = UserInput.rawInput();
-//                                        String discountCodeCustomer = new String();
-//                                        switch (discountOption) {
-//                                            case "1":
-//                                                discount.displayCustomerDiscountCode(member);
-//                                                String choiceOrder1 = UserInput.rawInput();
-//                                                ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
-//                                                for (int m = 0; m < discountCode.size(); m++) {
-//                                                    if (m == (Integer.parseInt(choiceOrder1)-1)) {
-//                                                        discountCodeCustomer = discountCode.get(m)[1];
-//                                                        break;
-//                                                    }
-//                                                }
-//                                                order.getTotalPaymentAfterApplyDiscountCode(oID, discountCodeCustomer, member);
-//                                                this.viewHomepage(username);
-//                                            case "2":
-//                                                String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
-//                                                        "./src/billingHistory.txt", ",");
-//                                                Long totalPayment = Long.parseLong(orderInfo[2]);
-//                                                discount.giveDiscountCode(member, totalPayment);
-//                                                discount.displayCustomerDiscountCode(member);
-//                                                TimeUnit.SECONDS.sleep(1);
-//                                                this.viewHomepage(username);
-//                                            default:
-//                                                System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
-//                                                TimeUnit.SECONDS.sleep(1);
-//                                                this.viewHomepage(username);
-//                                        }
-//                                    }
-//                                    else {
-//                                        String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
-//                                                "./src/billingHistory.txt", ",");
-//                                        Long totalPayment = Long.parseLong(orderInfo[2]);
-//                                        discount.giveDiscountCode(member, totalPayment);
-//                                        this.viewHomepage(username);
-//                                    }
                                 default:
                                     System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                                     TimeUnit.SECONDS.sleep(1);
@@ -285,8 +238,7 @@ public class CustomerMenu {
 
                     String continueShopping = UserInput.rawInput();
                     switch (continueShopping) {
-//                        case "3":
-//                            customerMenu.viewHomepage(username);
+
                         case "1":
                             product.getProductHaveId();
                             String choiceOrder = UserInput.rawInput();
@@ -329,116 +281,21 @@ public class CustomerMenu {
                                         cart.deleteItemInCart("./src/customerCart.txt", member.getcID(), product2);
                                         cart.getCustomerCart(member);
                                         this.viewHomepage(username);
+                                        
                                     case "2":
                                         createOrder(member);
-//                                        Random rd = new Random();
-//                                        int i = rd.nextInt(999);
-//                                        String oID = order.oIDDataForValidate(String.format("O%03d", i));
-//                                        for (int a = 0; a < cartList.size(); a++) {
-//                                            String[] productInfo1 = new String[3];
-//                                            productInfo1 = ReadDataFromTXTFile.readSpecificLine(cartList.get(a)[1], 1, "./src/items.txt", ",");
-//                                            Product product3 = new Product(productInfo1[0], productInfo1[1], Long.parseLong(productInfo1[2]), productInfo1[3]);
-//                                            order.createNewOrder(member, product3, oID, Integer.parseInt(cartList.get(a)[3]));
-//                                        }
-//                                        order.getTotalPaymentEachOrderId(member, oID);
-//                                        ArrayList<String[]> discountCode = discount.discountCodeList(member);
-//                                        if ((discountCode.size() == 0)) {
-//                                            System.out.println("You have discount voucher, do you want to use it?");
-//                                            System.out.println("1. Yes");
-//                                            System.out.println("2. No");
-//                                            String discountOption = UserInput.rawInput();
-//                                            String discountCodeCustomer = new String();
-//                                            switch (discountOption) {
-//                                                case "1":
-//                                                    discount.displayCustomerDiscountCode(member);
-//                                                    String choiceOrder1 = UserInput.rawInput();
-//                                                    for (int m = 0; m < discountCode.size(); m++) {
-//                                                        if (m == Integer.parseInt(choiceOrder1) - 1) {
-//                                                            discountCodeCustomer = discountCode.get(m)[1];
-//                                                        }
-//                                                    }
-//                                                    order.getTotalPaymentAfterApplyDiscountCode(oID, discountCodeCustomer, member);
-//                                                    TimeUnit.SECONDS.sleep(1);
-//                                                    this.viewHomepage(username);
-//                                                case "2":
-//                                                    String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
-//                                                            "./src/billingHistory.txt", ",");
-//                                                    Long totalPayment = Long.parseLong(orderInfo[2]);
-//                                                    discount.giveDiscountCode(member, totalPayment);
-//                                                    discount.displayCustomerDiscountCode(member);
-//                                                    TimeUnit.SECONDS.sleep(1);
-//                                                    this.viewHomepage(username);
-//                                                default:
-//                                                    System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
-//                                                    TimeUnit.SECONDS.sleep(1);
-//                                                    this.viewHomepage(username);
-//                                            }
-//                                        } else {
-//                                            String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
-//                                                    "./src/billingHistory.txt", ",");
-//                                            Long totalPayment = Long.parseLong(orderInfo[2]);
-//                                            System.out.println(totalPayment);
-//                                            discount.giveDiscountCode(member, totalPayment);
-//                                            this.viewHomepage(username);
-//                                        }
+                                        
                                     default:
-                                        System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
+                                        System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");        
                                         TimeUnit.SECONDS.sleep(1);
                                         this.viewHomepage(username);
                                 }
+
                             }
                         {
                             createOrder(member);
-//                            Random rd = new Random();
-//                            int i = rd.nextInt(999);
-//                            String oID = order.oIDDataForValidate(String.format("O%03d", i));
-//                            for (int a = 0; a < cartList.size(); a++) {
-//                                String[] productInfo1 = new String[3];
-//                                productInfo1 = ReadDataFromTXTFile.readSpecificLine(cartList.get(a)[1], 1, "./src/items.txt", ",");
-//                                Product product3 = new Product(productInfo1[0], productInfo1[1], Long.parseLong(productInfo1[2]), productInfo1[3]);
-//                                order.createNewOrder(member, product3, oID, Integer.parseInt(cartList.get(a)[3]));
-//                            }
-//                            order.getTotalPaymentEachOrderId(member, oID);
-//                            ArrayList<String[]> discountCode = discount.discountCodeList(member);
-//                            if (!(discountCode.size() == 0)) {
-//                                System.out.println("You have discount voucher, do you want to use it?");
-//                                System.out.println("1. Yes");
-//                                System.out.println("2. No");
-//                                String discountOption = UserInput.rawInput();
-//                                String discountCodeCustomer = new String();
-//                                switch (discountOption) {
-//                                    case "1":
-//                                        discount.displayCustomerDiscountCode(member);
-//                                        String choiceOrder1 = UserInput.rawInput();
-//                                        for (int m = 0; m < discountCode.size(); m++) {
-//                                            if (m == Integer.parseInt(choiceOrder1) - 1) {
-//                                                discountCodeCustomer = discountCode.get(m)[1];
-//                                            }
-//                                        }
-//                                        order.getTotalPaymentAfterApplyDiscountCode(oID, discountCodeCustomer, member);
-//                                        TimeUnit.SECONDS.sleep(1);
-//                                        this.viewHomepage(username);
-//                                    case "2":
-//                                        String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
-//                                                "./src/billingHistory.txt", ",");
-//                                        Long totalPayment = Long.parseLong(orderInfo[2]);
-//                                        discount.giveDiscountCode(member, totalPayment);
-//                                        discount.displayCustomerDiscountCode(member);
-//                                        TimeUnit.SECONDS.sleep(1);
-//                                        this.viewHomepage(username);
-//                                    default:
-//                                        System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
-//                                        TimeUnit.SECONDS.sleep(1);
-//                                        this.viewHomepage(username);
-//                                }
-//                            } else {
-//                                String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
-//                                        "./src/billingHistory.txt", ",");
-//                                Long totalPayment = Long.parseLong(orderInfo[2]);
-//                                discount.giveDiscountCode(member, totalPayment);
-//                                this.viewHomepage(username);
-//                            }
                         }
+                        
                         case "3":
                             this.viewHomepage(username);
                         default:
@@ -507,7 +364,37 @@ public class CustomerMenu {
                 TimeUnit.SECONDS.sleep(1);
                 this.viewHomepage(username);
             case "9":
+                PointsSystem.viewPrizes();
+                String userChoice = UserInput.rawInput();
+                ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/prizeItems.txt");
+                String[] prizeInfo = new String[3];
+                boolean displayMsg = false;
+
+                for (int i = 0; i < productList.size(); i++) {
+                    if (i == Integer.parseInt(userChoice)) {
+                        prizeInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1],
+                                1, "./src/prizeItems.txt", ",");
+                        displayMsg = true;
+                    }
+                }
+                if (displayMsg) {
+                    PointsSystem.exchangeItem(username, String.valueOf(prizeInfo[0]));
+                } else {
+                    System.out.println("Invalid input please try again later, you will now return to the main menu.");
+                    customerMenu.viewHomepage(username);
+                }
+
+
             case "10":
+                FAQ.FAQPrint();
+                System.out.print("\n" + "Press '=' to confirm exit or 1 to display the Questions again" + "\n");
+                String exit = UserInput.rawInput();
+                if (exit.equals("=")) {
+                    customerMenu.viewHomepage(username);
+                } else {
+                    System.out.println(" ");
+                    FAQ.FAQPrint();
+                }
             case "11":
                 if (!(cartList.size() == 0)) {
                     System.out.println("\n================================================= WARNING =================================================");
@@ -545,48 +432,7 @@ public class CustomerMenu {
                                         }
                                     case "2":
                                         createOrder(member);
-//                                    Random rd = new Random();
-//                                    int i = rd.nextInt(999);
-//                                    String oID = order.oIDDataForValidate(String.format("O%03d", i));
-//                                    for (int a = 0; a < cartList.size(); a++) {
-//                                        String[] productInfo1 = new String[3];
-//                                        productInfo1 = ReadDataFromTXTFile.readSpecificLine(cartList.get(a)[1], 1, "./src/items.txt", ",");
-//                                        Product product2 = new Product(productInfo1[0], productInfo1[1], Long.parseLong(productInfo1[2]), productInfo1[3]);
-//                                        order.createNewOrder(member, product2, oID, Integer.parseInt(cartList.get(a)[3]));
-//                                    }
-//                                    order.getTotalPaymentEachOrderId(member, oID);
-//                                    ArrayList<String[]> discountCode = discount.discountCodeList(member);
-//                                    if (!(discountCode.size() == 0)) {
-//                                        System.out.println("You have discount voucher, do you want to use it?");
-//                                        System.out.println("1. Yes");
-//                                        System.out.println("2. No");
-//                                        String discountOption = UserInput.rawInput();
-//                                        String discountCodeCustomer = new String();
-//                                        switch (discountOption) {
-//                                            case "1":
-//                                                discount.displayCustomerDiscountCode(member);
-//                                                String choiceOrder1 = UserInput.rawInput();
-//                                                for (int m = 0; m < discountCode.size(); m++) {
-//                                                    if (m == Integer.parseInt(choiceOrder1)) {
-//                                                        discountCodeCustomer = discountCode.get(m)[1];
-//                                                    }
-//                                                }
-//                                                order.getTotalPaymentAfterApplyDiscountCode(oID, discountCodeCustomer, member);
-//                                                this.viewHomepage(username);
-//                                            case "2":
-//                                                String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
-//                                                        "./src/billingHistory.txt", ",");
-//                                                Long totalPayment = Long.parseLong(orderInfo[2]);
-//                                                discount.giveDiscountCode(member, totalPayment);
-//                                                discount.displayCustomerDiscountCode(member);
-//                                                TimeUnit.SECONDS.sleep(1);
-//                                                this.viewHomepage(username);
-//                                            default:
-//                                                System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
-//                                                TimeUnit.SECONDS.sleep(1);
-//                                                this.viewHomepage(username);
-//                                        }
-//                                    }
+
                                     default:
                                         System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                                         TimeUnit.SECONDS.sleep(1);
