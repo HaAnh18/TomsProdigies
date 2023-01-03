@@ -152,6 +152,12 @@ public class Product {
         return pricesList;
     }
 
+    public static void printPriceRange() {
+        System.out.println("1. Below 25 million VND.");
+        System.out.println("2. 25 million VND to 50 million VND.");
+        System.out.println("3. 50 million VND to 75 million VND.");
+        System.out.println("4. 75 million VND to 100 million VND.");
+    }
 
     public void findItemByPriceRange() throws IOException {
         ArrayList<String[]> items = ReadDataFromTXTFile.readAllLines("./src/items.txt");

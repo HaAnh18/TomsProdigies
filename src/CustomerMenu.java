@@ -169,6 +169,7 @@ public class CustomerMenu {
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
                     case "2":
+                        Product.printPriceRange();
                         product.findItemByPriceRange();
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
