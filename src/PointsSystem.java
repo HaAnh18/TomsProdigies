@@ -26,7 +26,7 @@ public class PointsSystem {
 
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(cID)) {
-                /** If the system could find out the username in customers' file
+                /* If the system could find out the username in customers' file
                  * then the system update their information
                  */
                 long appendPoints = (Long.parseLong(database.get(i)[9]) + newPoints);

@@ -16,7 +16,6 @@ public class Discount {
         int i = rd.nextInt(999);
         String code = validateDiscountCode(String.format("%03d", i));
         String cID = customer.getcID();
-        String discountCode = new String();
         Long discountAmount = (long) 0;
         ArrayList<String[]> discountType = ReadDataFromTXTFile.readAllLines("./src/discountType.txt");
         if (totalPayment > Long.parseLong(discountType.get(1)[1]) && totalPayment < Long.parseLong(discountType.get(2)[1])) {
@@ -69,8 +68,7 @@ public class Discount {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(customer.getcID()))
-                /* If the system could find out the customer's ID in ordersHistory's file
-                 */ {
+            {
                 discountCode.add(database.get(i));
             }
         }

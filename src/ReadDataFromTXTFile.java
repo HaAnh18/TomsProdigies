@@ -21,6 +21,7 @@ public class ReadDataFromTXTFile {
                 colData.add(data[col]);
             }
         } catch (Exception e) {
+            throw new RuntimeException();
         }
         return colData.toArray(new String[0]);
     }
