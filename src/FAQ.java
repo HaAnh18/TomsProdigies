@@ -16,8 +16,6 @@ public class FAQ {
         this.answer = answer;
     }
 
-
-
     //This method create a menu for customer to select their FAQ option.
     public static void searchQNA() throws IOException {
         //using method ReadDataFromTXTFile to read specific column which is QID in the text file
