@@ -59,13 +59,30 @@ public class CustomerMenu {
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
             case "4":
+                // Searching product by category or price range
                 System.out.println("\n================================================= SEARCHING PRODUCT =================================================");
                 System.out.println("1. Search by category");
                 System.out.println("2. Search by price range");
-                String choice = UserInput.rawInput();
-                switch (choice) {
+                System.out.println("3. Back to homepage");
+                String sort = UserInput.rawInput();
+                switch (sort) {
                     case "1":
+                        // Ask customer to enter a category and check if it has product in that category or not
+                        System.out.print("Enter category: ");
+                        String category = scanner.nextLine();
+                        product.searchByCategory(category);
+                        TimeUnit.SECONDS.sleep(1);
+                        this.view();
                     case "2":
+                        product.findItemByPriceRange();
+                        TimeUnit.SECONDS.sleep(1);
+                        this.view();
+                    case "3":
+                        this.view();
+                    default:
+                        System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
+                        TimeUnit.SECONDS.sleep(1);
+                        this.view();
                 }
             case "5":
                 // Ask customer whether he/she wants to sort the product's price ascending or descending

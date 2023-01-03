@@ -5,7 +5,6 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -25,7 +24,9 @@ public class Admin extends Account {
 //        return adminUsername;
 //    }
 
-    public static boolean dateValidate(String date) {
+    public static boolean dateValidate(String date)
+    // Validate the date that customer input
+    {
         String[] dateComponent = date.split("/");
         String month = dateComponent[0].replaceFirst("^0*", "");
         String day = dateComponent[1].replaceFirst("^0*", "");
@@ -54,9 +55,8 @@ public class Admin extends Account {
     {
         String hashPassword = this.hashing(password); // Hash the input password
         if (username.equals("admin") && hashPassword.equals("751cb3f4aa17c36186f4856c8982bf27"))
-        /**
-         * If the username and hash password are correct
-         */ {
+        // If the username and password after hashing are correct
+        {
             return true;
         }
         return false;
@@ -74,6 +74,7 @@ public class Admin extends Account {
             String[] data; // Create an array to store one customer's information
             String line = fileScanner.nextLine();
             StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
+
             // Separate the line's information by comma
             String ID = stringTokenizer.nextToken();
             String name = stringTokenizer.nextToken();
@@ -84,14 +85,15 @@ public class Admin extends Account {
             String username = stringTokenizer.nextToken();
             String password = stringTokenizer.nextToken();
             String totalSpending = String.valueOf(stringTokenizer.nextToken());
-            data = new String[]{ID, name, username, email, address, phone, membership,totalSpending};
+            data = new String[]{ID, name, username, email, address, phone, membership, totalSpending};
             // Add one customer's information to an array
             user.add(data); // Add one customer's information in an arraylist
         }
 
         CreateTable createTable = new CreateTable(); // Create table to display customers' information
         createTable.setShowVerticalLines(true);
-        createTable.setHeaders("CID", "NAME", "USERNAME", "EMAIL", "ADDRESS", "PHONE", "MEMBERSHIP", "TOTAL SPENDING"); // Set header for the table
+        createTable.setHeaders("CID", "NAME", "USERNAME", "EMAIL", "ADDRESS", "PHONE", "MEMBERSHIP", "TOTAL SPENDING");
+        // Set header for the table
 
         for (int i = 1; i < user.size(); i++)
         // This for loop will add every single customer's information in the table to display
@@ -166,12 +168,12 @@ public class Admin extends Account {
     // This method allow admin to modify a product's price that had existed in items' file
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
-        for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[0].equals(pID))
+        for (String[] strings : database) {
+            if (strings[0].equals(pID))
                 /* If the system could find out the pID in items' file
                  * then the system allow admin to update the product's price
                  */ {
-                database.get(i)[2] = newData; // Modify the product's price
+                strings[2] = newData; // Modify the product's price
             }
         }
         File file = new File(filepath);
@@ -180,9 +182,8 @@ public class Admin extends Account {
         pw.write(""); // The file would erase all the data in items' file
         pw.close();
 
-        for (int i = 0; i < database.size(); i++) {
-            System.out.println(Arrays.toString(database.get(i)));
-            Write.rewriteFile(filepath, "#ID,Title, Price, Category", String.join(",", database.get(i)));
+        for (String[] strings : database) {
+            Write.rewriteFile(filepath, "#ID,Title, Price, Category", String.join(",", strings));
             // This method would allow system to write all data including new data into the items' file
         }
     }
@@ -191,12 +192,12 @@ public class Admin extends Account {
     // This method allow admin to modify a delivery status of order that had existed in items' file
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
-        for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[0].equals(oID))
+        for (String[] strings : database) {
+            if (strings[0].equals(oID))
                 /* If the system could find out the oID in ordersHistory's file
                  * then the system allow admin to update the order's delivery status
                  */ {
-                database.get(i)[8] = newData; // Modify the order's delivery status
+                strings[8] = newData; // Modify the order's delivery status
             }
         }
         File file = new File(filepath);
@@ -205,8 +206,8 @@ public class Admin extends Account {
         pw.write(""); // The file would erase all the data in items' file
         pw.close();
 
-        for (int i = 0; i < database.size(); i++) {
-            Write.rewriteFile(filepath, "#OID,CID,PID,Membership,Total payment,Timestamp,Total spending,Order status,Delivery status", String.join(",", database.get(i)));
+        for (String[] strings : database) {
+            Write.rewriteFile(filepath, "#OID,CID,PID,Membership,Payment price,Timestamp,Total spending,Order status,Delivery status", String.join(",", strings));
             // This method would allow system to write all data including new data into the items' file
         }
     }
@@ -263,9 +264,9 @@ public class Admin extends Account {
 
 
         // Loop through all the categories
-        for (int i = 0; i < categoryList.size(); i++) {
-            if (!categoryList.get(i)[1].equals(delCategory)) {
-                newCategoryList.add(categoryList.get(i)); // Add all categories except the deleted category
+        for (String[] strings : categoryList) {
+            if (!strings[1].equals(delCategory)) {
+                newCategoryList.add(strings); // Add all categories except the deleted category
             }
         }
         PrintWriter pw = new PrintWriter("./src/categories.txt");
@@ -334,22 +335,22 @@ public class Admin extends Account {
         CreateTable createTable = new CreateTable();
 
         // Get total spending column
-        String[] readSpendings = ReadDataFromTXTFile.readColString(8, "./src/customers.txt", ",");
+        String[] readSpending = ReadDataFromTXTFile.readColString(8, "./src/customers.txt", ",");
 
 
-        // Create an arraylist of all the total spendings
-        ArrayList<Long> spendingList = new ArrayList<>(readSpendings.length);
+        // Create an arraylist of all the total spending
+        ArrayList<Long> spendingList = new ArrayList<>(readSpending.length);
 
         // Creating a new list to utilise the sort method
-        for (int i = 1; i < readSpendings.length; i++) {
-            spendingList.add(Long.parseLong(readSpendings[i]));
+        for (int i = 1; i < readSpending.length; i++) {
+            spendingList.add(Long.parseLong(readSpending[i]));
         }
         // Sort the product from min to max
         SortProduct.sortDescending(spendingList);
 
         // Creating and printing out the information
         createTable.setShowVerticalLines(true);
-        createTable.setHeaders("CID", "NAME", "USERNAME", "EMAIL", "ADDRESS", "PHONE", "MEMBERSHIP",  "TOTAL SPENDING");
+        createTable.setHeaders("CID", "NAME", "USERNAME", "EMAIL", "ADDRESS", "PHONE", "MEMBERSHIP", "TOTAL SPENDING");
 
         // Get the first person on the list (Max spenders as the list have been sorted to Ascend from Max)
         String[] mostSpender = ReadDataFromTXTFile.readSpecificLine(Long.toString(spendingList.get(0)), 8, "./src/customers.txt", ",");
@@ -371,14 +372,14 @@ public class Admin extends Account {
         /* This method will calculate the revenue*/
 
         long sum = 0;
-        for (int i = 0; i < moneyList.size(); i++) {
-            sum += moneyList.get(i);
+        for (Long aLong : moneyList) {
+            sum += aLong;
         }
         CreateTable revenueTable = new CreateTable();
         revenueTable.setShowVerticalLines(true);
         revenueTable.setHeaders("TOTAL REVENUE");
         revenueTable.addRow(String.valueOf(sum));
-                revenueTable.print();
+        revenueTable.print();
     }
 
     /* This method allow admin to calculate daily revenue base on the timestamp of the purchase.*/

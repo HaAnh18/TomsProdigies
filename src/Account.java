@@ -21,8 +21,6 @@ public class Account {
     private Long totalPoint;
 
     // Constructor
-
-
     public Account(String cID, String name, String email, String address, String phone, String customerType, String userName, String password, Long totalSpending, Long totalPoint) {
         this.cID = cID;
         this.name = name;
@@ -303,22 +301,22 @@ public class Account {
     // Hashing the customer's password
     {
         try {
-            /* MessageDigest instance for MD5. */
+            // MessageDigest instance for MD5.
             MessageDigest m = MessageDigest.getInstance("MD5");
 
-            /* Add plain-text password bytes to digest using MD5 update() method. */
+            // Add plain-text password bytes to digest using MD5 update() method.
             m.update(password.getBytes());
 
-            /* Convert the hash value into bytes */
+            // Convert the hash value into bytes
             byte[] bytes = m.digest();
 
-            /* The bytes array has bytes in decimal form. Converting it into hexadecimal format. */
+            // The bytes array has bytes in decimal form. Converting it into hexadecimal format.
             StringBuilder s = new StringBuilder();
             for (int i = 0; i < bytes.length; i++) {
                 s.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
 
-            /* Complete hashed password in hexadecimal format */
+            // Complete hashed password in hexadecimal format
             return s.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -358,12 +356,12 @@ public class Account {
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
-        for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[6].equals(userName) && validateEmail(newData))
+        for (String[] strings : database) {
+            if (strings[6].equals(userName) && validateEmail(newData))
                 /* If the system could find out the username in customers' file and the new email is validated
                  * then the system allow customer to update their information
                  */ {
-                database.get(i)[2] = newData; // The customer's information is changed in arraylist
+                strings[2] = newData; // The customer's information is changed in arraylist
             }
         }
         File file = new File(filepath);
@@ -371,8 +369,6 @@ public class Account {
 
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
-
-//        ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : database) {
             Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
@@ -386,12 +382,12 @@ public class Account {
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
-        for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[6].equals(userName) && validateAddress(newData))
-            /** If the system could find out the username in customers' file and the new address is validated
-             * then the system allow customer to update their information
-             */ {
-                database.get(i)[3] = newData; // The customer's information is changed in arraylist
+        for (String[] strings : database) {
+            if (strings[6].equals(userName) && validateAddress(newData))
+                /* If the system could find out the username in customers' file and the new address is validated
+                 * then the system allow customer to update their information
+                 */ {
+                strings[3] = newData; // The customer's information is changed in arraylist
             }
         }
         File file = new File(filepath);
@@ -400,7 +396,6 @@ public class Account {
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
-//        ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : database) {
             Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
@@ -414,12 +409,12 @@ public class Account {
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
-        for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[6].equals(userName) && validatePhoneNumber(newData))
-            /** If the system could find out the username in customers' file and the new phone number is validated
-             * then the system allow customer to update their information
-             */ {
-                database.get(i)[4] = newData; // The customer's information is changed
+        for (String[] strings : database) {
+            if (strings[6].equals(userName) && validatePhoneNumber(newData))
+                /* If the system could find out the username in customers' file and the new phone number is validated
+                 * then the system allow customer to update their information
+                 */ {
+                strings[4] = newData; // The customer's information is changed
             }
         }
         File file = new File(filepath);
@@ -442,12 +437,12 @@ public class Account {
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
-        for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[6].equals(userName) && validatePassword(newData))
-            /** If the system could find out the username in customers' file and the new password is validated
-             * then the system allow customer to update their information
-             */ {
-                database.get(i)[7] = newData; // The customer's information is changed
+        for (String[] strings : database) {
+            if (strings[6].equals(userName) && validatePassword(newData))
+                /* If the system could find out the username in customers' file and the new password is validated
+                 * then the system allow customer to update their information
+                 */ {
+                strings[7] = this.hashing(newData); // The customer's information is changed
             }
         }
         File file = new File(filepath);
@@ -455,8 +450,6 @@ public class Account {
 
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
-
-//        ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : database) {
             Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
@@ -483,12 +476,12 @@ public class Account {
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
-        for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[6].equals(userName))
-            /** If the system could find out the username in customers' file and the new password is validated
-             * then the system allow customer to update their information
-             */ {
-                database.get(i)[8] = newData; // The customer's information is changed
+        for (String[] strings : database) {
+            if (strings[6].equals(userName))
+                /* If the system could find out the username in customers' file and the new password is validated
+                 * then the system allow customer to update their information
+                 */ {
+                strings[8] = newData; // The customer's information is changed
             }
         }
         File file = new File(filepath);
@@ -497,7 +490,6 @@ public class Account {
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
-//        ArrayList<String[]> newDatabase = database;
 
         for (String[] obj : database) {
             Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
@@ -515,23 +507,23 @@ public class Account {
         // Read all line in customers.txt file and put all data in arraylist
 
         // Loop through all customers
-        for (int i = 0; i < database.size(); i++) {
+        for (String[] strings : database) {
             // Find corresponding user
-            if (database.get(i)[6].equals(userName)) {
-                long compareNum = Long.parseLong(database.get(i)[8]);
+            if (strings[6].equals(userName)) {
+                long compareNum = Long.parseLong(strings[8]);
 
                 // Membership requirements and newMembership variable use to update the membership
                 if (5000000 < compareNum && compareNum < 10000000) {
                     String newMembership = "Silver";
-                    database.get(i)[5] = newMembership;
+                    strings[5] = newMembership;
                     setCustomerType(newMembership);
                 } else if (10000000 < compareNum && compareNum < 25000000) {
                     String newMembership = "Gold";
-                    database.get(i)[5] = newMembership;
+                    strings[5] = newMembership;
                     setCustomerType(newMembership);
                 } else if (25000000 < compareNum) {
                     String newMembership = "Platinum";
-                    database.get(i)[5] = newMembership;
+                    strings[5] = newMembership;
                     setCustomerType(newMembership);
                 }
             }
@@ -543,7 +535,6 @@ public class Account {
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
-//        ArrayList<String[]> newDatabase = database;
 
         // Rewrite the whole file with new updated information
         for (String[] obj : database) {
@@ -553,7 +544,9 @@ public class Account {
         }
     }
 
-    public void searchOrder(String oId) {
+    public void searchOrder(String oId)
+    // Searching the order by using order ID
+    {
         ArrayList<String[]> orders = new ArrayList<>(); // Create a new arraylist to store order information
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
