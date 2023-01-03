@@ -451,6 +451,15 @@ public class CustomerMenu {
 
 
             case "10":
+                FAQ.FAQPrint();
+                System.out.print("\n" + "Press '=' to confirm exit or 1 to display the Questions again" + "\n");
+                String exit = UserInput.rawInput();
+                if (exit.equals("=")) {
+                    customerMenu.viewHomepage(username);
+                } else {
+                    System.out.println(" ");
+                    FAQ.FAQPrint();
+                }
             case "11":
                 if (!(cartList.size() == 0)) {
                     System.out.println("You still have item(s) in your cart! Do you want to create order or log out");
