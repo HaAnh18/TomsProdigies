@@ -49,7 +49,7 @@ public class PointsSystem {
     public static void viewPrizes() throws IOException {
         ArrayList<String[]> prizeItems = new ArrayList<>();
         Scanner fileProducts = new Scanner(new File("./src/prizeItems.txt"));
-        while (fileProducts.hasNext()) {
+        while (fileProducts.hasNext()) { // Read all lines in .txt file
             String[] productData;
             String line = fileProducts.nextLine();
             StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
@@ -57,14 +57,16 @@ public class PointsSystem {
             String title = stringTokenizer.nextToken();
             String price = stringTokenizer.nextToken();
             String category = stringTokenizer.nextToken();
-            productData = new String[]{ID, title, price, category};
-            prizeItems.add(productData);
+            productData = new String[]{ID, title, price, category}; // Put all split String into an Array
+            prizeItems.add(productData); // Add that Array into an ArrayList
         }
 
+        // Set up table
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("OPTION", "ID", "TITLE", "POINTS", "CATEGORY");
 
+        // Add all lines into table with options
         for (int i = 1; i < prizeItems.size(); i++) {
             createTable.addRow(String.valueOf(i), prizeItems.get(i)[0], prizeItems.get(i)[1], prizeItems.get(i)[2], prizeItems.get(i)[3]);
         }
@@ -92,7 +94,7 @@ public class PointsSystem {
         for (int i = 1; i < database.size(); i++) {
             pointWallet = Long.parseLong(database.get(i)[9]);
             if (database.get(i)[0].equals(user) && pointWallet >= newData) {
-                /** If the system could find out the username in customers' file
+                /* If the system could find out the username in customers' file
                  * then the system update their information
                  */
                 newPoints = pointWallet - newData; // Deduct points
@@ -124,10 +126,13 @@ public class PointsSystem {
     public static void logExchange(String user, String itemID, String Cost) throws IOException {
         Order order = new Order();
         PrintWriter pw = new PrintWriter(new FileWriter("./src/prizeExHistory.txt", true));
+
+        // log Exchange date and assign status and pickup notifications
         String exchangeDate = new SimpleDateFormat("MM/dd/yyyy_HH:mm").format(Calendar.getInstance().getTime());
         String exchangeStatus = "SUCCESSFUL";
         String pickupStatus = "PENDING";
 
+        // Create oID for each exchange
         Random rd = new Random();
         int randNum = rd.nextInt(999);
         String oID = order.oIDDataForValidate(String.format("O%03d", randNum));
