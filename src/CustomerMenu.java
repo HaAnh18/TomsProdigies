@@ -63,7 +63,8 @@ public class CustomerMenu {
                 System.out.println("\n================================================= SEARCHING PRODUCT =================================================");
                 System.out.println("1. Search by category");
                 System.out.println("2. Search by price range");
-                System.out.println("3. Back to homepage");
+                System.out.println("3. Search by category and price range");
+                System.out.println("4. Back to homepage");
                 String sort = UserInput.rawInput();
                 switch (sort) {
                     case "1":
@@ -78,6 +79,12 @@ public class CustomerMenu {
                         TimeUnit.SECONDS.sleep(1);
                         this.view();
                     case "3":
+                        System.out.println("Enter category: ");
+                        category = scanner.nextLine();
+                        product.searchCategoryByPriceRange(category);
+                        TimeUnit.SECONDS.sleep(1);
+                        this.view();
+                    case "4":
                         this.view();
                     default:
                         System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
@@ -101,7 +108,6 @@ public class CustomerMenu {
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
             case "8":
-
                 customerMenu.view();
             case "9":
                 customerMenu.view();
@@ -176,7 +182,8 @@ public class CustomerMenu {
                 System.out.println("\n================================================= SEARCHING PRODUCT =================================================");
                 System.out.println("1. Search by category");
                 System.out.println("2. Search by price range");
-                System.out.println("3. Back to homepage");
+                System.out.println("3. Search by category and price range");
+                System.out.println("4. Back to homepage");
                 String sort = UserInput.rawInput();
                 switch (sort) {
                     case "1":
@@ -191,6 +198,12 @@ public class CustomerMenu {
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
                     case "3":
+                        System.out.println("Enter category: ");
+                        category = scanner.nextLine();
+                        product.searchCategoryByPriceRange(category);
+                        TimeUnit.SECONDS.sleep(1);
+                        this.view();
+                    case "4":
                         this.viewHomepage(username);
                     default:
                         System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");

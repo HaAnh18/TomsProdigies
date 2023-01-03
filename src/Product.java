@@ -159,7 +159,7 @@ public class Product {
         System.out.println("4. 75 million VND to 100 million VND.");
     }
 
-    public static void findItemByPriceRange() throws IOException {
+    public void findItemByPriceRange() throws IOException {
         ArrayList<String[]> items = ReadDataFromTXTFile.readAllLines("./src/items.txt");
 
         String option = UserInput.rawInput();
@@ -216,7 +216,7 @@ public class Product {
 
     /* This method will help user to search by category */
 
-    public static void searchByCategory(String category) throws IOException {
+    public void searchByCategory(String category) throws IOException {
 
         //transforming user input to the right format.
         String capital = category.substring(0, 1).toUpperCase() + category.substring(1);

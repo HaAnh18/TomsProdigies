@@ -29,7 +29,7 @@ public static void createDefaultFAQ(int qaaID, String question, String answer) t
 
     pw = new PrintWriter(new FileWriter("./src/FAQ.txt", true));
 
-    pw.println(qnaID + "," + question + "," + answer);
+    pw.println(qaaID + "," + question + "," + answer);
     pw.close();
 }
 
@@ -120,7 +120,7 @@ public static void createDefaultFAQ(int qaaID, String question, String answer) t
 
 
             if (isFound) {
-                String[] specificLine = ReadDataFromTXTFile.getSpecificLine(question[i], 1, "./src/FAQ.txt", ",");
+                String[] specificLine = ReadDataFromTXTFile.readSpecificLine(question[i], 1, "./src/FAQ.txt", ",");
                 matchResult.add(specificLine);
             }
         }
