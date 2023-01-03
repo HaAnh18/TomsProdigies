@@ -1,22 +1,25 @@
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FAQ {
 
     // Attributes
-    private int qnaID;
+    private int qaaID;
     private String question;
     private String answer;
 
     //Constructor for FAQ class.
-    public FAQ(int qnaID, String question, String answer) {
-        this.qnaID = qnaID;
+    public FAQ(int qaaID, String question, String answer) {
+        this.qaaID = qaaID;
         this.question = question;
         this.answer = answer;
     }
 
     //This method create a menu for customer to select their FAQ option.
+
     public static void searchQNA() throws IOException {
         //using method ReadDataFromTXTFile to read specific column which is QID in the text file
         String[] faq = ReadDataFromTXTFile.readColString(0, "./src/FAQ.txt", ",");
@@ -76,10 +79,13 @@ public class FAQ {
                 table.setHeaders("Answer");
 
                 //using this for loop read and adding the next rows into a table from a specific column
-                for (String[] strings : matchResult) {
-                    table.addRow(strings[2]);
+                for (int i = 0; i < matchResult.size(); i++) {
+                    table.addRow(matchResult.get(i)[2]);
                 }
                 table.print();
+
+                table.setHeaders(new String[0]);
+                table.setRows(new ArrayList<String[]>());
             }
         }
     }
@@ -118,4 +124,30 @@ public class FAQ {
 
         FAQ.searchQNA();
     }
+
+//    //getter and setter
+//
+//    public int getQaaID() {
+//        return qaaID;
+//    }
+//
+//    public void setQaaID(int qaaID) {
+//        this.qaaID = qaaID;
+//    }
+//
+//    public String getQuestion() {
+//        return question;
+//    }
+//
+//    public void setQuestion(String question) {
+//        this.question = question;
+//    }
+//
+//    public String getAnswer() {
+//        return answer;
+//    }
+//
+//    public void setAnswer(String answer) {
+//        this.answer = answer;
+//    }
 }
