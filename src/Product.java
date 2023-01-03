@@ -210,8 +210,11 @@ public class Product {
 
     /* This method will help user to search by category */
   public static void searchByCategory(String category) throws IOException{
+      //transforming user input to the right format.
       String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+      //create a empty Arraylist to store data after searching.
       ArrayList<String[]> categories = new ArrayList<>();
+      //temporary database to store data.
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
       for (int i = 1; i < database.size(); i++) {
           if (database.get(i)[3].equals(capital))

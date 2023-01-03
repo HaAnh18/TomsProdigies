@@ -9,7 +9,7 @@ public class FAQ {
     private int qaaID;
     private String question;
     private String answer;
-
+//Constructor for FAQ class.
     public FAQ(int qaaID, String question, String answer) {
         this.qaaID = qaaID;
         this.question = question;
@@ -19,8 +19,9 @@ public class FAQ {
     public FAQ() {
     }
 
-//This method create FAQ text file.
-public static void createDefaultFAQ(int qnaID, String question, String answer) throws IOException {
+    //This method create FAQ text file to store questions and answers for the FAQ session.
+public static void createDefaultFAQ(int qaaID, String question, String answer) throws IOException {
+
     PrintWriter pw;
 
     pw = new PrintWriter(new FileWriter("./src/FAQ.txt", true));
@@ -28,6 +29,9 @@ public static void createDefaultFAQ(int qnaID, String question, String answer) t
     pw.println(qnaID + "," + question + "," + answer);
     pw.close();
 }
+
+
+    //This method create a menu for customer to select their FAQ option.
 
     public static void searchQNA() throws IOException {
         //using method ReadDataFromTXTFile to read specific column which is QID in the text file
