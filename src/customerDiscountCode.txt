@@ -1,2 +1,2 @@
-#CID,Discount code,Discount amount
-C978,367,Phone2023,500000
+#CID,ID,Discount code,Discount amount
+C978,926,Phone2023,500000

@@ -3,12 +3,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Product {
-    ArrayList<String> categories = new ArrayList<>(Arrays.asList(ReadDataFromTXTFile.readColString(3, "./src/items.txt", ",")));
+    // Attributes
+//    ArrayList<String> categories = new ArrayList<>(Arrays.asList(ReadDataFromTXTFile.readColString(3, "./src/items.txt", ",")));
     private String ID;
     private String title;
     private Long price;
@@ -153,7 +153,7 @@ public class Product {
     }
 
 
-    public static void findItemByPriceRange() throws IOException {
+    public void findItemByPriceRange() throws IOException {
         ArrayList<String[]> items = ReadDataFromTXTFile.readAllLines("./src/items.txt");
 
         String option = UserInput.rawInput();
@@ -209,35 +209,33 @@ public class Product {
     }
 
     /* This method will help user to search by category */
-  public static void searchByCategory(String category) throws IOException{
-      String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
-      ArrayList<String[]> categories = new ArrayList<>();
+    public void searchByCategory(String category) throws IOException {
+        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        ArrayList<String[]> categories = new ArrayList<>();
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
-      for (int i = 1; i < database.size(); i++) {
-          if (database.get(i)[3].equals(capital))
-              /* If the system could find out the category in items.txt file
-               */ {
-              categories.add(database.get(i));
-          }
-      }
-      CreateTable createTable = new CreateTable();
-      createTable.setShowVerticalLines(true);
-      createTable.setHeaders("ID", "Title", "Prices", "Category");
-      for (String[] categoryOutput : categories) {
-          createTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
-      }
-      createTable.print();
-  }
-
-    public ArrayList<String> getCategories() {
-        return categories;
+        for (int i = 1; i < database.size(); i++) {
+            if (database.get(i)[3].equals(capital))
+                /* If the system could find out the category in items.txt file
+                 */ {
+                categories.add(database.get(i));
+            }
+        }
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("ID", "Title", "Prices", "Category");
+        for (String[] categoryOutput : categories) {
+            createTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
+        }
+        createTable.print();
     }
 
-    public void setCategories(ArrayList<String> categories) {
-        this.categories = categories;
-    }
-
-
+//    public ArrayList<String> getCategories() {
+//        return categories;
+//    }
+//
+//    public void setCategories(ArrayList<String> categories) {
+//        this.categories = categories;
+//    }
 
     public String getID() {
         return ID;
@@ -251,9 +249,9 @@ public class Product {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+//    public void setTitle(String title) {
+//        this.title = title;
+//    }
 
     public Long getPrice() {
         return price;

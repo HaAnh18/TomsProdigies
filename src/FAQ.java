@@ -6,16 +6,19 @@ import java.util.Arrays;
 
 public class FAQ {
 
+    // Attributes
     private int qaaID;
     private String question;
     private String answer;
 
+    // Constructor
     public FAQ(int qaaID, String question, String answer) {
         this.qaaID = qaaID;
         this.question = question;
         this.answer = answer;
     }
 
+    // Constructor
     public FAQ() {
     }
 
@@ -115,29 +118,29 @@ public static void createDefaultFAQ(int qaaID, String question, String answer) t
         FAQ.searchQNA();
     }
 
-    //getter and setter
-
-    public int getQaaID() {
-        return qaaID;
-    }
-
-    public void setQaaID(int qaaID) {
-        this.qaaID = qaaID;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
+//    //getter and setter
+//
+//    public int getQaaID() {
+//        return qaaID;
+//    }
+//
+//    public void setQaaID(int qaaID) {
+//        this.qaaID = qaaID;
+//    }
+//
+//    public String getQuestion() {
+//        return question;
+//    }
+//
+//    public void setQuestion(String question) {
+//        this.question = question;
+//    }
+//
+//    public String getAnswer() {
+//        return answer;
+//    }
+//
+//    public void setAnswer(String answer) {
+//        this.answer = answer;
+//    }
 }
