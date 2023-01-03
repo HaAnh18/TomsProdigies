@@ -18,22 +18,6 @@ public class FAQ {
         this.answer = answer;
     }
 
-    // Constructor
-    public FAQ() {
-    }
-
-    //This method create FAQ text file to store questions and answers for the FAQ session.
-public static void createDefaultFAQ(int qaaID, String question, String answer) throws IOException {
-
-    PrintWriter pw;
-
-    pw = new PrintWriter(new FileWriter("./src/FAQ.txt", true));
-
-    pw.println(qaaID + "," + question + "," + answer);
-    pw.close();
-}
-
-
     //This method create a menu for customer to select their FAQ option.
 
     public static void searchQNA() throws IOException {
@@ -120,7 +104,7 @@ public static void createDefaultFAQ(int qaaID, String question, String answer) t
 
 
             if (isFound) {
-                String[] specificLine = ReadDataFromTXTFile.readSpecificLine(question[i], 1, "./src/FAQ.txt", ",");
+                String[] specificLine = ReadDataFromTXTFile.getSpecificLine(question[i], 1, "./src/FAQ.txt", ",");
                 matchResult.add(specificLine);
             }
         }
