@@ -13,7 +13,7 @@ public class AuthenticationSystem {
             case "1":
 //                customerMenu.view();
             case "2":
-                adminMenu.view();
+//                adminMenu.view();
             case "3":
                 System.out.println("Thank you so much for using our system. See you soon !!!!");
                 System.out.println("COSC2081 GROUP ASSIGNMENT");

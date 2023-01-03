@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.ParseException;
 
 public class menuGUITesting implements ActionListener {
     private static JLabel label = new JLabel();
@@ -82,6 +83,8 @@ public class menuGUITesting implements ActionListener {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            } catch (ParseException ex) {
                 throw new RuntimeException(ex);
             }
         }

@@ -96,12 +96,6 @@ public class Account {
     {
         boolean isAuthentication = false;
 
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println("Enter username: ");
-//        String username = scanner.nextLine();
-//        System.out.println("Enter password: ");
-//        String password = scanner.nextLine();
-//        String hashing = this.hashingPassword(password);
         try {
             Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
 
@@ -273,7 +267,11 @@ public class Account {
     // Register the password
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter password: ");
+        System.out.print("Enter password \n" +
+                "        (Password must contain at least one digit [0-9].\n" +
+                "        Password must contain at least one lowercase Latin character [a-z].\n" +
+                "        Password must contain at least one uppercase Latin character [A-Z].\n" +
+                "        Password must contain a length of at least 8 characters and a maximum of 20 characters): ");
         String password = scanner.nextLine();
         if (validatePassword(password))
         // If the password satisfy the password's rules, the password will be saved in customer's information
@@ -473,7 +471,10 @@ public class Account {
     {
         String[] database = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
         // Read all information of this customer
-        System.out.println("Membership: " + database[5]); // Print the membership status of this customer
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("MEMBERSHIP");
+        createTable.addRow(database[5]); // Print the membership status of this customer
     }
 
 
@@ -564,7 +565,7 @@ public class Account {
                 orders.add(database.get(i));
             }
         }
-        if (!(orders == null)) {
+        if (!(orders.size() == 0)) {
             CreateTable createTable = new CreateTable();
             createTable.setShowVerticalLines(true);
             createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
@@ -577,7 +578,7 @@ public class Account {
             }
             createTable.print();
         } else {
-            System.out.println("There is no order that have this ID!");
+            System.out.println("THERE IS NO ORDER HAVE THIS ID");
         }
 
     }
