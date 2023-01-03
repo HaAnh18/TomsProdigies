@@ -2,9 +2,13 @@ import java.io.IOException;
 
 public class Test {
     public static void main(String[] args) throws IOException {
-        PointsSystem haha = new PointsSystem();
-        haha.viewPrizes();
-//        haha.pointsConversion("C413", "O842");
-        haha.exchangeItem("C413", "I005-2015");
+        Product.searchCategoryByPriceRange("laptop");
+//        Product.searchByCategory("laptop");
+//        Product.findItemByPriceRange();
+//        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+//        database.get(1);
+//        System.out.println(database.get(1)[0]);
+
+
     }
 }

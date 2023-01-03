@@ -9,7 +9,7 @@ public class FAQ {
     private int qaaID;
     private String question;
     private String answer;
-
+//Constructor for FAQ class.
     public FAQ(int qaaID, String question, String answer) {
         this.qaaID = qaaID;
         this.question = question;
@@ -19,8 +19,13 @@ public class FAQ {
     public FAQ() {
     }
 
+<<<<<<<<< Temporary merge branch 1
 //This method create FAQ text file.
+public static void createFAQ(int qaaID, String question, String answer) throws IOException {
+=========
+    //This method create FAQ text file to store questions and answers for the FAQ session.
 public static void createDefaultFAQ(int qaaID, String question, String answer) throws IOException {
+>>>>>>>>> Temporary merge branch 2
     PrintWriter pw;
 
     pw = new PrintWriter(new FileWriter("./src/FAQ.txt", true));
@@ -29,7 +34,7 @@ public static void createDefaultFAQ(int qaaID, String question, String answer) t
     pw.close();
 }
 
-
+    //This method create a menu for customer to select their FAQ option.
     public static void searchQNA() throws IOException {
         //using method ReadDataFromTXTFile to read specific column which is QID in the text file
         String[] faq = ReadDataFromTXTFile.readColString(0, "./src/FAQ.txt", ",");
@@ -42,7 +47,7 @@ public static void createDefaultFAQ(int qaaID, String question, String answer) t
 
 
         CreateTable table = new CreateTable();
-
+        //base on the question ID this will then read that specific row on that specific column
         switch (option) {
             case "1":
                 matchResult = getMatchResult(faq[1]);
