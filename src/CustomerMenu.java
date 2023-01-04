@@ -38,29 +38,33 @@ public class CustomerMenu {
                 customer.register(); // Register customer's account
                 System.out.println("Register Successfully!");
                 customerMenu.view(); // Back to the viewpage
+
             case "2":
                 System.out.println("\n================================================= LOGIN FORM =================================================");
-                System.out.print("Enter username: ");
-                String username = scanner.nextLine();
-                System.out.print("Enter password: ");
-                String password = scanner.nextLine();
-                if (!customer.login(username, password))
+                do {
+                    System.out.print("Enter username: ");
+                    String username = scanner.nextLine();
+                    System.out.print("Enter password: ");
+                    String password = scanner.nextLine();
                 /* Verify the username and password,
                 if it doesn't correct, the system will ask customer to input again
                 if the username and password are correct, the login status will become true and display the homepage
-                 */ {
-                    System.out.print("Enter username: ");
-                    username = scanner.nextLine();
-                    System.out.print("Enter password: ");
-                    password = scanner.nextLine();
-                }
-                this.cookies = true;
-                this.viewHomepage(username);
+                 */
+                    if (!customer.login(username, password)) {
+                        System.out.println("Incorrect login info, please try again!");
+
+                    } else {
+                        this.cookies = true;
+                        this.viewHomepage(username);
+                    }
+                } while (!cookies);
+
             case "3":
                 System.out.println("\n================================================= OUR PRODUCTS =================================================");
                 product.getAllProductInfo(); // Display all products information
                 TimeUnit.SECONDS.sleep(1); // Wait for 1 second and then display a viewpage
                 customerMenu.view();
+
             case "4":
                 // Ask customer whether he/she wants to sort the product's price ascending or descending
                 System.out.println("\n================================================= SORTING PRODUCT =================================================");
@@ -70,6 +74,7 @@ public class CustomerMenu {
                 SortProduct.sortItems(Integer.parseInt(sortOption));
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
+
             case "5":
                 // Searching product by category or price range
                 System.out.println("\n================================================= SEARCHING PRODUCT =================================================");
@@ -94,7 +99,7 @@ public class CustomerMenu {
                     case "3":
                         System.out.println("Enter category: ");
                         category = scanner.nextLine();
-                        product.searchCategoryByPriceRange(category);
+                        Product.searchCategoryByPriceRange(category);
                         TimeUnit.SECONDS.sleep(1);
                         customerMenu.view();
                     case "4":

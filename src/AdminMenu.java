@@ -12,27 +12,33 @@ public class AdminMenu {
         System.out.println("2. Back to authentication system");
         System.out.println("3. Exit");
 
+        boolean validUser = false;
+        PointsSystem pointShop = new PointsSystem();
         Admin admin = new Admin();
         AuthenticationSystem authenticationSystem = new AuthenticationSystem();
         String option = UserInput.rawInput();
         switch (option) {
             case "1":
-                // Ask user to input username and password
-                // if the username and password are not correct, the system will ask user to input again
-                // otherwise, the system will change to the homepage after login
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Enter username: ");
-                String username = scanner.nextLine();
-                System.out.println("Enter password: ");
-                String password = scanner.nextLine();
-                if (!admin.verifyAdmin(username, password)) {
-                    System.out.println("Wrong password, try again !!!!!");
+                System.out.println("\n================================================= LOGIN FORM =================================================");
+                do {
+                    // Ask user to input username and password
+                    // if the username and password are not correct, the system will ask user to input again
+                    // otherwise, the system will change to the homepage after login
+                    Scanner scanner = new Scanner(System.in);
                     System.out.println("Enter username: ");
-                    username = scanner.nextLine();
+                    String username = scanner.nextLine();
                     System.out.println("Enter password: ");
-                    password = scanner.nextLine();
-                }
-                this.viewHomepage();
+                    String password = scanner.nextLine();
+
+                    if (!admin.verifyAdmin(username, password)) {
+                        System.out.println("Wrong password, try again !!!!!");
+
+                    } else {
+                        this.viewHomepage();
+                        validUser = true;
+                    }
+                } while (!validUser);
+
             case "2":
                 authenticationSystem.mainMenu();
             case "3":
@@ -204,6 +210,67 @@ public class AdminMenu {
                         adminMenu.viewHomepage();
                 }
             case "12":
+                System.out.println("\n================================================= MANAGE POINT SHOP =================================================");
+                System.out.println("1. View exchange log");
+                System.out.println("2. Search exchange order by oID");
+                System.out.println("3. Search exchange order by cID");
+                System.out.println("4. Update pickup status");
+                System.out.println("5. Add new prize item");
+                System.out.println("6. Delete prize item");
+
+                String pShopOption = UserInput.rawInput();
+                Scanner inputs = new Scanner(System.in);
+
+                switch (pShopOption) {
+                    case "1":
+                        PointsSystem.viewExchangeLog();
+                        TimeUnit.SECONDS.sleep(1);
+                        adminMenu.viewHomepage();
+                        break;
+
+                    case "2":
+                        System.out.println("\n Please enter oID");
+                        String oID = inputs.nextLine();
+                        PointsSystem.searchExchangeOrderByOID(oID);
+                        TimeUnit.SECONDS.sleep(1);
+                        adminMenu.viewHomepage();
+                        break;
+
+                    case "3":
+                        System.out.println("\n Please enter cID");
+                        String customerID = inputs.nextLine();
+                        PointsSystem.getExchangeInfo(customerID);
+                        TimeUnit.SECONDS.sleep(1);
+                        adminMenu.viewHomepage();
+                        break;
+
+                    case "4":
+                        System.out.println("\n Enter oID you want to update");
+                        String targetOID = inputs.nextLine();
+                        System.out.println("\n Enter new status");
+                        String exStatus = inputs.nextLine();
+                        PointsSystem.updatePickupStatus(exStatus, targetOID);
+                        TimeUnit.SECONDS.sleep(1);
+                        adminMenu.viewHomepage();
+                        break;
+
+                    case "5":
+                        PointsSystem.addPrize();
+                        TimeUnit.SECONDS.sleep(1);
+                        adminMenu.viewHomepage();
+                        break;
+
+                    case "6":
+                        PointsSystem.deletePrize();
+                        TimeUnit.SECONDS.sleep(1);
+                        adminMenu.viewHomepage();
+                        break;
+
+                    case "7":
+                        adminMenu.viewHomepage();
+                        break;
+                }
+
 
             case "13":
                 // Admin could delete customer by using customer's ID

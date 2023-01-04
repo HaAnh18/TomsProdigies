@@ -94,6 +94,7 @@ public class Account {
     {
         boolean isAuthentication = false;
 
+
         try {
             Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
 
