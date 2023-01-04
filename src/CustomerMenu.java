@@ -81,7 +81,7 @@ public class CustomerMenu {
                         // Ask customer to enter a category and check if it has product in that category or not
                         System.out.print("Enter category: ");
                         String category = scanner.nextLine();
-                        product.searchByCategory(category);
+                        product.searchByCategory();
                         TimeUnit.SECONDS.sleep(1);
                         customerMenu.view();
                     case "2":
@@ -222,7 +222,7 @@ public class CustomerMenu {
                         // Ask customer to enter a category and check if it has product in that category or not
                         System.out.print("Enter category: ");
                         String category = scanner.nextLine();
-                        product.searchByCategory(category);
+                        product.searchByCategory();
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
                     case "2":

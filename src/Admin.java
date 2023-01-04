@@ -17,6 +17,8 @@ public class Admin extends Account {
     public static boolean dateValidate(String date)
     // Validate the date that customer input
     {
+        //First, we will need to seperate the day into three different component and reformat it into a string.
+
         String[] dateComponent = date.split("/");
         String month = dateComponent[0].replaceFirst("^0*", "");
         String day = dateComponent[1].replaceFirst("^0*", "");
@@ -118,6 +120,15 @@ public class Admin extends Account {
         pw.println(ID + "," + title + "," + price + "," + category + "\n");
 //        // Write product's information to items' file
         pw.close();
+
+    //This method is used to reformat the input date into a separate string for comparison.
+    public static String dateInput(String date) {
+        String[] dateComponent = date.split("/");
+        String month = dateComponent[0].replaceFirst("^0*", "");
+        String day = dateComponent[1].replaceFirst("^0*", "");
+        String year = dateComponent[2].replaceFirst("^0*", "");
+        date = month + "/" + day + "/" + year;
+        return date;
 
     }
 
@@ -372,10 +383,37 @@ public class Admin extends Account {
         revenueTable.print();
     }
 
+    public void addProduct() throws IOException, ParseException, InterruptedException
+    // This method for admin to add new product
+    {
+        Scanner scanner = new Scanner(System.in);
+        PrintWriter pw;
+        Product product = new Product();
+        pw = new PrintWriter(new FileWriter("./src/items.txt", true));
+        Path path = Paths.get("./src/items.txt");
+        int id = (int) Files.lines(path).count(); // Define the id of this product
+        System.out.println("Enter a year of this product: "); // Ask admin to input the product's year
+        int year = Integer.parseInt(scanner.nextLine());
+        String ID = String.format("I%03d-%04d", id, year); // Generate the product ID in items' file
+        System.out.println("Enter category: "); // Ask admin to input the product's category
+        String category = scanner.nextLine();
+        product.registerCategory(category); // Increase the quantity if the category had existed or create new category
+        System.out.println("Enter title: "); // Ask admin to input the product's title
+        String title = scanner.nextLine();
+        System.out.println("Enter price: "); // Ask admin to input the product's price
+        double price = scanner.nextDouble();
+        scanner.nextLine();
+        pw.println(ID + "," + title + "," + price + "," + category + "\n");
+//        // Write product's information to items' file
+        pw.close();
+
+    }
+
     /* This method allow admin to calculate daily revenue base on the timestamp of the purchase.*/
-    public  ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
-        String[] dailyRevenue = ReadDataFromTXTFile.readColString(2,"./src/billingHistory.txt", ",");
-        String[] dateAndTime = ReadDataFromTXTFile.readColString(3,"./src/billingHistory.txt",",");
+    public ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
+
+        String[] dailyRevenue = ReadDataFromTXTFile.readColString(2, "./src/billingHistory.txt", ",");
+        String[] dateAndTime = ReadDataFromTXTFile.readColString(3, "./src/billingHistory.txt", ",");
         ArrayList<Long> revenueList = new ArrayList<>(dailyRevenue.length);
 
         Scanner inputObj = new Scanner(System.in);
@@ -387,20 +425,11 @@ public class Admin extends Account {
             date = inputObj.nextLine();
         }
         date = dateInput(date);
+        //If the date is match, all the price will put in an Arraylist and total all the price.
             for (int i = 1; i < dailyRevenue.length; i++) {
         do revenueList.add(Long.valueOf(dailyRevenue[i]));
             while (dateAndTime.equals(date));
     }
             return revenueList;
-    }
-
-    public static String dateInput(String date)
-    {
-        String[] dateComponent = date.split("/");
-        String month = dateComponent[0].replaceFirst("^0*", "");
-        String day = dateComponent[1].replaceFirst("^0*", "");
-        String year = dateComponent[2].replaceFirst("^0*", "");
-        date = month + "/" + day + "/" + year;
-        return date;
     }
 }
