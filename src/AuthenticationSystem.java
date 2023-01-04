@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.concurrent.TimeUnit;
 
 public class AuthenticationSystem {
     public void mainMenu() throws IOException, InterruptedException, ParseException {
@@ -31,6 +32,11 @@ public class AuthenticationSystem {
                 createTable.addRow("s3938143", "Nguyen Gia Bao");
                 createTable.print();
                 System.exit(1);
+
+            default:
+                System.out.println("Invalid input please try again!");
+                TimeUnit.SECONDS.sleep(1);
+                this.mainMenu();
         }
     }
 }

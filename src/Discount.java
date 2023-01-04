@@ -27,26 +27,26 @@ public class Discount {
             discountCode = discountType.get(1)[0];
             discountAmount = Long.parseLong(discountType.get(1)[2]);
 
-            // 10000000 < totalPayment < 20000000
+            // 20000000 < totalPayment < 30000000
         } else if (totalPayment >= Long.parseLong(discountType.get(2)[1]) && totalPayment < Long.parseLong(discountType.get(3)[1])) {
             System.out.println("Your bill have 1 voucher");
             discountCode = discountType.get(2)[0];
             discountAmount = Long.parseLong(discountType.get(2)[2]);
 
-            // 20000000 < totalPayment < 30000000
+            // 30000000 < totalPayment < 50000000
         } else if (totalPayment >= Long.parseLong(discountType.get(3)[1]) && totalPayment < Long.parseLong(discountType.get(4)[1])) {
             System.out.println("Your bill have 1 voucher");
             discountCode = discountType.get(3)[0];
             discountAmount = Long.parseLong(discountType.get(3)[2]);
 
-            // 30000000 < totalPayment < 50000000
+            // 50000000 < totalPayment
         } else if (totalPayment >= Long.parseLong(discountType.get(4)[1])) {
             System.out.println("Your bill have 1 voucher");
             discountCode = discountType.get(4)[0];
             discountAmount = Long.parseLong(discountType.get(4)[2]);
         }
 
-        // 50000000 < totalPayment
+        //
         if (!(discountCode == null)) {
             pw.println(cID + "," + code + "," + discountCode + "," + discountAmount);
             pw.close();

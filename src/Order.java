@@ -148,6 +148,7 @@ public class Order {
                 totalPaymentAfterDiscount = (long) (totalPayment * (1 - 0.15));
                 break;
             case "Regular":
+                totalPaymentAfterDiscount = totalPayment;
                 break;
         }
 

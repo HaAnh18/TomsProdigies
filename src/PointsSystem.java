@@ -29,7 +29,7 @@ public class PointsSystem {
         }
 
         for (int i = 1; i < database.size(); i++) {
-            if (database.get(i)[0].equals(cID)) {
+            if (database.get(i)[6].equals(cID)) {
                 /* If the system could find out the username in customers' file
                  * then the system update their information
                  */
