@@ -217,6 +217,7 @@ public class AdminMenu {
                 System.out.println("4. Update pickup status");
                 System.out.println("5. Add new prize item");
                 System.out.println("6. Delete prize item");
+                System.out.println("7. Exit");
 
                 String pShopOption = UserInput.rawInput();
                 Scanner inputs = new Scanner(System.in);
