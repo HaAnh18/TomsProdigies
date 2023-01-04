@@ -14,16 +14,6 @@ public class Admin extends Account {
         super();
     }
 
-//    public String adminLogin() {
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println("Enter admin username: ");
-//        String adminUsername = scanner.nextLine();
-//        if (!adminUsername.equals("admin")) {
-//            System.out.println("This admin account is not existed! Please try again");
-//        }
-//        return adminUsername;
-//    }
-
     public static boolean dateValidate(String date)
     // Validate the date that customer input
     {
@@ -389,11 +379,11 @@ public class Admin extends Account {
         ArrayList<Long> revenueList = new ArrayList<>(dailyRevenue.length);
 
         Scanner inputObj = new Scanner(System.in);
-        System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy)");
+        System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy):");
         String date = inputObj.nextLine();
         while (dateValidate(date)) /* validate if the timestamp is match to the user's input */
         {
-            System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy)");
+            System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy):");
             date = inputObj.nextLine();
         }
         date = dateInput(date);
