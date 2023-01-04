@@ -136,18 +136,13 @@ public class AdminMenu {
                 switch (option) {
                     case "1":
                         admin.addProduct();
+                        TimeUnit.SECONDS.sleep(1);
+                        adminMenu.viewHomepage();
                         adminMenu.viewHomepage();
                     case "2":
-                        product.getProductHaveId();
-                        String choiceOrder = UserInput.rawInput();
-                        ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/items.txt");
-                        String[] productInfo = new String[3];
-                        for (int i = 0; i < productList.size(); i++) {
-                            if (i == Integer.parseInt(choiceOrder)) {
-                                productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1], 1, "./src/items.txt", ",");
-                            }
-                        }
-                        admin.deleteProduct("./src/items.txt", productInfo[1], 1);
+                        admin.deleteProduct();
+                        TimeUnit.SECONDS.sleep(1);
+                        adminMenu.viewHomepage();
                         adminMenu.viewHomepage();
                     case "3":
                         adminMenu.viewHomepage();
