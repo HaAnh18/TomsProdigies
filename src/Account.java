@@ -55,7 +55,7 @@ public class Account {
         password = registerPassword();
         totalSpending = (long) 0; // When customer register his/her account, their total spending will be set to 0
         totalPoint = (long) 0;
-        pw.println("\n" + cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + ","
+        pw.println(cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + ","
                 + userName + "," + password + "," + totalSpending + "," + totalPoint);
         // Write customer's information to customers file
         pw.close();

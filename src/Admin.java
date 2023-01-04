@@ -214,14 +214,24 @@ public class Admin extends Account {
         }
     }
 
-    public void deleteProduct(String filepath, String delProduct, int col) throws IOException
+    public void deleteProduct() throws IOException
     // This method allow admin to delete a product that had existed in items' file
     {
+        Product products = new Product();
+        products.getProductHaveId();
+        String choiceOrder = UserInput.rawInput();
+        ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+        String[] productInfo = new String[3];
+        for (int i = 0; i < productList.size(); i++) {
+            if (i == Integer.parseInt(choiceOrder)) {
+                productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1], 1, "./src/items.txt", ",");
+            }
+        }
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
-        for (int i = 0; i < database.size(); i++) {
-            if (!database.get(i)[col].equals(delProduct)) {
-                newDatabase.add(database.get(i)); // Add all items except the deleted product
+        for (String[] strings : database) {
+            if (!strings[0].equals(productInfo[0])) {
+                newDatabase.add(strings); // Add all items except the deleted product
             }
         }
         PrintWriter pw = new PrintWriter("./src/items.txt");
@@ -231,9 +241,10 @@ public class Admin extends Account {
 
 
         for (String[] obj : newDatabase) {
-            Write.rewriteFile(filepath, "#ID,Title,Price,Category", String.join(",", obj));
+            Write.rewriteFile("./src/items.txt", "#ID,Title,Price,Category", String.join(",", obj));
             // This method would allow system to write all data including new data into the items' file
         }
+        System.out.println("Deletion successful");
     }
 
     public void deleteCustomer(String filepath, String delCustomer, int col) throws IOException
@@ -256,6 +267,7 @@ public class Admin extends Account {
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
+        System.out.println("Deletion successful");
     }
 
     public void deleteCategory(String filepath, String delCategory) throws IOException
@@ -283,6 +295,7 @@ public class Admin extends Account {
         }
 
         deleteProductCategory("./src/items.txt", delCategory);
+        System.out.println("Deletion successful");
     }
 
 
@@ -307,6 +320,7 @@ public class Admin extends Account {
         for (String[] obj : database) {
             Write.rewriteFile(filepath, "#ID,Title, Price, Category", String.join(",", obj));
         }
+        System.out.println("Deletion successful");
     }
 
 

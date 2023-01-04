@@ -42,20 +42,24 @@ public class CustomerMenu {
             case "2":
                 System.out.println("\n================================================= LOGIN FORM =================================================");
                 do {
-                    System.out.print("Enter username: ");
-                    String username = scanner.nextLine();
-                    System.out.print("Enter password: ");
-                    String password = scanner.nextLine();
+                    try {
+                        System.out.print("Enter username: ");
+                        String username = scanner.nextLine();
+                        System.out.print("Enter password: ");
+                        String password = scanner.nextLine();
                 /* Verify the username and password,
                 if it doesn't correct, the system will ask customer to input again
                 if the username and password are correct, the login status will become true and display the homepage
                  */
-                    if (!customer.login(username, password)) {
-                        System.out.println("Incorrect login info, please try again!");
+                        if (!customer.login(username, password)) {
+                            System.out.println("Incorrect login info, please try again!");
 
-                    } else {
-                        this.cookies = true;
-                        this.viewHomepage(username);
+                        } else {
+                            this.cookies = true;
+                            this.viewHomepage(username);
+                        }
+                    } catch (ArrayIndexOutOfBoundsException toomuch) {
+                        System.out.println("Incorrect login info, please try again!");
                     }
                 } while (!cookies);
 
@@ -322,6 +326,7 @@ public class CustomerMenu {
 
                         case "2":
                             this.viewHomepage(username);
+
                         default:
                             // If customer input another option that don't have in the menu
                             // then the system will give he/she message and back to the homepage
@@ -401,6 +406,8 @@ public class CustomerMenu {
 
                                     case "2":
                                         createOrder(member); // Create order based on customer's cart
+                                        TimeUnit.SECONDS.sleep(1);
+                                        this.viewHomepage(username);
                                     default:
                                         // If customer input another option that don't have in the menu
                                         // then the system will give he/she message and back to the homepage
@@ -639,6 +646,7 @@ public class CustomerMenu {
     public void createOrder(Customer member) throws IOException, InterruptedException, ParseException
     // Create a new order for customer
     {
+        Account user = new Account();
         Order order = new Order();
         Cart cart = new Cart();
         Discount discount = new Discount();
@@ -687,7 +695,7 @@ public class CustomerMenu {
                     // Display the final total payment after customer apply discount voucher
                     TimeUnit.SECONDS.sleep(1);
                     this.viewHomepage(member.getUserName());
-                    PointsSystem.pointsConversion(member.getUserName(), oID);
+                    PointsSystem.pointsConversion(member.getcID(), oID);
 
                 case "2":
                     /* If customer doesn't want to use voucher,
@@ -700,7 +708,7 @@ public class CustomerMenu {
                     discount.displayCustomerDiscountCode(member);
                     TimeUnit.SECONDS.sleep(1);
                     this.viewHomepage(member.getUserName());
-                    PointsSystem.pointsConversion(member.getUserName(), oID);
+                    PointsSystem.pointsConversion(member.getcID(), oID);
                 default:
                     System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                     TimeUnit.SECONDS.sleep(1);
@@ -715,7 +723,7 @@ public class CustomerMenu {
             Long totalPayment = Long.parseLong(orderInfo[2]);
             discount.giveDiscountCode(member, totalPayment);
             this.viewHomepage(member.getUserName());
-            PointsSystem.pointsConversion(member.getUserName(), oID);
+            PointsSystem.pointsConversion(member.getcID(), oID);
         }
     }
 }
