@@ -73,7 +73,8 @@ public class CustomerMenu {
                 System.out.println("\n================================================= SEARCHING PRODUCT =================================================");
                 System.out.println("1. Search by category");
                 System.out.println("2. Search by price range");
-                System.out.println("3. Back to homepage");
+                System.out.println("3. Search by category and price range");
+                System.out.println("4. Back to homepage");
                 String sort = UserInput.rawInput();
                 switch (sort) {
                     case "1":
@@ -89,6 +90,13 @@ public class CustomerMenu {
                         TimeUnit.SECONDS.sleep(1);
                         customerMenu.view();
                     case "3":
+                        System.out.println("Enter category: ");
+                        category = scanner.nextLine();
+                        product.searchCategoryByPriceRange(category);
+                        TimeUnit.SECONDS.sleep(1);
+                        this.view();
+                    case "4":
+                      
                         customerMenu.view();
                     default:
                         // If customer input another option that don't have in the searching product menu
@@ -101,11 +109,13 @@ public class CustomerMenu {
                 PointsSystem.viewPrizes(); // Display all the prizes that customers could exchange by his/her point
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
+                
             case "7":
                 System.out.println("\n================================================= MEMBERSHIP TYPES =================================================");
                 customer.getAllMembershipTypes(); // Display all types of membership and its discount for customer
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
+                
             case "8":
                 // Display all the questions and then the customer will choose which question he/she want to find
                 // After that, the system will display the answer of the customer's choice question
@@ -119,8 +129,10 @@ public class CustomerMenu {
                     System.out.println(" ");
                     FAQ.FAQPrint();
                 }
+
             case "9":
 //                customerMenu.view(); // Back to the authentication system menu
+
             case "10":
                 // Display our course's information and our group's information
                 // and then exit the system
@@ -139,6 +151,7 @@ public class CustomerMenu {
                 createTable.addRow("s3938143", "Nguyen Gia Bao");
                 createTable.print();
                 System.exit(1);
+                
             default:
                 // If customer input another option that don't have in the menu
                 // then the system will give he/she message and back to the viewpage
@@ -201,7 +214,8 @@ public class CustomerMenu {
                 System.out.println("\n================================================= SEARCHING PRODUCT =================================================");
                 System.out.println("1. Search by category");
                 System.out.println("2. Search by price range");
-                System.out.println("3. Back to homepage");
+                System.out.println("3. Search by category and price range");
+                System.out.println("4. Back to homepage");
                 String sort = UserInput.rawInput();
                 switch (sort) {
                     case "1":
@@ -220,6 +234,12 @@ public class CustomerMenu {
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
                     case "3":
+                        System.out.println("Enter category: ");
+                        category = scanner.nextLine();
+                        product.searchCategoryByPriceRange(category);
+                        TimeUnit.SECONDS.sleep(1);
+                        this.view();
+                    case "4":
                         this.viewHomepage(username);
                     default:
                         // If customer input another option that don't have in the searching product menu
