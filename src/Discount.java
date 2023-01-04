@@ -44,6 +44,9 @@ public class Discount {
             System.out.println("Your bill have 1 voucher");
             discountCode = discountType.get(4)[0];
             discountAmount = Long.parseLong(discountType.get(4)[2]);
+
+        } else {
+            discountCode = null;
         }
 
         //
