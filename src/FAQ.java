@@ -1,19 +1,17 @@
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FAQ {
 
     // Attributes
-    private int qaaID;
+    private int qnaID;
     private String question;
     private String answer;
 
     //Constructor for FAQ class.
-    public FAQ(int qaaID, String question, String answer) {
-        this.qaaID = qaaID;
+    public FAQ(int qnaID, String question, String answer) {
+        this.qnaID = qnaID;
         this.question = question;
         this.answer = answer;
     }
@@ -104,7 +102,7 @@ public class FAQ {
 
 
             if (isFound) {
-                String[] specificLine = ReadDataFromTXTFile.getSpecificLine(question[i], 1, "./src/FAQ.txt", ",");
+                String[] specificLine = ReadDataFromTXTFile.readSpecificLine(question[i], 1, "./src/FAQ.txt", ",");
                 matchResult.add(specificLine);
             }
         }
@@ -120,34 +118,7 @@ public class FAQ {
             System.out.println(readQuestionList[i]);
         }
         System.out.println("=.Exit");
-//        System.out.println(" ");
 
         FAQ.searchQNA();
     }
-
-//    //getter and setter
-//
-//    public int getQaaID() {
-//        return qaaID;
-//    }
-//
-//    public void setQaaID(int qaaID) {
-//        this.qaaID = qaaID;
-//    }
-//
-//    public String getQuestion() {
-//        return question;
-//    }
-//
-//    public void setQuestion(String question) {
-//        this.question = question;
-//    }
-//
-//    public String getAnswer() {
-//        return answer;
-//    }
-//
-//    public void setAnswer(String answer) {
-//        this.answer = answer;
-//    }
 }

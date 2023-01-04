@@ -2,6 +2,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -24,7 +25,8 @@ public class Product {
     public Product() throws IOException {
     }
 
-    public void registerCategory(String category) throws IOException {
+    public void registerCategory(String category) throws IOException, InterruptedException, ParseException {
+        AdminMenu adminMenu = new AdminMenu();
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
         String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
         for (int i = 1; i < database.size(); i++) {
@@ -35,9 +37,7 @@ public class Product {
                 pw.write("");
                 pw.close();
 
-                ArrayList<String[]> newDatabase = database;
-
-                for (String[] obj : newDatabase) {
+                for (String[] obj : database) {
                     Write.rewriteFile("./src/productsSold.txt", "#ID,pID,Quantities", String.join(",", obj));
                 }
             }
@@ -48,11 +48,13 @@ public class Product {
             System.out.println("Please choose your option: ");
             System.out.println("1. Create new category automatically");
             System.out.println("2. Exit");
-            int option = Integer.parseInt(scanner.nextLine());
+            String option = UserInput.rawInput();
             switch (option) {
-                case 1:
+                case "1":
                     createNewCategory(category);
                     break;
+                case "2":
+                    adminMenu.viewHomepage();
             }
         }
     }
@@ -170,6 +172,7 @@ public class Product {
         CreateTable table = new CreateTable();
 
         switch (option) {
+            //case 1: find the product between the price of 0 to 25000000.
             case "1":
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
@@ -179,6 +182,8 @@ public class Product {
                 }
                 System.out.println("Price range: 0 --> 25 mil");
                 break;
+
+            //case 2: find the product between the price of 25000000 to 50000000.
             case "2":
 
                 for (int i = 1; i < items.size(); i++) {
@@ -189,6 +194,8 @@ public class Product {
                 }
                 System.out.println("Price range: 25 mil --> 50 mil");
                 break;
+
+            //case 3: find the product between the price of 50000000 to 75000000.
             case "3":
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
@@ -198,6 +205,9 @@ public class Product {
                 }
                 System.out.println("Price range: 50 mil --> 75 mil");
                 break;
+
+
+            //case 4: find the product between the price of 75000000 to 100000000.
             case "4":
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
