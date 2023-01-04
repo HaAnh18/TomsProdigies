@@ -14,7 +14,6 @@ public class Admin extends Account {
         super();
     }
 
-
     public static boolean dateValidate(String date)
     // Validate the date that customer input
     {
@@ -98,6 +97,30 @@ public class Admin extends Account {
         createTable.print(); // Print the table
     }
 
+    public void addProduct() throws IOException, ParseException, InterruptedException
+    // This method for admin to add new product
+    {
+        Scanner scanner = new Scanner(System.in);
+        PrintWriter pw;
+        Product product = new Product();
+        pw = new PrintWriter(new FileWriter("./src/items.txt", true));
+        Path path = Paths.get("./src/items.txt");
+        int id = (int) Files.lines(path).count(); // Define the id of this product
+        System.out.println("Enter a year of this product: "); // Ask admin to input the product's year
+        int year = Integer.parseInt(scanner.nextLine());
+        String ID = String.format("I%03d-%04d", id, year); // Generate the product ID in items' file
+        System.out.println("Enter category: "); // Ask admin to input the product's category
+        String category = scanner.nextLine();
+        product.registerCategory(category); // Increase the quantity if the category had existed or create new category
+        System.out.println("Enter title: "); // Ask admin to input the product's title
+        String title = scanner.nextLine();
+        System.out.println("Enter price: "); // Ask admin to input the product's price
+        double price = scanner.nextDouble();
+        scanner.nextLine();
+        pw.println(ID + "," + title + "," + price + "," + category + "\n");
+//        // Write product's information to items' file
+        pw.close();
+
     //This method is used to reformat the input date into a separate string for comparison.
     public static String dateInput(String date) {
         String[] dateComponent = date.split("/");
@@ -106,6 +129,7 @@ public class Admin extends Account {
         String year = dateComponent[2].replaceFirst("^0*", "");
         date = month + "/" + day + "/" + year;
         return date;
+
     }
 
     public void getAllCategory() throws FileNotFoundException

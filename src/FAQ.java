@@ -16,9 +16,8 @@ public class FAQ {
         this.answer = answer;
     }
 
-
-
     //This method create a menu for customer to select their FAQ option.
+
     public static void searchQNA() throws IOException {
         //using method ReadDataFromTXTFile to read specific column which is QID in the text file
         String[] faq = ReadDataFromTXTFile.readColString(0, "./src/FAQ.txt", ",");
@@ -82,6 +81,9 @@ public class FAQ {
                     table.addRow(strings[2]);
                 }
                 table.print();
+
+                table.setHeaders(new String[0]);
+                table.setRows(new ArrayList<String[]>());
             }
         }
     }
@@ -100,7 +102,7 @@ public class FAQ {
 
 
             if (isFound) {
-                String[] specificLine = ReadDataFromTXTFile.getSpecificLine(question[i], 1, "./src/FAQ.txt", ",");
+                String[] specificLine = ReadDataFromTXTFile.readSpecificLine(question[i], 1, "./src/FAQ.txt", ",");
                 matchResult.add(specificLine);
             }
         }
@@ -116,7 +118,6 @@ public class FAQ {
             System.out.println(readQuestionList[i]);
         }
         System.out.println("=.Exit");
-//        System.out.println(" ");
 
         FAQ.searchQNA();
     }

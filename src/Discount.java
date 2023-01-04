@@ -10,6 +10,7 @@ public class Discount {
     }
 
     public void giveDiscountCode(Customer customer, Long totalPayment) throws IOException {
+
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/customerDiscountCode.txt", true));
         Random rd = new Random();
@@ -18,39 +19,50 @@ public class Discount {
         String cID = customer.getcID();
         Long discountAmount = (long) 0;
         ArrayList<String[]> discountType = ReadDataFromTXTFile.readAllLines("./src/discountType.txt");
+
+        /// Give discount code based on the totalPayment amount
+        // 10000000 < totalPayment < 20000000
         if (totalPayment > Long.parseLong(discountType.get(1)[1]) && totalPayment < Long.parseLong(discountType.get(2)[1])) {
             System.out.println("Your bill have 1 voucher");
             discountCode = discountType.get(1)[0];
             discountAmount = Long.parseLong(discountType.get(1)[2]);
+
+            // 10000000 < totalPayment < 20000000
         } else if (totalPayment >= Long.parseLong(discountType.get(2)[1]) && totalPayment < Long.parseLong(discountType.get(3)[1])) {
             System.out.println("Your bill have 1 voucher");
             discountCode = discountType.get(2)[0];
             discountAmount = Long.parseLong(discountType.get(2)[2]);
+
+            // 20000000 < totalPayment < 30000000
         } else if (totalPayment >= Long.parseLong(discountType.get(3)[1]) && totalPayment < Long.parseLong(discountType.get(4)[1])) {
             System.out.println("Your bill have 1 voucher");
             discountCode = discountType.get(3)[0];
             discountAmount = Long.parseLong(discountType.get(3)[2]);
+
+            // 30000000 < totalPayment < 50000000
         } else if (totalPayment >= Long.parseLong(discountType.get(4)[1])) {
             System.out.println("Your bill have 1 voucher");
             discountCode = discountType.get(4)[0];
             discountAmount = Long.parseLong(discountType.get(4)[2]);
         }
+
+        // 50000000 < totalPayment
         if (!(discountCode == null)) {
             pw.println(cID + "," + code + "," + discountCode + "," + discountAmount);
             pw.close();
         }
     }
 
-    public String validateDiscountCode(String id) {
+
+    public String validateDiscountCode(String id) { // Used to create unique discount code for customer
         try {
             Scanner fileScanner = new Scanner(new File("./src/ordersHistory.txt"));
-
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
                 String[] helo = line.split(",");
                 if (helo[0].equals(id)) {
                     Random random = new Random();
-                    id = String.format("0%03d", random.nextInt(999));
+                    id = String.format("%03d", random.nextInt(999));
                     validateDiscountCode(id);
                 } else {
                     this.discountCode = id;
@@ -62,26 +74,34 @@ public class Discount {
         return this.discountCode;
     }
 
+
     public void displayCustomerDiscountCode(Customer customer) {
         ArrayList<String[]> discountCode = new ArrayList<>();
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
+
         for (int i = 1; i < database.size(); i++) {
-            if (database.get(i)[0].equals(customer.getcID()))
-            {
+            if (database.get(i)[0].equals(customer.getcID())) {
                 discountCode.add(database.get(i));
             }
         }
-        if (!(discountCode.size() == 0)) {
+
+        // If there is a discount code
+        if (!(discountCode.size() == 0)) { // Print out discount codes if available
+
+            // Setting up table
             CreateTable createTable = new CreateTable();
             createTable.setShowVerticalLines(true);
             createTable.setHeaders("OPTION", "ID", "DISCOUNT CODE", "DISCOUNT AMOUNT");
+
+            // Adding content of found/available discount codes
             for (int i = 0; i < discountCode.size(); i++) {
                 createTable.addRow(String.valueOf(i + 1), discountCode.get(i)[1], discountCode.get(i)[2], discountCode.get(i)[3]);
             }
             createTable.print();
         }
     }
+
 
     public ArrayList<String[]> discountCodeList(Customer customer)
     // Get all the product that have in that customer's cart
@@ -105,6 +125,7 @@ public class Discount {
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
+
         for (String[] strings : database) {
             if (!strings[1].equals(id)) {
                 newDatabase.add(strings); // Add all customers except the deleted customer
