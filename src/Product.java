@@ -4,7 +4,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -64,40 +63,45 @@ public class Product {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the category:");
         String category = sc.nextLine();
-        boolean loop = true;
-        do {
-            try {
-                // Transforming user input to the right format.
+        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        try {
+            Scanner fileScanner = new Scanner(new File("./src/items.txt"));
+            boolean found = false;
+            while (fileScanner.hasNext()) {
+                String data = fileScanner.nextLine();
+                String[] items = data.split(",");
+                if (capital.equals(items[3])) {
+                    found = true;
+                    break;
+                } else {
+                    found = false;
+                }
 
-                String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
-
-                // Create a empty Arraylist to store data after searching.
+            }
+            if (found) {
                 ArrayList<String[]> categories = new ArrayList<>();
-
-                // Temporary database to store data.
                 ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
                 for (int i = 1; i < database.size(); i++) {
                     if (database.get(i)[3].equals(capital))
                     // If the system could find out the category in items.txt file
                     {
                         categories.add(database.get(i));
-
                     }
-                    CreateTable createTable = new CreateTable();
-                    createTable.setShowVerticalLines(true);
-                    createTable.setHeaders("ID", "Title", "Prices", "Category");
-                    for (String[] categoryOutput : categories) {
-                        createTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
-                    }
-                    createTable.print();
-                    loop = false;
                 }
-            } catch (InputMismatchException er) {
-                System.out.println("Please enter the category again:");
-                category = sc.nextLine();
+                CreateTable createTable = new CreateTable();
+                createTable.setShowVerticalLines(true);
+                createTable.setHeaders("ID", "Title", "Prices", "Category");
+                for (String[] categoryOutput : categories) {
+                    createTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
+                }
+                createTable.print();
+            } else {
+                System.out.println("This category is not existed!");
+                searchByCategory();
             }
+        } catch (FileNotFoundException e) {
+            searchByCategory();
         }
-        while (loop);
     }
 
     //This method is used to create new category and add to the categories.txt file.
