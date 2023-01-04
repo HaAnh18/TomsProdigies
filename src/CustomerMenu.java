@@ -59,13 +59,30 @@ public class CustomerMenu {
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
             case "4":
+                // Searching product by category or price range
                 System.out.println("\n================================================= SEARCHING PRODUCT =================================================");
                 System.out.println("1. Search by category");
                 System.out.println("2. Search by price range");
-                String choice = UserInput.rawInput();
-                switch (choice) {
+                System.out.println("3. Back to homepage");
+                String sort = UserInput.rawInput();
+                switch (sort) {
                     case "1":
+                        // Ask customer to enter a category and check if it has product in that category or not
+                        System.out.print("Enter category: ");
+                        String category = scanner.nextLine();
+                        product.searchByCategory(category);
+                        TimeUnit.SECONDS.sleep(1);
+                        this.view();
                     case "2":
+                        product.findItemByPriceRange();
+                        TimeUnit.SECONDS.sleep(1);
+                        this.view();
+                    case "3":
+                        this.view();
+                    default:
+                        System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
+                        TimeUnit.SECONDS.sleep(1);
+                        this.view();
                 }
             case "5":
                 // Ask customer whether he/she wants to sort the product's price ascending or descending
@@ -363,6 +380,7 @@ public class CustomerMenu {
                 member.getAllMembershipTypes();
                 TimeUnit.SECONDS.sleep(1);
                 this.viewHomepage(username);
+
             case "9":
                 PointsSystem.viewPrizes();
                 String userChoice = UserInput.rawInput();
@@ -384,7 +402,6 @@ public class CustomerMenu {
                     customerMenu.viewHomepage(username);
                 }
 
-
             case "10":
                 FAQ.FAQPrint();
                 System.out.print("\n" + "Press '=' to confirm exit or 1 to display the Questions again" + "\n");
@@ -395,6 +412,7 @@ public class CustomerMenu {
                     System.out.println(" ");
                     FAQ.FAQPrint();
                 }
+
             case "11":
                 if (!(cartList.size() == 0)) {
                     System.out.println("\n================================================= WARNING =================================================");
@@ -529,6 +547,7 @@ public class CustomerMenu {
                     // Display the final total payment after customer apply discount voucher
                     TimeUnit.SECONDS.sleep(1);
                     this.viewHomepage(member.getUserName());
+                    PointsSystem.pointsConversion(member.getUserName(), oID);
                 case "2":
                     /* If customer doesn't want to use voucher,
                     then the system will base on order's total spending after discount by membership to give customer discount voucher
@@ -540,6 +559,7 @@ public class CustomerMenu {
                     discount.displayCustomerDiscountCode(member);
                     TimeUnit.SECONDS.sleep(1);
                     this.viewHomepage(member.getUserName());
+                    PointsSystem.pointsConversion(member.getUserName(), oID);
                 default:
                     System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                     TimeUnit.SECONDS.sleep(1);
@@ -554,6 +574,7 @@ public class CustomerMenu {
             Long totalPayment = Long.parseLong(orderInfo[2]);
             discount.giveDiscountCode(member, totalPayment);
             this.viewHomepage(member.getUserName());
+            PointsSystem.pointsConversion(member.getUserName(), oID);
         }
     }
 }

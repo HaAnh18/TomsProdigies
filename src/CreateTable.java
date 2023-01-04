@@ -21,7 +21,7 @@ public class CreateTable {
 //    public void setRightAlign(boolean rightAlign) {
 //        this.rightAlign = rightAlign;
 //    }
-
+// When you set the setShowVerticalLines to true, the border of the table will be set under the below format.
     public void setShowVerticalLines(boolean showVerticalLines) {
         verticalSep = showVerticalLines ? "|" : "";
         joinSep = showVerticalLines ? "*" : " ";
@@ -41,7 +41,7 @@ public class CreateTable {
 
     public void print()
     // Print the table
-    {
+    { /*If the user input the header, the header will become !=null and all the borders will be measured.*/
         int[] maxWidths = headers != null ?
                 Arrays.stream(headers).mapToInt(String::length).toArray() : null;
 
@@ -56,6 +56,7 @@ public class CreateTable {
                 maxWidths[i] = Math.max(maxWidths[i], cells[i].length());
             }
         }
+        /*If the user input the header, the header will become !=null and print out the table */
 
         if (headers != null) {
             printLine(maxWidths);
@@ -70,6 +71,7 @@ public class CreateTable {
         }
     }
 
+    //This method is used to print the information in the line column.
     private void printLine(int[] columnWidths) {
         for (int i = 0; i < columnWidths.length; i++) {
             String line = String.join("", Collections.nCopies(columnWidths[i] +
@@ -79,6 +81,7 @@ public class CreateTable {
         System.out.println();
     }
 
+    //This method is used to print the information in the row column.
     private void printRow(String[] cells, int[] maxWidths) {
         for (int i = 0; i < cells.length; i++) {
             String s = cells[i];

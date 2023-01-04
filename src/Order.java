@@ -37,10 +37,7 @@ public class Order {
         String productID = product.getID();
         Long singleUnitPrice = product.getPrice();
         paymentPrice = product.getPrice() * quantity;
-//        Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + paymentPrice);
         productSales(String.valueOf(product.getTitle()), quantity);
-//        customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
-//        customer.updateMembership("./src/customers.txt", customer.getUserName());
         String membership = customer.getCustomerType();
         orderDate = new SimpleDateFormat("MM/dd/yyyy_HH:mm").format(Calendar.getInstance().getTime());
         orderStatus = "SUCCESSFUL";
@@ -60,8 +57,7 @@ public class Order {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(cID))
-                /* If the system could find out the customer's ID in ordersHistory's file
-                 */ {
+            {
                 orders.add(database.get(i));
             }
         }
@@ -80,37 +76,12 @@ public class Order {
         }
     }
 
-//    public void getOrderInfoById(String oID) {
-//
-//        ArrayList<String[]> orders = new ArrayList<>();
-//
-//        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
-//        for (int i = 1; i < database.size(); i++) {
-//            if (database.get(i)[0].equals(oID))
-//                /* If the system could find out the customer's ID in ordersHistory's file
-//                 */ {
-//                orders.add(database.get(i));
-//            }
-//        }
-//        CreateTable createTable = new CreateTable();
-//        createTable.setShowVerticalLines(true);
-//        createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
-//                "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
-//        for (String[] order : orders) {
-//            createTable.addRow(order[0], order[1], order[2], order[3],
-//                    order[4], order[5], order[6], order[7], order[9], order[10]);
-//        }
-//        createTable.print();
-//    }
-
     public void getTotalPaymentEachOrderId(Customer customer, String oID) throws IOException {
         ArrayList<String[]> orders = new ArrayList<>();
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
         for (int i = 1; i < database.size(); i++) {
-            if (database.get(i)[0].equals(oID))
-                /* If the system could find out the customer's ID in ordersHistory's file
-                 */ {
+            if (database.get(i)[0].equals(oID)) {
                 orders.add(database.get(i));
             }
         }
@@ -286,6 +257,7 @@ public class Order {
         writer.close();
     }
 
+    // Getter method for order date
     public String getOrderDate() {
         return orderDate;
     }
