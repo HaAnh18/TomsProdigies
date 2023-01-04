@@ -14,7 +14,6 @@ public class Admin extends Account {
         super();
     }
 
-
     public static boolean dateValidate(String date)
     // Validate the date that customer input
     {
