@@ -2,6 +2,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,6 +16,8 @@ public class Order {
     private String orderDate;
     private String orderStatus;
     private String deliveryStatus;
+
+    private String date;
 
     // Constructor
     public Order(String oID, Long paymentPrice, String orderDate, String orderStatus, String deliveryStatus) {
@@ -162,7 +165,7 @@ public class Order {
             discount.deleteDiscountCode("./src/customerDiscountCode.txt", id);
     }
 
-    public void getAllOrderInfo() {
+    public static void getAllOrderInfo() {
         ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
@@ -198,15 +201,25 @@ public class Order {
 
 
     /* This method will help to get the order date out of ordersHistory.txt */
-    public static ArrayList<Order> getOrderByDate(String date){
-        ArrayList<Order> dailyOrder = new ArrayList<>();
-        for (Order strings : Order.getOrderByDate(date)) {
-            String orderDate = strings.getOrderDate();
-            if (date.equalsIgnoreCase(orderDate)) {
-                dailyOrder.add(strings);
-            }
+    public static ArrayList<String[]> getDailyOrder() throws IOException, ParseException {
+
+        ArrayList<String[]> dailyOrder = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        String[] dateAndTime = ReadDataFromTXTFile.readColString(7, "./src/ordersHistory.txt", ",");
+        Scanner inputObj = new Scanner(System.in);
+        System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");
+        String date = inputObj.nextLine();
+        while (Admin.dateValidate(date)) /* validate if the timestamp is match to the user's input */ {
+            System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");
+            date = inputObj.nextLine();
         }
-        return dailyOrder;}
+        date = Admin.dateInput(date);
+        do {
+            Order.getAllOrderInfo();
+        }
+        while (dateAndTime.equals(date));
+        return dailyOrder;
+    }
+
 
     // Everytime a product is bought or ordered it will log in the productsSold file
     public void productSales(String product, int quantity) throws IOException {
