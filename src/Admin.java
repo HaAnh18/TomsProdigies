@@ -120,6 +120,7 @@ public class Admin extends Account {
         pw.println(ID + "," + title + "," + price + "," + category + "\n");
 //        // Write product's information to items' file
         pw.close();
+    }
 
     //This method is used to reformat the input date into a separate string for comparison.
     public static String dateInput(String date) {
@@ -281,7 +282,7 @@ public class Admin extends Account {
             // This method would allow system to write all data including new data into the customers' file
         }
 
-        deleteProductCategory("./src/items.txt",delCategory);
+        deleteProductCategory("./src/items.txt", delCategory);
     }
 
 
@@ -310,10 +311,10 @@ public class Admin extends Account {
 
 
     /* All the methods deleteCustomer and deleteCategory and deleteProduct basically works in the same logic
-    * First it finds the corresponding customer ID or name for category or product ID and exclude the information belong to
-    * that specific input, then it adds all the remaining info into a temporary ArrayList (newDataBase) and deletes all the content in .txt file
-    * and rewrite the file with the data in the newDataBase which will not have the "deleted data" since that has been excluded from the newDataBase
-    */
+     * First it finds the corresponding customer ID or name for category or product ID and exclude the information belong to
+     * that specific input, then it adds all the remaining info into a temporary ArrayList (newDataBase) and deletes all the content in .txt file
+     * and rewrite the file with the data in the newDataBase which will not have the "deleted data" since that has been excluded from the newDataBase
+     */
 
 
     public ArrayList<Long> getTotalRevenue() throws IOException {
@@ -383,31 +384,6 @@ public class Admin extends Account {
         revenueTable.print();
     }
 
-    public void addProduct() throws IOException, ParseException, InterruptedException
-    // This method for admin to add new product
-    {
-        Scanner scanner = new Scanner(System.in);
-        PrintWriter pw;
-        Product product = new Product();
-        pw = new PrintWriter(new FileWriter("./src/items.txt", true));
-        Path path = Paths.get("./src/items.txt");
-        int id = (int) Files.lines(path).count(); // Define the id of this product
-        System.out.println("Enter a year of this product: "); // Ask admin to input the product's year
-        int year = Integer.parseInt(scanner.nextLine());
-        String ID = String.format("I%03d-%04d", id, year); // Generate the product ID in items' file
-        System.out.println("Enter category: "); // Ask admin to input the product's category
-        String category = scanner.nextLine();
-        product.registerCategory(category); // Increase the quantity if the category had existed or create new category
-        System.out.println("Enter title: "); // Ask admin to input the product's title
-        String title = scanner.nextLine();
-        System.out.println("Enter price: "); // Ask admin to input the product's price
-        double price = scanner.nextDouble();
-        scanner.nextLine();
-        pw.println(ID + "," + title + "," + price + "," + category + "\n");
-//        // Write product's information to items' file
-        pw.close();
-
-    }
 
     /* This method allow admin to calculate daily revenue base on the timestamp of the purchase.*/
     public ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
@@ -419,17 +395,16 @@ public class Admin extends Account {
         Scanner inputObj = new Scanner(System.in);
         System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy):");
         String date = inputObj.nextLine();
-        while (dateValidate(date)) /* validate if the timestamp is match to the user's input */
-        {
+        while (dateValidate(date)) /* validate if the timestamp is match to the user's input */ {
             System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy):");
             date = inputObj.nextLine();
         }
         date = dateInput(date);
         //If the date is match, all the price will put in an Arraylist and total all the price.
-            for (int i = 1; i < dailyRevenue.length; i++) {
-        do revenueList.add(Long.valueOf(dailyRevenue[i]));
+        for (int i = 1; i < dailyRevenue.length; i++) {
+            do revenueList.add(Long.valueOf(dailyRevenue[i]));
             while (dateAndTime.equals(date));
-    }
-            return revenueList;
+        }
+        return revenueList;
     }
 }

@@ -71,7 +71,6 @@ public class PointsSystem {
             createTable.addRow(String.valueOf(i), prizeItems.get(i)[0], prizeItems.get(i)[1], prizeItems.get(i)[2], prizeItems.get(i)[3]);
         }
         createTable.print();
-        System.out.println("Please enter an option to exchange: ");
     }
 
     public static void exchangeItem(String user, String itemID) throws IOException {

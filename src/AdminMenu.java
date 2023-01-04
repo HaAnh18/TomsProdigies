@@ -13,6 +13,7 @@ public class AdminMenu {
         System.out.println("3. Exit");
 
         Admin admin = new Admin();
+        AuthenticationSystem authenticationSystem = new AuthenticationSystem();
         String option = UserInput.rawInput();
         switch (option) {
             case "1":
@@ -33,6 +34,7 @@ public class AdminMenu {
                 }
                 this.viewHomepage();
             case "2":
+                authenticationSystem.mainMenu();
             case "3":
                 // Display our course's information and our group's information
                 // and then exit the system
@@ -73,7 +75,7 @@ public class AdminMenu {
         System.out.println("9. Update price");
         System.out.println("10. Update status of the order");
         System.out.println("11. Update category");
-        System.out.println("12. Update point store");
+        System.out.println("12. Manage point store");
         System.out.println("13. Remove customer by customer ID");
         System.out.println("14. Log out");
         System.out.println("15. Exit");
@@ -115,7 +117,7 @@ public class AdminMenu {
                 // Search the customer information by customer ID
                 System.out.print("Enter customer ID: ");
                 String cID = scanner.nextLine();
-                order.getOrderInfo(cID);
+                order.getOrderInfoByCID(cID);
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
             case "8":
@@ -160,6 +162,7 @@ public class AdminMenu {
                 Long price = Long.parseLong(scanner.nextLine());
                 admin.updatePrice("./src/items.txt", String.valueOf(price), productInfo[0]);
                 adminMenu.viewHomepage();
+
             case "10":
                 // Search the order's information based on order ID
                 System.out.println("\n================================================= SEARCHING ORDER =================================================");
@@ -169,6 +172,7 @@ public class AdminMenu {
                 String status = scanner.nextLine().toUpperCase();
                 admin.updateDeliveryStatus("./src/ordersHistory.txt", status, oId);
                 adminMenu.viewHomepage();
+
             case "11":
                 // Allow user to add more product or remove any product
                 System.out.println("\n================================================= UPDATING CATEGORY =================================================");
@@ -200,6 +204,7 @@ public class AdminMenu {
                         adminMenu.viewHomepage();
                 }
             case "12":
+
             case "13":
                 // Admin could delete customer by using customer's ID
                 System.out.println("\n================================================= DELETING CUSTOMER =================================================");
