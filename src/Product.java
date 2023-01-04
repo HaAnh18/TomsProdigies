@@ -322,31 +322,37 @@ public class Product {
         table.print();
 
     }
-
+    // Getter method for pID
     public String getID() {
         return ID;
     }
 
+    // Setter method for pID
     public void setID(String ID) {
         this.ID = ID;
     }
 
+    // Getter method for title
     public String getTitle() {
         return title;
     }
 
+    // Getter method for price
     public Long getPrice() {
         return price;
     }
 
+    // Setter method for price
     public void setPrice(Long price) {
         this.price = price;
     }
 
+    // Getter method for category
     public String getCategory() {
         return category;
     }
 
+    // Setter method for category
     public void setCategory(String category) {
         this.category = category;
     }

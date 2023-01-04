@@ -77,8 +77,8 @@ public class FAQ {
                 table.setHeaders("Answer");
 
                 //using this for loop read and adding the next rows into a table from a specific column
-                for (int i = 0; i < matchResult.size(); i++) {
-                    table.addRow(matchResult.get(i)[2]);
+                for (String[] strings : matchResult) {
+                    table.addRow(strings[2]);
                 }
                 table.print();
 
