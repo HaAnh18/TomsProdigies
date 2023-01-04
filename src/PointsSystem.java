@@ -148,7 +148,7 @@ public class PointsSystem {
         // Set up table
         CreateTable table = new CreateTable();
         table.setShowVerticalLines(true);
-        table.setHeaders("Order ID", "cID", "prizeID", "Point Cost", "Date Exchanged", "Exchanged Status", "Pickup Status");
+        table.setHeaders("Order ID", "cID", "prizeID", "Point Cost", "Date Exchanged", "Exchange Status", "Pickup Status");
 
         // Get line in .txt file with parameter oID
         String[] exchangeConfirmation = ReadDataFromTXTFile.readSpecificLine(oID, 0, "./src/prizeExHistory.txt", ",");
@@ -159,5 +159,78 @@ public class PointsSystem {
 
         // Print out the table
         table.print();
+    }
+
+    public static void getExchangeInfo(String cID) {
+        ArrayList<String[]> orders = new ArrayList<>();
+
+        // Read all orders in prizeExHistory
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/prizeExHistory.txt");
+        for (int i = 1; i < database.size(); i++) {
+            if (database.get(i)[1].equals(cID)) {
+                orders.add(database.get(i)); //
+            }
+        }
+
+        // If there is no exchange with the cID
+        if (orders.size() == 0) {
+            System.out.println("This customer did not make an exchange yet!");
+        } else {
+
+            // Setting up table
+            CreateTable createTable = new CreateTable();
+            createTable.setShowVerticalLines(true);
+            createTable.setHeaders("OID", "CID", "PID", "POINT COSTS",
+                    "EXCHANGE DATE", "EXCHANGE STATUS", "PICKUP STATUS");
+
+            // Add all the exchangeHistory that have the corresponding cID
+            for (String[] order : orders) {
+                createTable.addRow(order[0], order[1], order[2], order[3],
+                        order[4], order[5], order[6]);
+            }
+            createTable.print();
+        }
+    }
+
+    public static void viewExchangeLog() {
+        // Read all line in prizeExHistory
+        ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/prizeExHistory.txt");
+        CreateTable createTable = new CreateTable();
+
+        // Setting up table
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("OID", "CID", "PID", "POINTS COST", "DATE EXCHANGED", "EXCHANGE STATUS", "PICKUP STATUS");
+
+        // For each line, assign all content into table
+        for (int i = 1; i < orders.size(); i++) {
+            createTable.addRow(orders.get(i)[0], orders.get(i)[1], orders.get(i)[2],
+                    orders.get(i)[3], orders.get(i)[4], orders.get(i)[5],
+                    orders.get(i)[6]);
+        }
+        createTable.print();
+    }
+
+    public void updatePickupStatus(String filepath, String newData, String oID) throws IOException
+    // This method allow admin to modify a pickup status of order that had existed in items' file
+    {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/prizeExHistory.txt");
+        for (String[] strings : database) {
+            if (strings[0].equals(oID))
+                /* If the system could find out the oID in prizeExHistory file
+                 * then the system allow admin to update the order's delivery status
+                 */ {
+                strings[5] = newData; // Modify the order's pickup status
+            }
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write(""); // The file would erase all the data in items' file
+        pw.close();
+
+        for (String[] strings : database) {
+            Write.rewriteFile(filepath, "#oID, cID, prizeID, Points Cost, Date Exchanged, Exchange Status, Pickup Status", String.join(",", strings));
+            // This method would allow system to write all data including new data into the prizeExHistory file
+        }
     }
 }

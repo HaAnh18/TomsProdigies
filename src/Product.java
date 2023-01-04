@@ -2,13 +2,13 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Product {
     // Attributes
+    // ArrayList<String> categories = new ArrayList<>(Arrays.asList(ReadDataFromTXTFile.readColString(3, "./src/items.txt", ",")));
     private String ID;
     private String title;
     private Long price;
@@ -24,10 +24,9 @@ public class Product {
     public Product() throws IOException {
     }
 
-    public void registerCategory(String category) throws IOException, ParseException, InterruptedException {
+    public void registerCategory(String category) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
         String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
-        AdminMenu adminMenu = new AdminMenu();
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(capital)) {
                 database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + 1);
@@ -36,7 +35,9 @@ public class Product {
                 pw.write("");
                 pw.close();
 
-                for (String[] obj : database) {
+                ArrayList<String[]> newDatabase = database;
+
+                for (String[] obj : newDatabase) {
                     Write.rewriteFile("./src/productsSold.txt", "#ID,pID,Quantities", String.join(",", obj));
                 }
             }
@@ -47,13 +48,11 @@ public class Product {
             System.out.println("Please choose your option: ");
             System.out.println("1. Create new category automatically");
             System.out.println("2. Exit");
-            String option = UserInput.rawInput();
+            int option = Integer.parseInt(scanner.nextLine());
             switch (option) {
-                case "1":
+                case 1:
                     createNewCategory(category);
                     break;
-                case "2":
-                    adminMenu.viewHomepage();
             }
         }
     }
@@ -153,13 +152,20 @@ public class Product {
         return pricesList;
     }
 
+    public static void printPriceRange() {
+        System.out.println("1. Below 25 million VND.");
+        System.out.println("2. 25 million VND to 50 million VND.");
+        System.out.println("3. 50 million VND to 75 million VND.");
+        System.out.println("4. 75 million VND to 100 million VND.");
+    }
 
-    public void findItemByPriceRange() throws IOException {
+    public static void findItemByPriceRange() throws IOException {
         ArrayList<String[]> items = ReadDataFromTXTFile.readAllLines("./src/items.txt");
 
         String option = UserInput.rawInput();
 
 
+//        ArrayList<String[]> matchResult = new ArrayList<>(this.getMatchResult(category[0]).size());
 
         CreateTable table = new CreateTable();
 
@@ -167,7 +173,7 @@ public class Product {
             case "1":
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
-                    if (0 < priceItem && priceItem < 25000000) {
+                    if (0 <= priceItem && priceItem < 25000000) {
                         table.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
                     }
                 }
@@ -177,7 +183,7 @@ public class Product {
 
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
-                    if (25000000 < priceItem && priceItem < 50000000) {
+                    if (25000000 <= priceItem && priceItem < 50000000) {
                         table.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
                     }
                 }
@@ -186,7 +192,7 @@ public class Product {
             case "3":
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
-                    if (5000000 < priceItem && priceItem < 75000000) {
+                    if (50000000 <= priceItem && priceItem < 75000000) {
                         table.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
                     }
                 }
@@ -195,7 +201,7 @@ public class Product {
             case "4":
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
-                    if (75000000 < priceItem && priceItem < 100000000) {
+                    if (75000000 <= priceItem && priceItem < 100000000) {
                         table.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
                     }
                 }
@@ -209,20 +215,21 @@ public class Product {
     }
 
     /* This method will help user to search by category */
-  public void searchByCategory(String category) throws IOException{
 
-      // Transforming user input to the right format.
-      String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+    public static void searchByCategory(String category) throws IOException {
 
-      // Create a empty Arraylist to store data after searching.
-      ArrayList<String[]> categories = new ArrayList<>();
+        //transforming user input to the right format.
+        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
 
-      // Temporary database to store data.
+        //create a empty Arraylist to store data after searching.
+        ArrayList<String[]> categories = new ArrayList<>();
+
+        //temporary database to store data.
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[3].equals(capital))
-            // If the system could find out the category in items.txt file
-            {
+                /* If the system could find out the category in items.txt file
+                 */ {
                 categories.add(database.get(i));
             }
         }
@@ -235,37 +242,101 @@ public class Product {
         createTable.print();
     }
 
-    // Getter method for ID
+    public static void searchCategoryByPriceRange(String category) throws IOException {
+        //transforming user input to the right format.
+        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+
+        //create a empty Arraylist to store data after searching.
+        ArrayList<String[]> categories = new ArrayList<>();
+
+        //temporary database to store data.
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+        for (int i = 1; i < database.size(); i++) {
+            if (database.get(i)[3].equals(capital))
+                /* If the system could find out the category in items.txt file
+                 */ {
+                categories.add(database.get(i));
+
+            }
+        }
+
+        Product.printPriceRange();
+        String option = UserInput.rawInput();
+
+
+//        ArrayList<String[]> matchResult = new ArrayList<>(this.getMatchResult(category[0]).size());
+
+        CreateTable table = new CreateTable();
+
+        switch (option) {
+            case "1":
+                for (int i = 0; i < categories.size(); i++) {
+                    Long priceItem = Long.parseLong(categories.get(i)[2]);
+                    if (0 <= priceItem && priceItem < 25000000) {
+                        table.addRow(categories.get(i)[0], categories.get(i)[1], categories.get(i)[2], categories.get(i)[3]);
+                    }
+                }
+                System.out.println("Price range: 0 --> 25 mil");
+                break;
+            case "2":
+                for (int i = 0; i < categories.size(); i++) {
+                    Long priceItem = Long.parseLong(categories.get(i)[2]);
+                    if (25000000 <= priceItem && priceItem < 50000000) {
+                        table.addRow(categories.get(i)[0], categories.get(i)[1], categories.get(i)[2], categories.get(i)[3]);
+                    }
+                }
+                System.out.println("Price range: 25 mil --> 50 mil");
+                break;
+            case "3":
+                for (int i = 0; i < categories.size(); i++) {
+                    Long priceItem = Long.parseLong(categories.get(i)[2]);
+                    if (50000000 <= priceItem && priceItem < 75000000) {
+                        table.addRow(categories.get(i)[0], categories.get(i)[1], categories.get(i)[2], categories.get(i)[3]);
+                    }
+                }
+                System.out.println("Price range: 50 mil --> 75 mil");
+                break;
+            case "4":
+                for (int i = 0; i < categories.size(); i++) {
+                    Long priceItem = Long.parseLong(categories.get(i)[2]);
+                    if (75000000 <= priceItem && priceItem < 100000000) {
+                        table.addRow(categories.get(i)[0], categories.get(i)[1], categories.get(i)[2], categories.get(i)[3]);
+                    }
+                }
+                System.out.println("Price range: 75 mil --> 100 mil");
+                break;
+            // for menu add 1 more but will be menu.something();
+        }
+        table.setShowVerticalLines(true);
+        table.setHeaders("ID", "Title", "Prices", "Category");
+        table.print();
+
+    }
+
     public String getID() {
         return ID;
     }
 
-    // Setter method for ID
     public void setID(String ID) {
         this.ID = ID;
     }
 
-    // Getter method for title
     public String getTitle() {
         return title;
     }
 
-    // Getter method for price
     public Long getPrice() {
         return price;
     }
 
-    // Setter method for price
     public void setPrice(Long price) {
         this.price = price;
     }
 
-    // Getter method for category
     public String getCategory() {
         return category;
     }
 
-    // Setter method for category
     public void setCategory(String category) {
         this.category = category;
     }

@@ -212,7 +212,10 @@ public class CustomerMenu {
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
                     case "2":
+
                         // Ask customer to choose the price range that he/she wants to search
+                        Product.printPriceRange();
+
                         product.findItemByPriceRange();
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
