@@ -694,8 +694,8 @@ public class CustomerMenu {
                     order.getTotalPaymentAfterApplyDiscountCode(oID, discountCodeCustomer, member);
                     // Display the final total payment after customer apply discount voucher
                     TimeUnit.SECONDS.sleep(1);
-                    this.viewHomepage(member.getUserName());
                     PointsSystem.pointsConversion(member.getcID(), oID);
+                    this.viewHomepage(member.getUserName());
 
                 case "2":
                     /* If customer doesn't want to use voucher,
@@ -707,8 +707,8 @@ public class CustomerMenu {
                     discount.giveDiscountCode(member, totalPayment);
                     discount.displayCustomerDiscountCode(member);
                     TimeUnit.SECONDS.sleep(1);
-                    this.viewHomepage(member.getUserName());
                     PointsSystem.pointsConversion(member.getcID(), oID);
+                    this.viewHomepage(member.getUserName());
                 default:
                     System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                     TimeUnit.SECONDS.sleep(1);
@@ -722,8 +722,8 @@ public class CustomerMenu {
                     "./src/billingHistory.txt", ",");
             Long totalPayment = Long.parseLong(orderInfo[2]);
             discount.giveDiscountCode(member, totalPayment);
-            this.viewHomepage(member.getUserName());
             PointsSystem.pointsConversion(member.getcID(), oID);
+            this.viewHomepage(member.getUserName());
         }
     }
 }

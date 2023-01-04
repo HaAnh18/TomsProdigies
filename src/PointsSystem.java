@@ -27,16 +27,19 @@ public class PointsSystem {
             }
             // Read all line in customers.txt file and put all data in arraylist
         }
+        System.out.println(newPoints);
 
         for (int i = 1; i < database.size(); i++) {
-            if (database.get(i)[6].equals(cID)) {
+            if (database.get(i)[0].equals(cID)) {
                 /* If the system could find out the username in customers' file
                  * then the system update their information
                  */
                 long appendPoints = (Long.parseLong(database.get(i)[9]) + newPoints);
                 database.get(i)[9] = (String.valueOf(appendPoints));  // The customer's information is changed (assigning new points)
+//                System.out.println(database.get(i)[9]);
             }
         }
+
         File file = new File("./src/customers.txt");
         PrintWriter pw = new PrintWriter(file);
 
