@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AdminMenu {
     public void view() throws IOException, ParseException, InterruptedException {
+        // Display a menu for user before login
         System.out.println("\n================================================= WELCOME TO TOM'S PRODIGIES STORE =================================================");
         System.out.println("1. Login by admin account");
         System.out.println("2. Back to authentication system");
@@ -15,6 +16,9 @@ public class AdminMenu {
         String option = UserInput.rawInput();
         switch (option) {
             case "1":
+                // Ask user to input username and password
+                // if the username and password are not correct, the system will ask user to input again
+                // otherwise, the system will change to the homepage after login
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Enter username: ");
                 String username = scanner.nextLine();
@@ -30,6 +34,8 @@ public class AdminMenu {
                 this.viewHomepage();
             case "2":
             case "3":
+                // Display our course's information and our group's information
+                // and then exit the system
                 System.out.println("Thank you so much for using our system. See you soon !!!!");
                 System.out.println("COSC2081 GROUP ASSIGNMENT");
                 System.out.println("STORE ORDER MANAGEMENT SYSTEM");
@@ -46,6 +52,8 @@ public class AdminMenu {
                 createTable.print();
                 System.exit(1);
             default:
+                // If customer input another option that don't have in the menu
+                // then the system will give he/she message and back to the viewpage
                 System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                 TimeUnit.SECONDS.sleep(1);
                 this.view();
@@ -67,9 +75,8 @@ public class AdminMenu {
         System.out.println("11. Update category");
         System.out.println("12. Update point store");
         System.out.println("13. Remove customer by customer ID");
-        System.out.println("14. FAQ");
-        System.out.println("15. Log out");
-        System.out.println("16. Exit");
+        System.out.println("14. Log out");
+        System.out.println("15. Exit");
 
         Scanner scanner = new Scanner(System.in);
         Product product = new Product();
@@ -80,14 +87,17 @@ public class AdminMenu {
         String choice = UserInput.rawInput();
         switch (choice) {
             case "1":
+                // Display the information of all products
                 product.getAllProductInfo();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
             case "2":
+                // Display the information of all orders
                 order.getAllOrderInfo();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
             case "3":
+                // Display the information of all customers
                 admin.getAllCustomerInfo();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
@@ -97,16 +107,19 @@ public class AdminMenu {
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
             case "6":
+                // Display all the membership types
                 admin.getAllMembershipTypes();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
             case "7":
+                // Search the customer information by customer ID
                 System.out.print("Enter customer ID: ");
                 String cID = scanner.nextLine();
                 order.getOrderInfo(cID);
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
             case "8":
+                // Allow user to add more product or remove any product
                 System.out.println("\n================================================= UPDATING PRODUCT =================================================");
                 System.out.println("1. Add product");
                 System.out.println("2. Remove product");
@@ -132,6 +145,7 @@ public class AdminMenu {
                         adminMenu.viewHomepage();
                 }
             case "9":
+                // Allow admin to change the price of the product
                 System.out.println("\n================================================= UPDATING PRICE =================================================");
                 product.getProductHaveId();
                 String choiceOrder = UserInput.rawInput();
@@ -147,6 +161,7 @@ public class AdminMenu {
                 admin.updatePrice("./src/items.txt", String.valueOf(price), productInfo[0]);
                 adminMenu.viewHomepage();
             case "10":
+                // Search the order's information based on order ID
                 System.out.println("\n================================================= SEARCHING ORDER =================================================");
                 order.getAllOrderInfo();
                 System.out.println("Enter order ID of the order that you want to update: ");
@@ -155,6 +170,7 @@ public class AdminMenu {
                 admin.updateDeliveryStatus("./src/ordersHistory.txt", status, oId);
                 adminMenu.viewHomepage();
             case "11":
+                // Allow user to add more product or remove any product
                 System.out.println("\n================================================= UPDATING CATEGORY =================================================");
                 System.out.println("1. Add new category");
                 System.out.println("2. Delete category");
@@ -185,6 +201,7 @@ public class AdminMenu {
                 }
             case "12":
             case "13":
+                // Admin could delete customer by using customer's ID
                 System.out.println("\n================================================= DELETING CUSTOMER =================================================");
                 admin.getAllCustomerInfo();
                 System.out.println("Enter customer ID that you want to delete: ");
@@ -192,9 +209,8 @@ public class AdminMenu {
                 admin.deleteCustomer("./src/customers.txt", delCustomer, 0);
                 adminMenu.viewHomepage();
             case "14":
-            case "15":
                 adminMenu.view();
-            case "16":
+            case "15":
                 System.out.println("Thank you so much for using our system. See you soon !!!!");
                 System.out.println("COSC2081 GROUP ASSIGNMENT");
                 System.out.println("STORE ORDER MANAGEMENT SYSTEM");
@@ -217,7 +233,9 @@ public class AdminMenu {
         }
     }
 
-    public void viewStatistic() throws IOException, InterruptedException, ParseException {
+    public void viewStatistic() throws IOException, InterruptedException, ParseException
+    // Display all the statistic related to the revenue of the store as well as the most/the least popular product and the most spender in store
+    {
         System.out.println("\n================================================= ALL STATISTICS =================================================");
         System.out.println("1. List total revenue");
         System.out.println("2. List total revenue in particular day");
@@ -229,24 +247,32 @@ public class AdminMenu {
         Admin admin = new Admin();
         AdminMenu adminMenu = new AdminMenu();
         String adChoice = UserInput.rawInput();
+        SortProduct sortProduct = new SortProduct();
         switch (adChoice) {
             case "1":
+                // Display the total revenue of the store
                 admin.calculateRevenue(admin.getTotalRevenue());
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
             case "2":
+                // Display the daily revenue of the store
                 CreateTable dailyRevenue = new CreateTable();
                 dailyRevenue.setShowVerticalLines(true);
                 dailyRevenue.setHeaders("DAILY REVENUE");
                 dailyRevenue.addRow(String.valueOf(admin.getDailyRevenue()));
                 adminMenu.viewStatistic();
             case "3":
+                // Display the most popular product in store
+                sortProduct.getBestSeller();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
             case "4":
+                // Display the least popular product in store
+                sortProduct.getLeastSeller();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
             case "5":
+                // Display the customer that spend the most in store
                 admin.getMostSpender();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
