@@ -17,6 +17,8 @@ public class Admin extends Account {
     public static boolean dateValidate(String date)
     // Validate the date that customer input
     {
+        //First, we will need to seperate the day into three different component and reformat it into a string.
+
         String[] dateComponent = date.split("/");
         String month = dateComponent[0].replaceFirst("^0*", "");
         String day = dateComponent[1].replaceFirst("^0*", "");
@@ -118,6 +120,16 @@ public class Admin extends Account {
         pw.println(ID + "," + title + "," + price + "," + category + "\n");
 //        // Write product's information to items' file
         pw.close();
+    }
+
+    //This method is used to reformat the input date into a separate string for comparison.
+    public static String dateInput(String date) {
+        String[] dateComponent = date.split("/");
+        String month = dateComponent[0].replaceFirst("^0*", "");
+        String day = dateComponent[1].replaceFirst("^0*", "");
+        String year = dateComponent[2].replaceFirst("^0*", "");
+        date = month + "/" + day + "/" + year;
+        return date;
 
     }
 
@@ -270,7 +282,7 @@ public class Admin extends Account {
             // This method would allow system to write all data including new data into the customers' file
         }
 
-        deleteProductCategory("./src/items.txt",delCategory);
+        deleteProductCategory("./src/items.txt", delCategory);
     }
 
 
@@ -299,10 +311,10 @@ public class Admin extends Account {
 
 
     /* All the methods deleteCustomer and deleteCategory and deleteProduct basically works in the same logic
-    * First it finds the corresponding customer ID or name for category or product ID and exclude the information belong to
-    * that specific input, then it adds all the remaining info into a temporary ArrayList (newDataBase) and deletes all the content in .txt file
-    * and rewrite the file with the data in the newDataBase which will not have the "deleted data" since that has been excluded from the newDataBase
-    */
+     * First it finds the corresponding customer ID or name for category or product ID and exclude the information belong to
+     * that specific input, then it adds all the remaining info into a temporary ArrayList (newDataBase) and deletes all the content in .txt file
+     * and rewrite the file with the data in the newDataBase which will not have the "deleted data" since that has been excluded from the newDataBase
+     */
 
 
     public ArrayList<Long> getTotalRevenue() throws IOException {
@@ -372,35 +384,27 @@ public class Admin extends Account {
         revenueTable.print();
     }
 
+
     /* This method allow admin to calculate daily revenue base on the timestamp of the purchase.*/
-    public  ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
-        String[] dailyRevenue = ReadDataFromTXTFile.readColString(2,"./src/billingHistory.txt", ",");
-        String[] dateAndTime = ReadDataFromTXTFile.readColString(3,"./src/billingHistory.txt",",");
+    public ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
+
+        String[] dailyRevenue = ReadDataFromTXTFile.readColString(2, "./src/billingHistory.txt", ",");
+        String[] dateAndTime = ReadDataFromTXTFile.readColString(3, "./src/billingHistory.txt", ",");
         ArrayList<Long> revenueList = new ArrayList<>(dailyRevenue.length);
 
         Scanner inputObj = new Scanner(System.in);
         System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy):");
         String date = inputObj.nextLine();
-        while (dateValidate(date)) /* validate if the timestamp is match to the user's input */
-        {
+        while (dateValidate(date)) /* validate if the timestamp is match to the user's input */ {
             System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy):");
             date = inputObj.nextLine();
         }
         date = dateInput(date);
-            for (int i = 1; i < dailyRevenue.length; i++) {
-        do revenueList.add(Long.valueOf(dailyRevenue[i]));
+        //If the date is match, all the price will put in an Arraylist and total all the price.
+        for (int i = 1; i < dailyRevenue.length; i++) {
+            do revenueList.add(Long.valueOf(dailyRevenue[i]));
             while (dateAndTime.equals(date));
-    }
-            return revenueList;
-    }
-
-    public static String dateInput(String date)
-    {
-        String[] dateComponent = date.split("/");
-        String month = dateComponent[0].replaceFirst("^0*", "");
-        String day = dateComponent[1].replaceFirst("^0*", "");
-        String year = dateComponent[2].replaceFirst("^0*", "");
-        date = month + "/" + day + "/" + year;
-        return date;
+        }
+        return revenueList;
     }
 }

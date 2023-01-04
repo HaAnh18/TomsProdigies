@@ -2,6 +2,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,6 +16,8 @@ public class Order {
     private String orderDate;
     private String orderStatus;
     private String deliveryStatus;
+
+    private String date;
 
     // Constructor
     public Order(String oID, Long paymentPrice, String orderDate, String orderStatus, String deliveryStatus) {
@@ -58,34 +61,58 @@ public class Order {
         cart.deleteItemInCart("./src/customerCart.txt", customer.getcID(), product);
     }
 
-    public void getOrderInfo(String cID) {
-        ArrayList<String[]> orders = new ArrayList<>();
+    /* This method will help to get the order date out of ordersHistory.txt */
+    public static ArrayList<String[]> getOrderByDate() throws IOException, ParseException {
 
-        // Read all orders in orderHistory
+        ArrayList<String[]> dailyOrder = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        String[] dateAndTime = ReadDataFromTXTFile.readColString(7, "./src/ordersHistory.txt", ",");
+        Scanner inputObj = new Scanner(System.in);
+        Order order = new Order();
+        System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");
+        String date = inputObj.nextLine();
+        while (Admin.dateValidate(date)) /* validate if the timestamp is match to the user's input */ {
+            System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");
+            date = inputObj.nextLine();
+
+        }
+        date = Admin.dateInput(date);
+        do {
+            order.getAllOrderInfo();
+        }
+        while (dateAndTime.equals(date));
+        return dailyOrder;
+    }
+
+    public void searchOrder(String oId)
+    // Searching the order by using order ID
+    {
+        ArrayList<String[]> orders = new ArrayList<>(); // Create a new arraylist to store order information
+
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        // Read all line in ordersHistory.txt file and put all data in arraylist
         for (int i = 1; i < database.size(); i++) {
-            if (database.get(i)[1].equals(cID)) {
-                orders.add(database.get(i)); //
+            if (database.get(i)[0].equals(oId))
+                /* If the system could find out the customer's ID in ordersHistory's file
+                 */ {
+                orders.add(database.get(i));
             }
         }
-
-        // If there is no order with the cID
-        if (orders.size() == 0) {
-            System.out.println("This customer does not make order yet!");
-        } else {
-            // Setting up table
+        if (!(orders.size() == 0)) {
             CreateTable createTable = new CreateTable();
             createTable.setShowVerticalLines(true);
             createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
                     "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
-
-            // Add all the orders that have the corresponding cID
+            /* Set header for the order information table */
             for (String[] order : orders) {
                 createTable.addRow(order[0], order[1], order[2], order[3],
-                        order[4], order[5], order[6], order[7], order[9], order[10]);
+                        order[4], order[5], order[6], order[7], order[8], order[9]);
+                /* Add information to each row in table */
             }
             createTable.print();
+        } else {
+            System.out.println("THERE IS NO ORDER HAVE THIS ID");
         }
+
     }
 
     public void getTotalPaymentEachOrderId(Customer customer, String oID) throws IOException {
@@ -246,15 +273,36 @@ public class Order {
         return this.oID;
     }
 
-    public static ArrayList<Order> getOrderByDate(String date){
-        ArrayList<Order> dailyOrder = new ArrayList<>();
-        for (Order strings : Order.getOrderByDate(date)) {
-            String orderDate = strings.getOrderDate();
-            if (date.equalsIgnoreCase(orderDate)) {
-                dailyOrder.add(strings);
+    public void getOrderInfoByCID(String cID) {
+        ArrayList<String[]> orders = new ArrayList<>();
+
+        // Read all orders in orderHistory
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        for (int i = 1; i < database.size(); i++) {
+            if (database.get(i)[1].equals(cID)) {
+                orders.add(database.get(i)); //
             }
         }
-        return dailyOrder;}
+
+        // If there is no order with the cID
+        if (orders.size() == 0) {
+            System.out.println("This customer does not make order yet!");
+        } else {
+            // Setting up table
+            CreateTable createTable = new CreateTable();
+            createTable.setShowVerticalLines(true);
+            createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
+                    "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
+
+            // Add all the orders that have the corresponding cID
+            for (String[] order : orders) {
+                createTable.addRow(order[0], order[1], order[2], order[3],
+                        order[4], order[5], order[6], order[7], order[9], order[10]);
+            }
+            createTable.print();
+        }
+    }
+
 
     // Everytime a product is bought or ordered it will log in the productsSold file
     public void productSales(String product, int quantity) throws IOException {
