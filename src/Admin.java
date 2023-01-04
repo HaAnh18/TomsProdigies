@@ -105,7 +105,7 @@ public class Admin extends Account {
         createTable.print(); // Print the table
     }
 
-    public void addProduct() throws IOException
+    public void addProduct() throws IOException, ParseException, InterruptedException
     // This method for admin to add new product
     {
         Scanner scanner = new Scanner(System.in);

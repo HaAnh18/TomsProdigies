@@ -33,41 +33,53 @@ public class Order {
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/ordersHistory.txt", true));
 
+        // Assigning values to variables
         String customerID = customer.getcID();
         String productID = product.getID();
         Long singleUnitPrice = product.getPrice();
-        paymentPrice = product.getPrice() * quantity;
-        productSales(String.valueOf(product.getTitle()), quantity);
         String membership = customer.getCustomerType();
         orderDate = new SimpleDateFormat("MM/dd/yyyy_HH:mm").format(Calendar.getInstance().getTime());
         orderStatus = "SUCCESSFUL";
         deliveryStatus = "DELIVERING";
 
+        // Getting payment price
+        paymentPrice = product.getPrice() * quantity;
+
+        // Log in product Sales based on the order
+        productSales(String.valueOf(product.getTitle()), quantity);
+
+        // Log order into orderHistory file
         pw.println(oID + "," + customerID + "," + membership + "," + productID + "," +
                 singleUnitPrice + "," + quantity + "," + paymentPrice + "," + orderDate + "," + orderStatus + "," + deliveryStatus);
         pw.close();
+
+        // Delete Item in cart after created an order
         Cart cart = new Cart();
         cart.deleteItemInCart("./src/customerCart.txt", customer.getcID(), product);
     }
 
     public void getOrderInfo(String cID) {
-
         ArrayList<String[]> orders = new ArrayList<>();
 
+        // Read all orders in orderHistory
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
         for (int i = 1; i < database.size(); i++) {
-            if (database.get(i)[1].equals(cID))
-            {
-                orders.add(database.get(i));
+            if (database.get(i)[1].equals(cID)) {
+                orders.add(database.get(i)); //
             }
         }
+
+        // If there is no order with the cID
         if (orders.size() == 0) {
             System.out.println("This customer does not make order yet!");
         } else {
+            // Setting up table
             CreateTable createTable = new CreateTable();
             createTable.setShowVerticalLines(true);
             createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
                     "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
+
+            // Add all the orders that have the corresponding cID
             for (String[] order : orders) {
                 createTable.addRow(order[0], order[1], order[2], order[3],
                         order[4], order[5], order[6], order[7], order[9], order[10]);
@@ -78,21 +90,26 @@ public class Order {
 
     public void getTotalPaymentEachOrderId(Customer customer, String oID) throws IOException {
         ArrayList<String[]> orders = new ArrayList<>();
-
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+
+        // Loop through all ordersHistory
         for (int i = 1; i < database.size(); i++) {
-            if (database.get(i)[0].equals(oID)) {
-                orders.add(database.get(i));
+            if (database.get(i)[0].equals(oID)) { // Finds the corresponding order
+                orders.add(database.get(i)); // Add order to ArrayList of orders
             }
         }
 
         Long totalPayment = (long) 0;
         Long totalPaymentAfterDiscount = (long) 0;
         String membership = "";
+
+        // Adding in the total payment using each
         for (String[] order : orders) {
             totalPayment += (long) Integer.parseInt(order[6]);
             membership = order[2];
         }
+
+        // Based on the membership assigned above, it will calculate totalPayment with discount
         switch (membership) {
             case "Silver":
                 totalPaymentAfterDiscount = (long) (totalPayment * (1 - 0.05));
@@ -106,18 +123,28 @@ public class Order {
             case "Regular":
                 break;
         }
+
+        // Calculate new totalSpending based on discount
         Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + totalPaymentAfterDiscount);
+
+        // update methods for corresponding attributes
         customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
         customer.updateMembership("./src/customers.txt", customer.getUserName());
 
+        // Setting up table and print out the before and after total payment with membership type
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("TOTAL PAYMENT", "MEMBERSHIP", "TOTAL PAYMENT AFTER DISCOUNT");
         createTable.addRow(String.valueOf(totalPayment), membership,
                 String.valueOf(totalPaymentAfterDiscount));
         createTable.print();
+
+
+        // Get the corresponding info for order
         String cID = customer.getcID();
         String orderDate = new SimpleDateFormat("MM/dd/yyyy_HH:mm").format(Calendar.getInstance().getTime());
+
+        // Update billingHistory with corresponding info
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/billingHistory.txt", true));
         pw.println(oID + "," + cID + "," + totalPaymentAfterDiscount + "," + orderDate);
@@ -125,12 +152,19 @@ public class Order {
     }
 
     public void getTotalPaymentAfterApplyDiscountCode(String oID, String id, Customer customer) throws IOException {
+        // Reading from 2 different files to get the corresponding info with each other
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
         ArrayList<String[]> orderInfo = ReadDataFromTXTFile.readAllLines("./src/billingHistory.txt");
+
         Long finalPrice = (long) 0;
+
         for (int i = 1; i < database.size(); i++) {
             for (String[] strings : orderInfo) {
+
+                // Find the corresponding totalPayment
                 if (database.get(i)[1].equals(id)) {
+
+                    // Find the corresponding order using oID and calculate finalPrice (total payment)
                     if (strings[0].equals(oID)) {
                         long discountAmount = Long.parseLong(database.get(i)[3]);
                         strings[2] = String.valueOf(Long.parseLong(strings[2]) - discountAmount);
@@ -139,34 +173,46 @@ public class Order {
                 }
             }
         }
-                PrintWriter pw = new PrintWriter("./src/billingHistory.txt");
+        PrintWriter pw = new PrintWriter("./src/billingHistory.txt");
 
-                pw.write("");
-                pw.close();
+        // Delete to get ready to rewrite
+        pw.write("");
+        pw.close();
 
-                for (String[] obj : orderInfo) {
-                    Write.rewriteFile("./src/billingHistory.txt", "#OID,CID,Total payment after discount,Order date",
-                            String.join(",", obj));
-                }
-            Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + (finalPrice));
-            customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
-            customer.updateMembership("./src/customers.txt", customer.getUserName());
-//            System.out.println(finalPrice);
-            CreateTable createTable = new CreateTable();
-            createTable.setShowVerticalLines(true);
-            createTable.setHeaders("FINAL TOTAL PAYMENT");
-            createTable.addRow(String.valueOf(finalPrice));
-            createTable.print();
+        // Write all the orderInfo back with updated price for specific order
+        for (String[] obj : orderInfo) {
+            Write.rewriteFile("./src/billingHistory.txt", "#OID,CID,Total payment after discount,Order date",
+                    String.join(",", obj));
+        }
 
-            Discount discount = new Discount();
-            discount.deleteDiscountCode("./src/customerDiscountCode.txt", id);
+        // New totalSpending amount
+        Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + (finalPrice));
+
+        // Update TotalSpending and Membership for customer based on new totalSpending
+        customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
+        customer.updateMembership("./src/customers.txt", customer.getUserName());
+
+        // Setting up table and adding content
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("FINAL TOTAL PAYMENT");
+        createTable.addRow(String.valueOf(finalPrice));
+        createTable.print();
+
+        Discount discount = new Discount();
+        discount.deleteDiscountCode("./src/customerDiscountCode.txt", id);
     }
 
     public void getAllOrderInfo() {
+        // Read all line in ordersHistory
         ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
         CreateTable createTable = new CreateTable();
+
+        // Setting up table
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("OID", "CID", "PID", "MEMBERSHIP", "TOTAL PAYMENT", "TIMESTAMP", "TOTAL SPENDING", "ORDER STATUS", "DELIVERING STATUS");
+
+        // For each line, assign all content into table
         for (int i = 1; i < orders.size(); i++) {
             createTable.addRow(orders.get(i)[0], orders.get(i)[1], orders.get(i)[2],
                     orders.get(i)[3], orders.get(i)[4], orders.get(i)[5],
@@ -177,16 +223,20 @@ public class Order {
 
     public String oIDDataForValidate(String oId) {
         try {
+            // Read each line in ordersHistory
             Scanner fileScanner = new Scanner(new File("./src/ordersHistory.txt"));
-
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
                 String[] helo = line.split(",");
+
+                // If an oID is the same as the one generated
+                // It will generate a new oID and run it through the validation process again
                 if (helo[0].equals(oId)) {
                     Random random = new Random();
                     oId = String.format("0%03d", random.nextInt(999));
                     oIDDataForValidate(oId);
-                } else {
+
+                } else {    // The oID has no conflict and is able to be used
                     this.oID = oId;
                 }
             }
@@ -196,8 +246,6 @@ public class Order {
         return this.oID;
     }
 
-
-    /* This method will help to get the order date out of ordersHistory.txt */
     public static ArrayList<Order> getOrderByDate(String date){
         ArrayList<Order> dailyOrder = new ArrayList<>();
         for (Order strings : Order.getOrderByDate(date)) {
@@ -216,9 +264,12 @@ public class Order {
                 database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + quantity);
                 File file = new File("./src/productsSold.txt");
                 PrintWriter pw = new PrintWriter(file);
+
+                // Delete all content i file
                 pw.write("");
                 pw.close();
 
+                // Rewrite file with new data
                 for (String[] obj : database) {
                     Write.rewriteFile("./src/productsSold.txt", "#ID,Category,Quantity", String.join(",", obj));
                 }
@@ -233,11 +284,13 @@ public class Order {
     public boolean checkProductSales(String product) {
         boolean found = false;
         try {
+            // Read lines in the file
             Scanner fileScanner = new Scanner(new File("./src/productsSold.txt"));
-
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
                 String[] values = line.split(",");
+
+                // Check whether a product already existed in the file
                 if (product.equals(values[1])) {
                     found = true;
                 }
@@ -248,11 +301,16 @@ public class Order {
         return found;
     }
 
-    // If the checkProductSales return false, it will create a new line containing the pID of that product and start to log the amount of sales
+
+    // If the checkProductSales return false, it will create a new line containing the name of that product and start to log the amount of sales
     public void createNewProductSale(String product, int quantity) throws IOException {
         Path path = Paths.get("./src/productsSold.txt");
+
+        // Count existing lines in file
         int id = (int) Files.lines(path).count();
         PrintWriter writer = new PrintWriter(new FileWriter("./src/productsSold.txt", true));
+
+        // Append new product based on product name and quantity
         writer.print("\n" + id + "," + product + "," + quantity);
         writer.close();
     }
