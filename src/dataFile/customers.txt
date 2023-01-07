@@ -8,4 +8,3 @@ C986,Dylan Case,dylan@hotmail.com,02 West Drive,0424125598,Gold,dylanc,79d886010
 C762,Ming Ka,minkuan159@gmail.com,999 svh,0963456789,Platinum,Ming,5eac73d5f4641d25dbd988b429787ba7,57000000,450
 C010,Ha Anh,nana@gmail.com,12 Street,0987654321,Platinum,nana,e508a7edac21c6f07eb184fb27ccc8e5,254000000,1690
 C833,Nhi Nguyen,nhingg@gmail.com,12 Abc,1234567890,Platinum,nhiheo,6941df95a19d99b149ec18426f9a661b,196900000,1544
-C666,Mr Bao,MrB@BaoCompany.com,420 HighStrt,0696969420,Regular,bao,b04a8f25b97c1c2c53eae38621181a69,0,0

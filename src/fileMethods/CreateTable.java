@@ -1,8 +1,9 @@
+package fileMethods;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-// Link code
 // https://www.logicbig.com/how-to/code-snippets/jcode-java-cmd-command-line-table.html
 public class CreateTable {
     // Attributes
@@ -18,7 +19,7 @@ public class CreateTable {
         setShowVerticalLines(false);
     }
 
-// When you set the setShowVerticalLines to true, the border of the table will be set under the below format.
+    // When you set the setShowVerticalLines to true, the border of the table will be set under the below format.
     public void setShowVerticalLines(boolean showVerticalLines) {
         verticalSep = showVerticalLines ? "|" : "";
         joinSep = showVerticalLines ? "*" : " ";

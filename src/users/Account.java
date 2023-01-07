@@ -1,3 +1,9 @@
+package users;
+
+import fileMethods.CreateTable;
+import fileMethods.ReadDataFromTXTFile;
+import fileMethods.Write;
+
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -42,7 +48,7 @@ public class Account {
     // Register the customer's account
     {
         PrintWriter pw;
-        pw = new PrintWriter(new FileWriter("./src/customers.txt", true));
+        pw = new PrintWriter(new FileWriter("./src/dataFile/customers.txt", true));
         Random rd = new Random();
         int id = rd.nextInt(999);
         cID = validateCId(String.format("C%03d", id));
@@ -57,7 +63,7 @@ public class Account {
         totalPoint = (long) 0;
         pw.println(cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + ","
                 + userName + "," + password + "," + totalSpending + "," + totalPoint);
-        // Write customer's information to customers file
+        // FileMethods.Write customer's information to customers file
         pw.close();
     }
 
@@ -65,7 +71,7 @@ public class Account {
     // Validate customer ID to make sure that CID of each customer will be unique
     {
         try {
-            Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
+            Scanner fileScanner = new Scanner(new File("./src/dataFile/customers.txt"));
 
             while (fileScanner.hasNext())
             // The system will read the file and while it has next line, it will do following steps
@@ -95,7 +101,7 @@ public class Account {
         boolean isAuthentication = false;
 
         try {
-            Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
+            Scanner fileScanner = new Scanner(new File("./src/dataFile/customers.txt"));
 
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
@@ -126,7 +132,7 @@ public class Account {
         String username = scanner.nextLine();
 
         try {
-            Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
+            Scanner fileScanner = new Scanner(new File("./src/dataFile/customers.txt"));
 
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
@@ -167,7 +173,7 @@ public class Account {
     // Validate the name that customer inputs
     {
         String rulesName = "(\\b[A-Z]{1}[a-z]+)( )([A-Z]{1}[a-z]+\\b)";
-        // Customer's name must contain letters only and have white space
+        // Users.Customer's name must contain letters only and have white space
         Pattern pattern = Pattern.compile(rulesName);
         Matcher matcher = pattern.matcher(name);
         return matcher.matches(); // Returns true if name matches, else returns false
@@ -349,7 +355,7 @@ public class Account {
     public void updateName(String filepath, String newData, String userName) throws IOException
     // Update a new name in customer's information
     {
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
         for (String[] strings : database) {
             if (strings[6].equals(userName) && validateName(newData))
@@ -375,7 +381,7 @@ public class Account {
     public void updateEmail(String filepath, String newData, String userName) throws IOException
     // Update a new email in customer's information
     {
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
         for (String[] strings : database) {
             if (strings[6].equals(userName) && validateEmail(newData))
@@ -401,8 +407,8 @@ public class Account {
     public void updateAddress(String filepath, String newData, String userName) throws IOException
     // Update a new address in customer's information
     {
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
-//        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
+//        ArrayList<String[]> database = FileMethods.ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
         for (String[] strings : database) {
             if (strings[6].equals(userName) && validateAddress(newData))
@@ -429,7 +435,7 @@ public class Account {
     public void updatePhone(String filepath, String newData, String userName) throws IOException
     // Update a new phone number in customer's information
     {
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
         for (String[] strings : database) {
             if (strings[6].equals(userName) && validatePhoneNumber(newData))
@@ -457,7 +463,7 @@ public class Account {
     public void updatePassword(String filepath, String newData, String userName) throws IOException
     // Update a new password in customer's information
     {
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
         for (String[] strings : database) {
             if (strings[6].equals(userName) && validatePassword(newData))
@@ -484,7 +490,7 @@ public class Account {
     public void checkMembership(String userName) throws IOException
     // Display the customer's membership status
     {
-        String[] database = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/customers.txt", ",");
+        String[] database = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/dataFile/customers.txt", ",");
         // Read all information of this customer
         CreateTable createTable = new CreateTable();
         createTable.setShowVerticalLines(true);
@@ -498,7 +504,7 @@ public class Account {
     public void updateTotalSpending(String filepath, String newData, String userName) throws IOException
     // Update total spending of customer after he/she finished every order
     {
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
         for (String[] strings : database) {
             if (strings[6].equals(userName))
@@ -527,7 +533,7 @@ public class Account {
     // Update customer's membership when he/she reached the minimum spending in every membership's requirement
     {
 
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
 
         // Loop through all customers

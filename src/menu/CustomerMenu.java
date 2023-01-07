@@ -1,3 +1,17 @@
+package menu;
+
+import bonusFeatures.Cart;
+import bonusFeatures.Discount;
+import bonusFeatures.FAQ;
+import bonusFeatures.PointsSystem;
+import fileMethods.ReadDataFromTXTFile;
+import fileMethods.UserInput;
+import order.Order;
+import product.Product;
+import product.SortProduct;
+import users.Account;
+import users.Customer;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -54,6 +68,7 @@ public class CustomerMenu {
                  */
                         if (!customer.login(usernameNoSpace, password)) {
                             System.out.println("Incorrect login info, please try again!");
+                            this.cookies = false;
 
                         } else {
                             this.cookies = true;
@@ -107,7 +122,7 @@ public class CustomerMenu {
                     case "3":
                         System.out.println("Enter category: ");
                         category = scanner.nextLine();
-                        Product.searchCategoryByPriceRange(category);
+                        product.searchCategoryByPriceRange(category);
                         TimeUnit.SECONDS.sleep(1);
                         customerMenu.view();
 
@@ -126,7 +141,7 @@ public class CustomerMenu {
                 PointsSystem.viewPrizes(); // Display all the prizes that customers could exchange by his/her point
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
-                
+
             case "7":
                 System.out.println("\n================================================= MEMBERSHIP TYPES =================================================");
                 customer.getAllMembershipTypes(); // Display all types of membership and its discount for customer
@@ -138,7 +153,7 @@ public class CustomerMenu {
                 // Display all the questions and then the customer will choose which question he/she want to find
                 // After that, the system will display the answer of the customer's choice question
                 // The system will display question again or back to viewpage based on customer's choice
-                ArrayList<String[]> faq = ReadDataFromTXTFile.readAllLines("./src/FAQ.txt");
+                ArrayList<String[]> faq = ReadDataFromTXTFile.readAllLines("./src/dataFile/FAQ.txt");
                 String question;
                 do {
                     try {
@@ -171,7 +186,7 @@ public class CustomerMenu {
             case "10":
                 // Exit the system
                 System.exit(1);
-                
+
             default:
                 // If customer input another option that don't have in the menu
                 // then the system will give he/she message and back to the viewpage
@@ -186,7 +201,7 @@ public class CustomerMenu {
         // Display the login status when customer login successfully
         System.out.println("\nCookies (Login Status): " + this.cookies);
         // Read all information of the customer and store it in an array
-        String[] customerInfo = ReadDataFromTXTFile.readSpecificLine(username, 6, "./src/customers.txt", ",");
+        String[] customerInfo = ReadDataFromTXTFile.readSpecificLine(username, 6, "./src/dataFile/customers.txt", ",");
         // Display all information of the customer
         System.out.println("\nUsername:" + customerInfo[6] + "\t\tName:" + customerInfo[1]
                 + "\t\tEmail:" + customerInfo[2] + "\t\tAddress:" + customerInfo[3]
@@ -209,7 +224,6 @@ public class CustomerMenu {
         Customer member = new Customer(customerInfo[0], customerInfo[1], customerInfo[2], customerInfo[3],
                 customerInfo[4], customerInfo[5], customerInfo[6], customerInfo[7],
                 Long.parseLong(customerInfo[8]), Long.parseLong(customerInfo[9]));
-        CustomerMenu customerMenu = new CustomerMenu();
         Product product = new Product();
         Cart cart = new Cart();
         ArrayList<String[]> cartList = cart.cartList(member);
@@ -251,7 +265,7 @@ public class CustomerMenu {
 
                     case "2":
                         // Ask customer to choose the price range that he/she wants to search
-                        Product.printPriceRange();
+                        product.printPriceRange();
                         product.findItemByPriceRange();
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
@@ -290,7 +304,7 @@ public class CustomerMenu {
                             System.out.print("Please enter a quantity that you want to add: ");
                             int quantity = Integer.parseInt(scanner.nextLine());
                             // Ask customer to enter the quantity that he/she wants to add to cart
-                            ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+                            ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
 
                             String[] productInfo = new String[3];
                             for (int i = 0; i < productList.size(); i++)
@@ -300,7 +314,7 @@ public class CustomerMenu {
                              */ {
                                 if (i == Integer.parseInt(choiceOrder)) {
                                     productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1],
-                                            1, "./src/items.txt", ",");
+                                            1, "./src/dataFile/items.txt", ",");
                                 }
                             }
                             Product product1 = new Product((productInfo[0]), productInfo[1],
@@ -363,7 +377,7 @@ public class CustomerMenu {
                              */ {
                                 if (i == Integer.parseInt(choiceOrder)) {
                                     productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1],
-                                            1, "./src/items.txt", ",");
+                                            1, "./src/dataFile/items.txt", ",");
                                 }
                             }
                             Product product1 = new Product((productInfo[0]), productInfo[1],
@@ -396,13 +410,13 @@ public class CustomerMenu {
                                         {
                                             if (i == (Integer.parseInt(delProduct) - 1)) {
                                                 itemInfo = ReadDataFromTXTFile.readSpecificLine(cartList.get(i)[1],
-                                                        1, "./src/items.txt", ",");
+                                                        1, "./src/dataFile/items.txt", ",");
                                             }
                                         }
                                         Product product2 = new Product((itemInfo[0]), itemInfo[1],
                                                 Long.parseLong((itemInfo[2])), itemInfo[3]);
                                         // The system will delete the item that customer had chosen
-                                        cart.deleteItemInCart("./src/customerCart.txt", member.getcID(), product2);
+                                        cart.deleteItemInCart("./src/dataFile/customerCart.txt", member.getcID(), product2);
                                         cart.getCustomerCart(member);
                                         this.viewHomepage(username);
 
@@ -465,31 +479,31 @@ public class CustomerMenu {
                     case "1":
                         System.out.print("Please enter your new name: ");
                         String name = scanner.nextLine();
-                        member.updateName("./src/customers.txt", name, username);
+                        member.updateName("./src/dataFile/customers.txt", name, username);
                         this.viewHomepage(username);
 
                     case "2":
                         System.out.print("Please enter your new email: (e.g: MrB@Company.com)");
                         String email = scanner.nextLine();
-                        member.updateEmail("./src/customers.txt", email, username);
+                        member.updateEmail("./src/dataFile/customers.txt", email, username);
                         this.viewHomepage(username);
 
                     case "3":
                         System.out.print("Please enter your new address: (e.g: 420 HighStr)");
                         String address = scanner.nextLine();
-                        member.updateAddress("./src/customers.txt", address, username);
+                        member.updateAddress("./src/dataFile/customers.txt", address, username);
                         this.viewHomepage(username);
 
                     case "4":
                         System.out.print("Please enter your new phone: (e.g: 09********)");
                         String phone = scanner.nextLine();
-                        member.updatePhone("./src/customers.txt", phone, username);
+                        member.updatePhone("./src/dataFile/customers.txt", phone, username);
                         this.viewHomepage(username);
 
                     case "5":
                         System.out.print("Please enter your new password: ");
                         String password = scanner.nextLine();
-                        member.updatePassword("./src/customers.txt", password, username);
+                        member.updatePassword("./src/dataFile/customers.txt", password, username);
                         this.viewHomepage(username);
 
                     case "6":
@@ -520,14 +534,14 @@ public class CustomerMenu {
                 PointsSystem.viewPrizes();
                 System.out.print("Please enter an option to exchange: ");
                 String userChoice = scanner.nextLine();
-                ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/prizeItems.txt");
+                ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeItems.txt");
                 String[] prizeInfo = new String[3];
                 boolean displayMsg = false;
 
                 for (int i = 0; i < productList.size(); i++) {
                     if (i == (Integer.parseInt(userChoice))) {
                         prizeInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1],
-                                1, "./src/prizeItems.txt", ",");
+                                1, "./src/dataFile/prizeItems.txt", ",");
                         displayMsg = true;
                     }
                 }
@@ -545,7 +559,7 @@ public class CustomerMenu {
                 // Display all the questions and then the customer will choose which question he/she want to find
                 // After that, the system will display the answer of the customer's choice question
                 // The system will display question again or back to viewpage based on customer's choice
-                ArrayList<String[]> faq = ReadDataFromTXTFile.readAllLines("./src/FAQ.txt");
+                ArrayList<String[]> faq = ReadDataFromTXTFile.readAllLines("./src/dataFile/FAQ.txt");
                 String question;
                 do {
                     try {
@@ -604,12 +618,12 @@ public class CustomerMenu {
                                         for (int i = 0; i < cartList.size(); i++) {
                                             if (i == Integer.parseInt(choiceOrder)) {
                                                 productInfo = ReadDataFromTXTFile.readSpecificLine(cartList.get(i)[1],
-                                                        1, "./src/items.txt", ",");
+                                                        1, "./src/dataFile/items.txt", ",");
                                             }
                                         }
                                         Product product1 = new Product((productInfo[0]), productInfo[1],
                                                 Long.parseLong((productInfo[2])), productInfo[3]);
-                                        cart.deleteItemInCart("./src/customerCart.txt", member.getcID(), product1);
+                                        cart.deleteItemInCart("./src/dataFile/customerCart.txt", member.getcID(), product1);
                                         if (cartList.size() == 0) {
                                             System.out.println("Your cart is empty!");
                                         }
@@ -631,7 +645,7 @@ public class CustomerMenu {
                             this.view();
 
                         case "3":
-                            cart.deleteAllItemsInCart("./src/customerCart.txt", member.getcID());
+                            cart.deleteAllItemsInCart("./src/dataFile/customerCart.txt", member.getcID());
                             System.out.println("Delete all items successfully!");
                             this.view();
 
@@ -656,7 +670,6 @@ public class CustomerMenu {
     public void createOrder(Customer member) throws IOException, InterruptedException, ParseException
     // Create a new order for customer
     {
-        Account user = new Account();
         Order order = new Order();
         Cart cart = new Cart();
         Discount discount = new Discount();
@@ -669,7 +682,7 @@ public class CustomerMenu {
         and create a new order for those items which have the same order id
          */ {
             String[] productInfo1 = new String[3];
-            productInfo1 = ReadDataFromTXTFile.readSpecificLine(strings[1], 1, "./src/items.txt", ",");
+            productInfo1 = ReadDataFromTXTFile.readSpecificLine(strings[1], 1, "./src/dataFile/items.txt", ",");
             Product product3 = new Product(productInfo1[0], productInfo1[1], Long.parseLong(productInfo1[2]), productInfo1[3]);
             order.createNewOrder(member, product3, oID, Integer.parseInt(strings[3]));
         }
@@ -693,7 +706,7 @@ public class CustomerMenu {
                      */
                     discount.displayCustomerDiscountCode(member);
                     String choiceOrder1 = UserInput.rawInput();
-                    /* Customer will input their choice
+                    /* Users.Customer will input their choice
                     and the system will discount based on his/her used voucher
                      */
                     for (int m = 0; m < discountCode.size(); m++) {
@@ -712,7 +725,7 @@ public class CustomerMenu {
                     then the system will base on order's total spending after discount by membership to give customer discount voucher
                      */
                     String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
-                            "./src/billingHistory.txt", ",");
+                            "./src/dataFile/billingHistory.txt", ",");
                     Long totalPayment = Long.parseLong(orderInfo[2]);
                     discount.giveDiscountCode(member, totalPayment);
                     discount.displayCustomerDiscountCode(member);
@@ -729,7 +742,7 @@ public class CustomerMenu {
             then the system will base on order's total spending after discount by membership to give customer discount voucher
             */
             String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
-                    "./src/billingHistory.txt", ",");
+                    "./src/dataFile/billingHistory.txt", ",");
             Long totalPayment = Long.parseLong(orderInfo[2]);
             discount.giveDiscountCode(member, totalPayment);
             PointsSystem.pointsConversion(member.getcID(), oID);

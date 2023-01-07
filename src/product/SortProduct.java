@@ -1,3 +1,8 @@
+package product;
+
+import fileMethods.CreateTable;
+import fileMethods.ReadDataFromTXTFile;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +47,7 @@ public class SortProduct {
             for (int a = 0; a < prices.size(); a++) {
 
                 // Use the given prices to determine the correct item then adding them into an array list
-                String[] sortProducts = ReadDataFromTXTFile.readSpecificLine(Long.toString(priceAscend.get(a)), 2, "./src/items.txt", ",");
+                String[] sortProducts = ReadDataFromTXTFile.readSpecificLine(Long.toString(priceAscend.get(a)), 2, "./src/dataFile/items.txt", ",");
                 createTable.addRow(sortProducts[0], sortProducts[1], sortProducts[2], sortProducts[3]);
             }
         } else if (input == 2) {
@@ -57,7 +62,7 @@ public class SortProduct {
             for (int a = 0; a < prices.size(); a++) {
 
                 // Use the given prices to determine the correct item then adding them into an array list
-                String[] sortProducts = ReadDataFromTXTFile.readSpecificLine(Long.toString(priceDescend.get(a)), 2, "./src/items.txt", ",");
+                String[] sortProducts = ReadDataFromTXTFile.readSpecificLine(Long.toString(priceDescend.get(a)), 2, "./src/dataFile/items.txt", ",");
                 createTable.addRow(sortProducts[0], sortProducts[1], sortProducts[2], sortProducts[3]);
             }
         }
@@ -68,12 +73,12 @@ public class SortProduct {
         // Initialise maxCount
         int maxCount = 0;
 
-        ArrayList<String[]> productInfo = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+        ArrayList<String[]> productInfo = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
         // Reading column quantities in productsSold file
-        String[] productList = ReadDataFromTXTFile.readColString(2, "./src/productsSold.txt", ",");
+        String[] productList = ReadDataFromTXTFile.readColString(2, "./src/dataFile/productsSold.txt", ",");
 
         // Read all products in productsSold
-        ArrayList<String[]> allProduct = ReadDataFromTXTFile.readAllLines("./src/productsSold.txt");
+        ArrayList<String[]> allProduct = ReadDataFromTXTFile.readAllLines("./src/dataFile/productsSold.txt");
 
         // An ArrayList used to get the numbersSold for that item
         ArrayList<Integer> countProduct = new ArrayList<>();
@@ -116,7 +121,7 @@ public class SortProduct {
         createTable.print();
         // Getting the info of bestSeller product and adding it into the table
 //        for (int y = 0; y < bestSeller.size(); y++) {
-//            String[] info = ReadDataFromTXTFile.readSpecificLine(bestSeller.get(y)[1], 0, "./src/productsSold.txt", ",");
+//            String[] info = FileMethods.ReadDataFromTXTFile.readSpecificLine(bestSeller.get(y)[1], 0, "./src/productsSold.txt", ",");
 //            bestSellerInfo.add(info);
 //            createTable.addRow(bestSellerInfo.get(y)[0], bestSellerInfo.get(y)[1], bestSellerInfo.get(y)[2], bestSellerInfo.get(y)[3], String.valueOf(maxCount));
 //        }
@@ -127,13 +132,13 @@ public class SortProduct {
         // Initialise minCount
         int minCount = 1000000;
 
-        ArrayList<String[]> productInfo = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+        ArrayList<String[]> productInfo = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
 
         // Reading column quantities in productsSold file
-        String[] productList = ReadDataFromTXTFile.readColString(2, "./src/productsSold.txt", ",");
+        String[] productList = ReadDataFromTXTFile.readColString(2, "./src/dataFile/productsSold.txt", ",");
 
         // Read all products in productsSold
-        ArrayList<String[]> allProduct = ReadDataFromTXTFile.readAllLines("./src/productsSold.txt");
+        ArrayList<String[]> allProduct = ReadDataFromTXTFile.readAllLines("./src/dataFile/productsSold.txt");
 
         // An ArrayList used to get the numbersSold for that item
         ArrayList<Integer> countProduct = new ArrayList<>();

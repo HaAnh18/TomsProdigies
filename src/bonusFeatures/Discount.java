@@ -1,7 +1,15 @@
+package bonusFeatures;
+
+import fileMethods.CreateTable;
+import fileMethods.ReadDataFromTXTFile;
+import fileMethods.Write;
+import users.Customer;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+
 
 public class Discount {
     private String discountCode;
@@ -12,13 +20,13 @@ public class Discount {
     public void giveDiscountCode(Customer customer, Long totalPayment) throws IOException {
 
         PrintWriter pw;
-        pw = new PrintWriter(new FileWriter("./src/customerDiscountCode.txt", true));
+        pw = new PrintWriter(new FileWriter("./src/dataFile/customerDiscountCode.txt", true));
         Random rd = new Random();
         int i = rd.nextInt(999);
         String code = validateDiscountCode(String.format("%03d", i));
         String cID = customer.getcID();
         Long discountAmount = (long) 0;
-        ArrayList<String[]> discountType = ReadDataFromTXTFile.readAllLines("./src/discountType.txt");
+        ArrayList<String[]> discountType = ReadDataFromTXTFile.readAllLines("./src/dataFile/discountType.txt");
 
         /// Give discount code based on the totalPayment amount
         // 10000000 < totalPayment < 20000000
@@ -58,7 +66,7 @@ public class Discount {
 
     public String validateDiscountCode(String id) { // Used to create unique discount code for customer
         try {
-            Scanner fileScanner = new Scanner(new File("./src/ordersHistory.txt"));
+            Scanner fileScanner = new Scanner(new File("./src/dataFile/ordersHistory.txt"));
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
                 String[] helo = line.split(",");
@@ -80,7 +88,7 @@ public class Discount {
     public void displayCustomerDiscountCode(Customer customer) {
         ArrayList<String[]> discountCode = new ArrayList<>();
 
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customerDiscountCode.txt");
 
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(customer.getcID())) {
@@ -110,7 +118,7 @@ public class Discount {
     {
         ArrayList<String[]> discountCode = new ArrayList<>();
 
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customerDiscountCode.txt");
 
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(customer.getcID()))
@@ -125,7 +133,7 @@ public class Discount {
     public void deleteDiscountCode(String filepath, String id) throws IOException
     // This method allow admin to delete a customer that had existed in customers' file
     {
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customerDiscountCode.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
 
         for (String[] strings : database) {
@@ -133,7 +141,7 @@ public class Discount {
                 newDatabase.add(strings); // Add all customers except the deleted customer
             }
         }
-        PrintWriter pw = new PrintWriter("./src/customerDiscountCode.txt");
+        PrintWriter pw = new PrintWriter("./src/dataFile/customerDiscountCode.txt");
 
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();

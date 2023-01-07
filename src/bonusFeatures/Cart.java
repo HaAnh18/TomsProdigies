@@ -1,3 +1,11 @@
+package bonusFeatures;
+
+import fileMethods.CreateTable;
+import fileMethods.ReadDataFromTXTFile;
+import fileMethods.Write;
+import product.Product;
+import users.Customer;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +21,7 @@ public class Cart {
     {
         ArrayList<String[]> products = new ArrayList<>();
 
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerCart.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customerCart.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(customer.getcID()))
             // If the system could find out the customer's ID in ordersHistory's file
@@ -26,7 +34,7 @@ public class Cart {
     public void addToCart(Customer customer, Product product, int quantity) throws IOException {
         // Add new items into a customer's cart
         PrintWriter pw;
-        pw = new PrintWriter(new FileWriter("./src/customerCart.txt", true));
+        pw = new PrintWriter(new FileWriter("./src/dataFile/customerCart.txt", true));
 
         String customerID = customer.getcID();
         String productTitle = product.getTitle();
@@ -42,7 +50,7 @@ public class Cart {
         //prompt a specific customer's cart into the terminal for them to view
         ArrayList<String[]> products = new ArrayList<>();
 
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerCart.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customerCart.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(customer.getcID())) {
                 // read through the text file and store that file data into an ArrayList to check
@@ -63,7 +71,7 @@ public class Cart {
 
     public void deleteAllItemsInCart(String filepath, String cId) throws IOException {
         // Delete all the items from a specific customer's cart
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerCart.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customerCart.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
         for (String[] strings : database) {
             if (!strings[0].equals(cId)) {
@@ -73,7 +81,7 @@ public class Cart {
             }
         }
         // delete all the file content
-        PrintWriter pw = new PrintWriter("./src/customerCart.txt");
+        PrintWriter pw = new PrintWriter("./src/dataFile/customerCart.txt");
 
         pw.write("");
         pw.close();
@@ -87,7 +95,7 @@ public class Cart {
 
     public void deleteItemInCart(String filepath, String cId, Product product) throws IOException {
         // Delete a specific item form a particular customer's cart
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerCart.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customerCart.txt");
         ArrayList<String[]> customerCart = new ArrayList<>();
         ArrayList<String[]> newDatabase = new ArrayList<>();
         customerCart.add(database.get(0));
@@ -106,7 +114,7 @@ public class Cart {
             }
         }
         // delete all the file content
-        PrintWriter pw = new PrintWriter("./src/customerCart.txt");
+        PrintWriter pw = new PrintWriter("./src/dataFile/customerCart.txt");
 
         pw.write("");
         pw.close();

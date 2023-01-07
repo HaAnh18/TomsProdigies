@@ -1,3 +1,14 @@
+package order;
+
+import bonusFeatures.Cart;
+import bonusFeatures.Discount;
+import fileMethods.CreateTable;
+import fileMethods.ReadDataFromTXTFile;
+import fileMethods.Write;
+import product.Product;
+import users.Admin;
+import users.Customer;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,7 +44,7 @@ public class Order {
 
     public void createNewOrder(Customer customer, Product product, String oID, int quantity) throws IOException {
         PrintWriter pw;
-        pw = new PrintWriter(new FileWriter("./src/ordersHistory.txt", true));
+        pw = new PrintWriter(new FileWriter("./src/dataFile/ordersHistory.txt", true));
 
         // Assigning values to variables
         String customerID = customer.getcID();
@@ -57,7 +68,7 @@ public class Order {
 
         // Delete Item in cart after created an order
         Cart cart = new Cart();
-        cart.deleteItemInCart("./src/customerCart.txt", customer.getcID(), product);
+        cart.deleteItemInCart("./src/dataFile/customerCart.txt", customer.getcID(), product);
     }
 
     public void searchOrder(String oId)
@@ -65,7 +76,7 @@ public class Order {
     {
         ArrayList<String[]> orders = new ArrayList<>(); // Create a new arraylist to store order information
 
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
         // Read all line in ordersHistory.txt file and put all data in arraylist
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(oId))
@@ -94,7 +105,7 @@ public class Order {
 
     public void getTotalPaymentEachOrderId(Customer customer, String oID) throws IOException {
         ArrayList<String[]> orders = new ArrayList<>();
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
 
         // Loop through all ordersHistory
         for (int i = 1; i < database.size(); i++) {
@@ -133,8 +144,8 @@ public class Order {
         Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + totalPaymentAfterDiscount);
 
         // update methods for corresponding attributes
-        customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
-        customer.updateMembership("./src/customers.txt", customer.getUserName());
+        customer.updateTotalSpending("./src/dataFile/customers.txt", String.valueOf(totalSpending), customer.getUserName());
+        customer.updateMembership("./src/dataFile/customers.txt", customer.getUserName());
 
         // Setting up table and print out the before and after total payment with membership type
         CreateTable createTable = new CreateTable();
@@ -151,15 +162,15 @@ public class Order {
 
         // Update billingHistory with corresponding info
         PrintWriter pw;
-        pw = new PrintWriter(new FileWriter("./src/billingHistory.txt", true));
+        pw = new PrintWriter(new FileWriter("./src/dataFile/billingHistory.txt", true));
         pw.println(oID + "," + cID + "," + totalPaymentAfterDiscount + "," + orderDate);
         pw.close();
     }
 
     public void getTotalPaymentAfterApplyDiscountCode(String oID, String id, Customer customer) throws IOException {
         // Reading from 2 different files to get the corresponding info with each other
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customerDiscountCode.txt");
-        ArrayList<String[]> orderInfo = ReadDataFromTXTFile.readAllLines("./src/billingHistory.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customerDiscountCode.txt");
+        ArrayList<String[]> orderInfo = ReadDataFromTXTFile.readAllLines("./src/dataFile/billingHistory.txt");
 
         Long finalPrice = (long) 0;
 
@@ -178,7 +189,7 @@ public class Order {
                 }
             }
         }
-        PrintWriter pw = new PrintWriter("./src/billingHistory.txt");
+        PrintWriter pw = new PrintWriter("./src/dataFile/billingHistory.txt");
 
         // Delete to get ready to rewrite
         pw.write("");
@@ -186,7 +197,7 @@ public class Order {
 
         // Write all the orderInfo back with updated price for specific order
         for (String[] obj : orderInfo) {
-            Write.rewriteFile("./src/billingHistory.txt", "#OID,CID,Total payment after discount,Order date",
+            Write.rewriteFile("./src/dataFile/billingHistory.txt", "#OID,CID,Total payment after discount,order.Order date",
                     String.join(",", obj));
         }
 
@@ -194,8 +205,8 @@ public class Order {
         Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + (finalPrice));
 
         // Update TotalSpending and Membership for customer based on new totalSpending
-        customer.updateTotalSpending("./src/customers.txt", String.valueOf(totalSpending), customer.getUserName());
-        customer.updateMembership("./src/customers.txt", customer.getUserName());
+        customer.updateTotalSpending("./src/dataFile/customers.txt", String.valueOf(totalSpending), customer.getUserName());
+        customer.updateMembership("./src/dataFile/customers.txt", customer.getUserName());
 
         // Setting up table and adding content
         CreateTable createTable = new CreateTable();
@@ -205,12 +216,12 @@ public class Order {
         createTable.print();
 
         Discount discount = new Discount();
-        discount.deleteDiscountCode("./src/customerDiscountCode.txt", id);
+        discount.deleteDiscountCode("./src/dataFile/customerDiscountCode.txt", id);
     }
 
     public void getAllOrderInfo() {
         // Read all line in ordersHistory
-        ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
         CreateTable createTable = new CreateTable();
 
         // Setting up table
@@ -229,7 +240,7 @@ public class Order {
     public String oIDDataForValidate(String oId) {
         try {
             // Read each line in ordersHistory
-            Scanner fileScanner = new Scanner(new File("./src/ordersHistory.txt"));
+            Scanner fileScanner = new Scanner(new File("./src/dataFile/ordersHistory.txt"));
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
                 String[] helo = line.split(",");
@@ -255,7 +266,7 @@ public class Order {
         ArrayList<String[]> orders = new ArrayList<>();
 
         // Read all orders in orderHistory
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(cID)) {
                 orders.add(database.get(i)); //
@@ -284,11 +295,11 @@ public class Order {
 
     // Everytime a product is bought or ordered it will log in the productsSold file
     public void productSales(String product, int quantity) throws IOException {
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/productsSold.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/productsSold.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(product)) {
                 database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + quantity);
-                File file = new File("./src/productsSold.txt");
+                File file = new File("./src/dataFile/productsSold.txt");
                 PrintWriter pw = new PrintWriter(file);
 
                 // Delete all content i file
@@ -297,7 +308,7 @@ public class Order {
 
                 // Rewrite file with new data
                 for (String[] obj : database) {
-                    Write.rewriteFile("./src/productsSold.txt", "#ID,Category,Quantity", String.join(",", obj));
+                    Write.rewriteFile("./src/dataFile/productsSold.txt", "#ID,Category,Quantity", String.join(",", obj));
                 }
             }
         }
@@ -311,7 +322,7 @@ public class Order {
         boolean found = false;
         try {
             // Read lines in the file
-            Scanner fileScanner = new Scanner(new File("./src/productsSold.txt"));
+            Scanner fileScanner = new Scanner(new File("./src/dataFile/productsSold.txt"));
             while (fileScanner.hasNext()) {
                 String line = fileScanner.nextLine();
                 String[] values = line.split(",");
@@ -330,11 +341,11 @@ public class Order {
 
     // If the checkProductSales return false, it will create a new line containing the name of that product and start to log the amount of sales
     public void createNewProductSale(String product, int quantity) throws IOException {
-        Path path = Paths.get("./src/productsSold.txt");
+        Path path = Paths.get("./src/dataFile/productsSold.txt");
 
         // Count existing lines in file
         int id = (int) Files.lines(path).count();
-        PrintWriter writer = new PrintWriter(new FileWriter("./src/productsSold.txt", true));
+        PrintWriter writer = new PrintWriter(new FileWriter("./src/dataFile/productsSold.txt", true));
 
         // Append new product based on product name and quantity
         writer.print("\n" + id + "," + product + "," + quantity);
@@ -344,7 +355,7 @@ public class Order {
     /* This method will help to get the order date out of ordersHistory.txt */
     public ArrayList<String[]> getOrderByDate() throws IOException, ParseException {
 
-        ArrayList<String[]> orderList = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        ArrayList<String[]> orderList = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
         ArrayList<String[]> dailyOrder = new ArrayList<>();
         Scanner inputObj = new Scanner(System.in);
         System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");

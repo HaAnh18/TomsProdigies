@@ -1,3 +1,14 @@
+package menu;
+
+
+import bonusFeatures.PointsSystem;
+import fileMethods.ReadDataFromTXTFile;
+import fileMethods.UserInput;
+import order.Order;
+import product.Product;
+import product.SortProduct;
+import users.Admin;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -149,16 +160,16 @@ public class AdminMenu {
                 System.out.println("\n================================================= UPDATING PRICE =================================================");
                 product.getProductHaveId();
                 String choiceOrder = UserInput.rawInput();
-                ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+                ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
                 String[] productInfo = new String[3];
                 for (int i = 0; i < productList.size(); i++) {
                     if (i == Integer.parseInt(choiceOrder)) {
-                        productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1], 1, "./src/items.txt", ",");
+                        productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1], 1, "./src/dataFile/items.txt", ",");
                     }
                 }
                 System.out.print("Enter new price: ");
                 Long price = Long.parseLong(scanner.nextLine());
-                admin.updatePrice("./src/items.txt", String.valueOf(price), productInfo[0]);
+                admin.updatePrice("./src/dataFile/items.txt", String.valueOf(price), productInfo[0]);
                 adminMenu.viewHomepage();
 
             case "10":
@@ -169,7 +180,7 @@ public class AdminMenu {
                 String oId = scanner.nextLine();
                 System.out.print("Update order status to:");
                 String status = scanner.nextLine().toUpperCase();
-                admin.updateDeliveryStatus("./src/ordersHistory.txt", status, oId);
+                admin.updateDeliveryStatus("./src/dataFile/ordersHistory.txt", status, oId);
                 adminMenu.viewHomepage();
 
             case "11":
@@ -191,14 +202,14 @@ public class AdminMenu {
                         admin.getAllCategory();
                         System.out.print("Enter category ID that you want to delete:");
                         String delCategory = UserInput.rawInput();
-                        ArrayList<String[]> categoryList = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
+                        ArrayList<String[]> categoryList = ReadDataFromTXTFile.readAllLines("./src/dataFile/categories.txt");
                         String[] categoryInfo = new String[3];
                         for (int i = 0; i < categoryList.size(); i++) {
                             if (i == Integer.parseInt(delCategory)) {
-                                categoryInfo = ReadDataFromTXTFile.readSpecificLine(categoryList.get(i)[1], 1, "./src/categories.txt", ",");
+                                categoryInfo = ReadDataFromTXTFile.readSpecificLine(categoryList.get(i)[1], 1, "./src/dataFile/categories.txt", ",");
                             }
                         }
-                        admin.deleteCategory("./src/categories.txt", categoryInfo[1]);
+                        admin.deleteCategory("./src/dataFile/categories.txt", categoryInfo[1]);
                         adminMenu.viewHomepage();
 
                     case "3":
@@ -274,12 +285,12 @@ public class AdminMenu {
                 }
 
             case "13":
-                // Admin could delete customer by using customer's ID
+                // Users.Admin could delete customer by using customer's ID
                 System.out.println("\n================================================= DELETING CUSTOMER =================================================");
                 admin.getAllCustomerInfo();
                 System.out.print("Enter customer ID that you want to delete: (e.g: C123)");
-                String delCustomer = UserInput.rawInput();
-                admin.deleteCustomer("./src/customers.txt", delCustomer, 0);
+                String delCustomer = scanner.nextLine();
+                admin.deleteCustomer("./src/dataFile/customers.txt", delCustomer, 0);
                 adminMenu.viewHomepage();
             case "14":
                 adminMenu.view();

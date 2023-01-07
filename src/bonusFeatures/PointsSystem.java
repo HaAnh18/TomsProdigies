@@ -1,3 +1,12 @@
+package bonusFeatures;
+
+import fileMethods.CreateTable;
+import fileMethods.ReadDataFromTXTFile;
+import fileMethods.UserInput;
+import fileMethods.Write;
+import order.Order;
+import product.Product;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,13 +18,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+
 public class PointsSystem {
 
     public static void pointsConversion(String cID, String oID) throws IOException
     // Update total points earned for customer after he/she finished every order
     {
-        ArrayList<String[]> paymentConversion = ReadDataFromTXTFile.readAllLines("./src/billingHistory.txt");
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        ArrayList<String[]> paymentConversion = ReadDataFromTXTFile.readAllLines("./src/dataFile/billingHistory.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         long newData;
         Long newPoints = null;
 
@@ -40,14 +50,14 @@ public class PointsSystem {
             }
         }
 
-        File file = new File("./src/customers.txt");
+        File file = new File("./src/dataFile/customers.txt");
         PrintWriter pw = new PrintWriter(file);
 
         pw.write(""); // The file would erase all the data in customers' file
         pw.close();
 
         for (String[] obj : database) {
-            Write.rewriteFile("./src/customers.txt", "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending,Total Points",
+            Write.rewriteFile("./src/dataFile/customers.txt", "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending,Total Points",
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
@@ -55,7 +65,7 @@ public class PointsSystem {
 
     public static void viewPrizes() throws IOException {
         ArrayList<String[]> prizeItems = new ArrayList<>();
-        Scanner fileProducts = new Scanner(new File("./src/prizeItems.txt"));
+        Scanner fileProducts = new Scanner(new File("./src/dataFile/prizeItems.txt"));
         while (fileProducts.hasNext()) { // Read all lines in .txt file
             String[] productData;
             String line = fileProducts.nextLine();
@@ -82,8 +92,8 @@ public class PointsSystem {
 
     public static void exchangeItem(String user, String itemID) throws IOException {
         // Update total points earned for customer after he/she finished every order
-        ArrayList<String[]> pointCost = ReadDataFromTXTFile.readAllLines("./src/prizeItems.txt");
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+        ArrayList<String[]> pointCost = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeItems.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         Long newData = null;
         Long newPoints;
         Long pointWallet;
@@ -113,14 +123,14 @@ public class PointsSystem {
         }
 
         if (completeExchange) {
-            File file = new File("./src/customers.txt");
+            File file = new File("./src/dataFile/customers.txt");
             PrintWriter pw = new PrintWriter(file);
 
             pw.write(""); // The file would erase all the data in customers' file
             pw.close();
 
             for (String[] obj : database) {
-                Write.rewriteFile("./src/customers.txt", "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending,Total Points",
+                Write.rewriteFile("./src/dataFile/customers.txt", "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total Spending,Total Points",
                         String.join(",", obj));
                 // This method would allow system to write all data including new data into the customers' file
             }
@@ -131,7 +141,7 @@ public class PointsSystem {
 
     public static void logExchange(String user, String itemID, String Cost) throws IOException {
         Order order = new Order();
-        PrintWriter pw = new PrintWriter(new FileWriter("./src/prizeExHistory.txt", true));
+        PrintWriter pw = new PrintWriter(new FileWriter("./src/dataFile/prizeExHistory.txt", true));
 
         // log Exchange date and assign status and pickup notifications
         String exchangeDate = new SimpleDateFormat("MM/dd/yyyy_HH:mm").format(Calendar.getInstance().getTime());
@@ -154,10 +164,10 @@ public class PointsSystem {
         // Set up table
         CreateTable table = new CreateTable();
         table.setShowVerticalLines(true);
-        table.setHeaders("Order ID", "cID", "prizeID", "Point Cost", "Date Exchanged", "Exchange Status", "Pickup Status");
+        table.setHeaders("order.Order ID", "cID", "prizeID", "Point Cost", "Date Exchanged", "Exchange Status", "Pickup Status");
 
         // Get line in .txt file with parameter oID
-        String[] exchangeConfirmation = ReadDataFromTXTFile.readSpecificLine(oID, 0, "./src/prizeExHistory.txt", ",");
+        String[] exchangeConfirmation = ReadDataFromTXTFile.readSpecificLine(oID, 0, "./src/dataFile/prizeExHistory.txt", ",");
 
         // Add content to table
         table.addRow(exchangeConfirmation[0], exchangeConfirmation[1], exchangeConfirmation[2], exchangeConfirmation[3],
@@ -171,7 +181,7 @@ public class PointsSystem {
         ArrayList<String[]> orders = new ArrayList<>();
 
         // Read all orders in prizeExHistory
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/prizeExHistory.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeExHistory.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(cID)) {
                 orders.add(database.get(i)); //
@@ -200,7 +210,7 @@ public class PointsSystem {
 
     public static void viewExchangeLog() {
         // Read all line in prizeExHistory
-        ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/prizeExHistory.txt");
+        ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeExHistory.txt");
         CreateTable createTable = new CreateTable();
 
         // Setting up table
@@ -219,14 +229,14 @@ public class PointsSystem {
     public static void updatePickupStatus(String newData, String oID) throws IOException
     // This method allow admin to modify a pickup status of order that had existed in items' file
     {
-        File targetFile = new File("./src/prizeExHistory.txt");
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/prizeExHistory.txt");
+        File targetFile = new File("./src/dataFile/prizeExHistory.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeExHistory.txt");
         for (String[] strings : database) {
             if (strings[0].equals(oID))
                 /* If the system could find out the oID in prizeExHistory file
                  * then the system allow admin to update the order's delivery status
                  */ {
-                strings[5] = newData; // Modify the order's pickup status
+                strings[6] = newData; // Modify the order's pickup status
             }
         }
 
@@ -245,7 +255,7 @@ public class PointsSystem {
     {
         ArrayList<String[]> orders = new ArrayList<>(); // Create a new arraylist to store order information
 
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/prizeExHistory.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeExHistory.txt");
         // Read all line in prizeExHistory.txt file and put all data in arraylist
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(oId))
@@ -276,8 +286,8 @@ public class PointsSystem {
         Scanner scanner = new Scanner(System.in);
         PrintWriter pw;
         Product product = new Product();
-        pw = new PrintWriter(new FileWriter("./src/prizeItems.txt", true));
-        Path path = Paths.get("./src/prizeItems.txt");
+        pw = new PrintWriter(new FileWriter("./src/dataFile/prizeItems.txt", true));
+        Path path = Paths.get("./src/dataFile/prizeItems.txt");
         int id = (int) Files.lines(path).count(); // Define the id of this product
         System.out.println("Enter a year of this product: "); // Ask admin to input the product's year
         int year = Integer.parseInt(scanner.nextLine());
@@ -290,7 +300,7 @@ public class PointsSystem {
         System.out.println("Enter points cost: "); // Ask admin to input the product's price
         long pointCost = Long.parseLong(scanner.nextLine());
         pw.println(ID + "," + name + "," + pointCost + "," + category);
-//        // Write product's information to items' file
+//        // FileMethods.Write product's information to items' file
         pw.close();
     }
 
@@ -299,24 +309,24 @@ public class PointsSystem {
     {
         PointsSystem.viewPrizes();
         String optionOrder = UserInput.rawInput();
-        ArrayList<String[]> prizeItemList = ReadDataFromTXTFile.readAllLines("./src/prizeItems.txt");
+        ArrayList<String[]> prizeItemList = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeItems.txt");
         String[] prizeInfo = new String[3];
         for (int i = 1; i < prizeItemList.size(); i++) {
             if (i == Integer.parseInt(optionOrder)) {
-                prizeInfo = ReadDataFromTXTFile.readSpecificLine(prizeItemList.get(i)[0], 0, "./src/prizeItems.txt", ",");
+                prizeInfo = ReadDataFromTXTFile.readSpecificLine(prizeItemList.get(i)[0], 0, "./src/dataFile/prizeItems.txt", ",");
             }
         }
 
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/prizeItems.txt");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeItems.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
         for (String[] strings : database) {
             if (!strings[0].equals(prizeInfo[0])) {
                 newDatabase.add(strings); // Add all items except the deleted product
             }
         }
-        File targetFile = new File("./src/prizeItems.txt");
+        File targetFile = new File("./src/dataFile/prizeItems.txt");
 
-        PrintWriter pw = new PrintWriter("./src/prizeItems.txt");
+        PrintWriter pw = new PrintWriter("./src/dataFile/prizeItems.txt");
         pw.write(""); // The file would erase all the data in items' file
         pw.close();
 

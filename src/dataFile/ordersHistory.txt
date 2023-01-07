@@ -1,4 +1,4 @@
-#OID,CID,Membership,PID,Single unit price,Quantity,Payment price,Order date,Order status,Delivery status
+#OID,CID,Membership,PID,Single unit price,Quantity,Payment price,order.Order date,order.Order status,Delivery status
 O404,C978,Platinum,I005-2015,2100000,1,2100000,01/02/2023_23:04,SUCCESSFUL,DELIVERING
 O101,C978,Platinum,I003-1992,38000000,1,38000000,01/02/2023_23:05,SUCCESSFUL,DELIVERING
 O302,C978,Platinum,I001-2001,50000000,2,100000000,01/02/2023_23:05,SUCCESSFUL,DELIVERING
