@@ -364,6 +364,8 @@ public class Admin extends Account {
         revenueTable.print();
     }
 
+
+
     //This method is used to reformat the input date into a separate string for comparison.
     public static String dateInput(String date) {
         String[] dateComponent = date.split("/");
@@ -399,11 +401,13 @@ public class Admin extends Account {
         pw.close();
     }
 
+
     /* This method allow admin to calculate daily revenue base on the timestamp of the purchase.*/
-    public ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
+    public static ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
 
         String[] dailyRevenue = ReadDataFromTXTFile.readColString(2, "./src/billingHistory.txt", ",");
         String[] dateAndTime = ReadDataFromTXTFile.readColString(3, "./src/billingHistory.txt", ",");
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/billingHistory.txt");
         ArrayList<Long> revenueList = new ArrayList<>(dailyRevenue.length);
 
         Scanner inputObj = new Scanner(System.in);
@@ -413,11 +417,32 @@ public class Admin extends Account {
             System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy):");
             date = inputObj.nextLine();
         }
+
+        date = dateInput(date);
+//        ArrayList<String> dates = new ArrayList<>();
+//        for (int o = 1;o < dateAndTime.length;o++) {
+//            String[] data = dateAndTime[o].split("_");
+//            String splitted = data[0].trim();
+//            dates.add(splitted);
+//        }
+//        System.out.println(dates);
+
         //If the date is match, all the price will put in an Arraylist and total all the price.
-        for (int i = 1; i < dailyRevenue.length; i++) {
-            do revenueList.add(Long.valueOf(dailyRevenue[i]));
-            while (dateAndTime.equals(date));
+        for (int i = 1; i < database.size(); i++) {
+            String[] dateSplit = database.get(i)[3].split("_");
+//            System.out.println(dateSplit[0]);
+            String splitDate = dateSplit[0].replaceAll("//s", "");
+            splitDate = dateInput(splitDate);
+            if (splitDate.equals(date)) {
+                revenueList.add(Long.valueOf(dailyRevenue[i]));
+            }
+//            do revenueList.add(Long.valueOf(dailyRevenue[i]));
+//            while (dateAndTime.equals(date));
+
+            // If the system could find out the category in items.txt file
         }
         return revenueList;
     }
+
 }
+

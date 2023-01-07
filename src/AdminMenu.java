@@ -295,10 +295,12 @@ public class AdminMenu {
                 adminMenu.viewStatistic();
             case "2":
                 // Display the daily revenue of the store
-                CreateTable dailyRevenue = new CreateTable();
-                dailyRevenue.setShowVerticalLines(true);
-                dailyRevenue.setHeaders("DAILY REVENUE");
-                dailyRevenue.addRow(String.valueOf(admin.getDailyRevenue()));
+//                CreateTable dailyRevenue = new CreateTable();
+//                dailyRevenue.setShowVerticalLines(true);
+//                dailyRevenue.setHeaders("DAILY REVENUE");
+//                dailyRevenue.addRow(String.valueOf(admin.getDailyRevenue()));
+//                admin.calculateRevenue(admin.getDailyRevenue());
+                TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
             case "3":
                 // Display the most popular product in store
