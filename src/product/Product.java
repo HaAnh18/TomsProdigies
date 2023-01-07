@@ -34,7 +34,7 @@ public class Product {
     }
 
     /* This method will help user to search by category */
-    public static void searchByCategory() throws IOException {
+    public void searchByCategory() throws IOException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the category:");
         String category = sc.nextLine();
@@ -77,7 +77,7 @@ public class Product {
         }
     }
 
-    public static void searchCategoryByPriceRange(String category) {
+    public void searchCategoryByPriceRange(String category) {
         //transforming user input to the right format.
         String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
 
@@ -94,8 +94,7 @@ public class Product {
 
             }
         }
-
-        Product.printPriceRange();
+        printPriceRange();
         String option = UserInput.rawInput();
 
 
@@ -189,36 +188,7 @@ public class Product {
         pw = new PrintWriter(new FileWriter("./src/dataFile/categories.txt", true));
         pw.println(id + "," + category + "," + quantity);
         pw.close();
-//        PrintWriter pw = new PrintWriter(new FileWriter("./src/categories.txt", true));
-//        pw.println( id + "," + category + "," + 1);
-//        pw.close();
     }
-
-//    public void printCategory() throws FileNotFoundException {
-//        ArrayList<String[]> user = new ArrayList<>();
-//        Scanner fileProducts = new Scanner(new File("./src/categories.txt"));
-//
-//        while (fileProducts.hasNext()) {
-//            String[] productData = new String[3];
-//            String line = fileProducts.nextLine();
-//            StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
-//            String ID = stringTokenizer.nextToken();
-//            String title = stringTokenizer.nextToken();
-//            String price = stringTokenizer.nextToken();
-//            productData = new String[]{ID, title, price};
-//            user.add(productData);
-//        }
-//
-//        FileMethods.CreateTable createTable = new FileMethods.CreateTable();
-//        createTable.setShowVerticalLines(true);
-//        createTable.setHeaders("ID","CATEGORY", "QUANTITY");
-//
-//        for (int i = 1; i < user.size(); i++) {
-//            createTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2]);
-//        }
-//
-//        createTable.print();
-//    }
 
     //This method is used to check if the category belongs to the category list in categories.txt file.
     public boolean checkCategory(String category) {
@@ -271,7 +241,7 @@ public class Product {
         createTable.print();
     }
 
-    public static void printPriceRange() {
+    public void printPriceRange() {
         System.out.println("1. Below 25 million VND.");
         System.out.println("2. 25 million VND to 50 million VND.");
         System.out.println("3. 50 million VND to 75 million VND.");

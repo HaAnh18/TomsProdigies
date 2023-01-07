@@ -236,7 +236,7 @@ public class PointsSystem {
                 /* If the system could find out the oID in prizeExHistory file
                  * then the system allow admin to update the order's delivery status
                  */ {
-                strings[6] = newData; // Modify the order's pickup status
+                strings[6] = newData.toUpperCase(); // Modify the order's pickup status
             }
         }
 

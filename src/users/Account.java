@@ -128,7 +128,7 @@ public class Account {
     // Register the username
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter username: ");
+        System.out.print("Enter username (e.g: mingka): ");
         String username = scanner.nextLine();
 
         try {
@@ -156,7 +156,7 @@ public class Account {
     // Register the customer's name
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your name: ");
+        System.out.print("Enter your name (Ha Anh): ");
         String name = scanner.nextLine();
         if (validateName(name))
         // If the name is satisfied the name's rules, the name will be saved in customer's information
@@ -183,7 +183,7 @@ public class Account {
     // Register the customer's email
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter email: ");
+        System.out.print("Enter email (e.g: tomsprodigies@gmail.com): ");
         String email = scanner.nextLine();
         if (validateEmail(email))
         // If the email satisfy the email's rules, the email will be saved in customer's information
@@ -215,7 +215,7 @@ public class Account {
     // Register the customer's address
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter address: ");
+        System.out.print("Enter address (e.g: 702 Nguyen Van Linh Street): ");
         String address = scanner.nextLine();
         if (validateAddress(address))
         // If the address satisfy the address's rules, the address will be saved in customer's information
@@ -264,7 +264,7 @@ public class Account {
     // Register the phone number
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter phone number: ");
+        System.out.print("Enter phone number (e.g: 09********): ");
         String phone = scanner.nextLine();
         if (validatePhoneNumber(phone))
         // If the phone number satisfy the phone number's rules, the phone number will be saved in customer's information
@@ -305,7 +305,7 @@ public class Account {
         } else
         // If password is not strong enough, customer has to register password again
         {
-            System.out.println("Your password is too weak!");
+            System.out.println("Your password is invalid!");
             registerPassword();
         }
         return this.password;

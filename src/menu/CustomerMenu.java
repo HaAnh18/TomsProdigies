@@ -107,8 +107,6 @@ public class CustomerMenu {
                 switch (sort) {
                     case "1":
                         // Ask customer to enter a category and check if it has product in that category or not
-                        System.out.print("Enter category: ");
-                        String category = scanner.nextLine();
                         product.searchByCategory();
                         TimeUnit.SECONDS.sleep(1);
                         customerMenu.view();
@@ -120,8 +118,8 @@ public class CustomerMenu {
                         customerMenu.view();
 
                     case "3":
-                        System.out.println("Enter category: ");
-                        category = scanner.nextLine();
+                        System.out.println("Enter category (e.g: laptop): ");
+                        String category = scanner.nextLine();
                         product.searchCategoryByPriceRange(category);
                         TimeUnit.SECONDS.sleep(1);
                         customerMenu.view();
@@ -149,7 +147,6 @@ public class CustomerMenu {
                 customerMenu.view();
 
             case "8":
-                System.out.println("\n================================================= FAQ =========================================================");
                 // Display all the questions and then the customer will choose which question he/she want to find
                 // After that, the system will display the answer of the customer's choice question
                 // The system will display question again or back to viewpage based on customer's choice
@@ -157,6 +154,7 @@ public class CustomerMenu {
                 String question;
                 do {
                     try {
+                        System.out.println("\n================================================= FAQ =========================================================");
                         FAQ.FAQPrint();
                         System.out.println("Enter a question's number that you want to search: ");
                         question = scanner.nextLine();
@@ -173,7 +171,7 @@ public class CustomerMenu {
                         customerMenu.view();
                     }
                     TimeUnit.SECONDS.sleep(1);
-                    System.out.println("Please press '=' to back to homepage or 1 to display question again");
+                    System.out.println("Please press '=' to back to homepage or press any number to display question again");
                     question = scanner.nextLine();
                 } while (!question.equals("="));
                 customerMenu.view();
@@ -364,10 +362,10 @@ public class CustomerMenu {
                         case "1":
                             product.getProductHaveId(); // Display all products having ID option
                             String choiceOrder = UserInput.rawInput();
-                            System.out.println("Please enter a quantity that you want to add: ");
+                            System.out.print("Please enter a quantity that you want to add: ");
                             int quantity = Integer.parseInt(scanner.nextLine());
                             // Ask customer to enter the quantity that he/she wants to add to cart
-                            ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/items.txt");
+                            ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
 
                             String[] productInfo = new String[3];
                             for (int i = 0; i < productList.size(); i++)
@@ -451,7 +449,7 @@ public class CustomerMenu {
 
             case "5":
                 System.out.println("\n================================================= SEARCHING ORDER =================================================");
-                System.out.print("Please enter your order ID: (e.g: O392)"); // Ask customer to enter an order ID that he/she wants to search
+                System.out.print("Please enter your order ID: (e.g: T392)"); // Ask customer to enter an order ID that he/she wants to search
                 String orderId = scanner.nextLine();
                 order.searchOrder(orderId);
                 TimeUnit.SECONDS.sleep(1);
@@ -477,31 +475,35 @@ public class CustomerMenu {
                 String choice = UserInput.rawInput();
                 switch (choice) {
                     case "1":
-                        System.out.print("Please enter your new name: ");
+                        System.out.print("Please enter your new name (e.g: Ha Anh): ");
                         String name = scanner.nextLine();
                         member.updateName("./src/dataFile/customers.txt", name, username);
                         this.viewHomepage(username);
 
                     case "2":
-                        System.out.print("Please enter your new email: (e.g: MrB@Company.com)");
+                        System.out.print("Please enter your new email (e.g: tomsprodigies@gmail.com): ");
                         String email = scanner.nextLine();
                         member.updateEmail("./src/dataFile/customers.txt", email, username);
                         this.viewHomepage(username);
 
                     case "3":
-                        System.out.print("Please enter your new address: (e.g: 420 HighStr)");
+                        System.out.print("Please enter your new address (e.g: 702 Nguyen Van Linh Street): ");
                         String address = scanner.nextLine();
                         member.updateAddress("./src/dataFile/customers.txt", address, username);
                         this.viewHomepage(username);
 
                     case "4":
-                        System.out.print("Please enter your new phone: (e.g: 09********)");
+                        System.out.print("Please enter your new phone (e.g: 09********): ");
                         String phone = scanner.nextLine();
                         member.updatePhone("./src/dataFile/customers.txt", phone, username);
                         this.viewHomepage(username);
 
                     case "5":
-                        System.out.print("Please enter your new password: ");
+                        System.out.print("Enter password \n" +
+                                "        (Password must contain at least one digit [0-9].\n" +
+                                "        Password must contain at least one lowercase Latin character [a-z].\n" +
+                                "        Password must contain at least one uppercase Latin character [A-Z].\n" +
+                                "        Password must contain a length of at least 8 characters and a maximum of 20 characters): ");
                         String password = scanner.nextLine();
                         member.updatePassword("./src/dataFile/customers.txt", password, username);
                         this.viewHomepage(username);
@@ -555,7 +557,6 @@ public class CustomerMenu {
                 }
 
             case "11":
-                System.out.println("\n================================================= FAQ =========================================================");
                 // Display all the questions and then the customer will choose which question he/she want to find
                 // After that, the system will display the answer of the customer's choice question
                 // The system will display question again or back to viewpage based on customer's choice
@@ -563,6 +564,7 @@ public class CustomerMenu {
                 String question;
                 do {
                     try {
+                        System.out.println("\n================================================= FAQ =========================================================");
                         FAQ.FAQPrint();
                         System.out.println("Enter a question's number that you want to search: ");
                         question = scanner.nextLine();
@@ -579,7 +581,7 @@ public class CustomerMenu {
                         this.viewHomepage(username);
                     }
                     TimeUnit.SECONDS.sleep(1);
-                    System.out.println("Please press '=' to back to homepage or 1 to display question again");
+                    System.out.println("Please press '=' to back to homepage or press any number to display question again");
                     question = scanner.nextLine();
                 } while (!question.equals("="));
                 this.viewHomepage(username);
@@ -676,7 +678,7 @@ public class CustomerMenu {
         ArrayList<String[]> cartList = cart.cartList(member);
         Random rd = new Random();
         int i = rd.nextInt(999);
-        String oID = order.oIDDataForValidate(String.format("O%03d", i)); // Generate the order id randomly and it is unique
+        String oID = order.oIDDataForValidate(String.format("T%03d", i)); // Generate the order id randomly and it is unique
         for (String[] strings : cartList)
         /* this method will loop every item in customer's cart
         and create a new order for those items which have the same order id

@@ -24,7 +24,6 @@ public class AdminMenu {
         System.out.println("3. Exit");
 
         boolean validUser = false;
-        PointsSystem pointShop = new PointsSystem();
         Admin admin = new Admin();
         AuthenticationSystem authenticationSystem = new AuthenticationSystem();
         String option = UserInput.rawInput();
@@ -100,6 +99,7 @@ public class AdminMenu {
             case "2":
                 // Display the information of all orders
                 order.getAllOrderInfo();
+                order.getAllBillingHistory();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
 
@@ -125,7 +125,8 @@ public class AdminMenu {
 
             case "7":
                 // Search the customer information by customer ID
-                System.out.print("Enter customer ID: ");
+                admin.getAllCustomerInfo();
+                System.out.print("Enter customer ID (e.g: C123): ");
                 String cID = scanner.nextLine();
                 order.getOrderInfoByCID(cID);
                 TimeUnit.SECONDS.sleep(1);
@@ -173,12 +174,11 @@ public class AdminMenu {
                 adminMenu.viewHomepage();
 
             case "10":
-                // Search the order's information based on order ID
-                System.out.println("\n================================================= SEARCHING ORDER =================================================");
+                System.out.println("\n================================================= UPDATING ORDER'S STATUS =================================================");
                 order.getAllOrderInfo();
-                System.out.print("Enter order ID of the order that you want to update: (e.g: O345)");
+                System.out.print("Enter order ID of the order that you want to update: (e.g: T345)");
                 String oId = scanner.nextLine();
-                System.out.print("Update order status to:");
+                System.out.print("Update order status to (e.g: DONE):");
                 String status = scanner.nextLine().toUpperCase();
                 admin.updateDeliveryStatus("./src/dataFile/ordersHistory.txt", status, oId);
                 adminMenu.viewHomepage();
@@ -200,7 +200,6 @@ public class AdminMenu {
 
                     case "2":
                         admin.getAllCategory();
-                        System.out.print("Enter category ID that you want to delete:");
                         String delCategory = UserInput.rawInput();
                         ArrayList<String[]> categoryList = ReadDataFromTXTFile.readAllLines("./src/dataFile/categories.txt");
                         String[] categoryInfo = new String[3];
@@ -249,6 +248,7 @@ public class AdminMenu {
                         adminMenu.viewHomepage();
 
                     case "4":
+                        admin.getAllCustomerInfo();
                         System.out.print("Please enter cID: (e.g: C123)");
                         String customerID = inputs.nextLine();
                         PointsSystem.getExchangeInfo(customerID);
@@ -288,7 +288,7 @@ public class AdminMenu {
                 // Users.Admin could delete customer by using customer's ID
                 System.out.println("\n================================================= DELETING CUSTOMER =================================================");
                 admin.getAllCustomerInfo();
-                System.out.print("Enter customer ID that you want to delete: (e.g: C123)");
+                System.out.print("Enter customer ID that you want to delete (e.g: C123): ");
                 String delCustomer = scanner.nextLine();
                 admin.deleteCustomer("./src/dataFile/customers.txt", delCustomer, 0);
                 adminMenu.viewHomepage();

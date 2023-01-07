@@ -191,12 +191,13 @@ public class Admin extends Account {
     // This method allow admin to modify a delivery status of order that had existed in items' file
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
+
         for (String[] strings : database) {
             if (strings[0].equals(oID))
                 /* If the system could find out the oID in ordersHistory's file
                  * then the system allow admin to update the order's delivery status
                  */ {
-                strings[8] = newData; // Modify the order's delivery status
+                strings[8] = newData.toUpperCase(); // Modify the order's delivery status
             }
         }
         File file = new File(filepath);

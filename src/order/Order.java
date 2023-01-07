@@ -237,6 +237,22 @@ public class Order {
         createTable.print();
     }
 
+    public void getAllBillingHistory() {
+        ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/dataFile/billingHistory.txt");
+        CreateTable createTable = new CreateTable();
+
+        // Setting up table
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("OID", "CID", "TOTAL PAYMENT AFTER DISCOUNT", "ORDER DATE");
+
+        // For each line, assign all content into table
+        for (int i = 1; i < orders.size(); i++) {
+            createTable.addRow(orders.get(i)[0], orders.get(i)[1], orders.get(i)[2],
+                    orders.get(i)[3]);
+        }
+        createTable.print();
+    }
+
     public String oIDDataForValidate(String oId) {
         try {
             // Read each line in ordersHistory
