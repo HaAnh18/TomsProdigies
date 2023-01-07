@@ -1,5 +1,5 @@
 #ID,Category,Quantity
-1,Dell XPS 17,58
+1,Dell XPS 17,63
 2,Macbook Pro 15,23
 3,Samsung Galaxy S22,4
 4,Marshall,11

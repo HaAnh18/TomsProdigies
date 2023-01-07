@@ -55,7 +55,7 @@ public class Account {
         password = registerPassword();
         totalSpending = (long) 0; // When customer register his/her account, their total spending will be set to 0
         totalPoint = (long) 0;
-        pw.println("\n" + cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + ","
+        pw.println(cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + ","
                 + userName + "," + password + "," + totalSpending + "," + totalPoint);
         // Write customer's information to customers file
         pw.close();
@@ -93,6 +93,7 @@ public class Account {
     // Login if he/she had account already
     {
         boolean isAuthentication = false;
+
 
         try {
             Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
@@ -468,6 +469,8 @@ public class Account {
         createTable.setShowVerticalLines(true);
         createTable.setHeaders("MEMBERSHIP");
         createTable.addRow(database[5]); // Print the membership status of this customer
+
+        createTable.print();
     }
 
 
@@ -542,38 +545,6 @@ public class Account {
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
-    }
-
-    public void searchOrder(String oId)
-    // Searching the order by using order ID
-    {
-        ArrayList<String[]> orders = new ArrayList<>(); // Create a new arraylist to store order information
-
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
-        // Read all line in ordersHistory.txt file and put all data in arraylist
-        for (int i = 1; i < database.size(); i++) {
-            if (database.get(i)[0].equals(oId))
-                /* If the system could find out the customer's ID in ordersHistory's file
-                 */ {
-                orders.add(database.get(i));
-            }
-        }
-        if (!(orders.size() == 0)) {
-            CreateTable createTable = new CreateTable();
-            createTable.setShowVerticalLines(true);
-            createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
-                    "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
-            /* Set header for the order information table */
-            for (String[] order : orders) {
-                createTable.addRow(order[0], order[1], order[2], order[3],
-                        order[4], order[5], order[6], order[7], order[8], order[9]);
-                /* Add information to each row in table */
-            }
-            createTable.print();
-        } else {
-            System.out.println("THERE IS NO ORDER HAVE THIS ID");
-        }
-
     }
 
     public void getAllMembershipTypes()

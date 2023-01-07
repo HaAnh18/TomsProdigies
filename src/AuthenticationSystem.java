@@ -1,19 +1,21 @@
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.concurrent.TimeUnit;
 
 public class AuthenticationSystem {
-    public void mainMenu() throws IOException, InterruptedException {
+    public void mainMenu() throws IOException, InterruptedException, ParseException {
         System.out.println("1. Use as a customer");
         System.out.println("2. Use as a administrator");
         System.out.println("3. Exit");
 
         AdminMenu adminMenu = new AdminMenu();
-//        CustomerMenu1 customerMenu = new CustomerMenu1();
+        CustomerMenu customerMenu = new CustomerMenu();
         String option = UserInput.rawInput();
         switch (option) {
             case "1":
-//                customerMenu.view();
+                customerMenu.view();
             case "2":
-//                adminMenu.view();
+                adminMenu.view();
             case "3":
                 System.out.println("Thank you so much for using our system. See you soon !!!!");
                 System.out.println("COSC2081 GROUP ASSIGNMENT");
@@ -30,6 +32,11 @@ public class AuthenticationSystem {
                 createTable.addRow("s3938143", "Nguyen Gia Bao");
                 createTable.print();
                 System.exit(1);
+
+            default:
+                System.out.println("Invalid input please try again!");
+                TimeUnit.SECONDS.sleep(1);
+                this.mainMenu();
         }
     }
 }

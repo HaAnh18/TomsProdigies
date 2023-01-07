@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -8,7 +9,7 @@ public class CustomerMenu {
     // This class will display customer menu
     private boolean cookies;
 
-    public void view() throws IOException, InterruptedException
+    public void view() throws IOException, InterruptedException, ParseException
     // Display menu when customer did not login yet
     {
         System.out.println("\n================================================= WELCOME TO TOM'S PRODIGIES STORE =================================================");
@@ -28,7 +29,8 @@ public class CustomerMenu {
         String option = UserInput.rawInput();
         Account customer = new Account();
         Product product = new Product();
-
+        AuthenticationSystem authenticationSystem = new AuthenticationSystem();
+        Order order = new Order();
 
         switch (option) {
             case "1":
@@ -36,29 +38,37 @@ public class CustomerMenu {
                 customer.register(); // Register customer's account
                 System.out.println("Register Successfully!");
                 customerMenu.view(); // Back to the viewpage
+
             case "2":
                 System.out.println("\n================================================= LOGIN FORM =================================================");
-                System.out.print("Enter username: ");
-                String username = scanner.nextLine();
-                System.out.print("Enter password: ");
-                String password = scanner.nextLine();
-                if (!customer.login(username, password))
+                do {
+                    try {
+                        System.out.print("Enter username: ");
+                        String username = scanner.nextLine();
+                        System.out.print("Enter password: ");
+                        String password = scanner.nextLine();
                 /* Verify the username and password,
                 if it doesn't correct, the system will ask customer to input again
                 if the username and password are correct, the login status will become true and display the homepage
-                 */ {
-                    System.out.print("Enter username: ");
-                    username = scanner.nextLine();
-                    System.out.print("Enter password: ");
-                    password = scanner.nextLine();
-                }
-                this.cookies = true;
-                this.viewHomepage(username);
+                 */
+                        if (!customer.login(username, password)) {
+                            System.out.println("Incorrect login info, please try again!");
+
+                        } else {
+                            this.cookies = true;
+                            this.viewHomepage(username);
+                        }
+                    } catch (ArrayIndexOutOfBoundsException toomuch) {
+                        System.out.println("Incorrect login info, please try again!");
+                    }
+                } while (!cookies);
+
             case "3":
                 System.out.println("\n================================================= OUR PRODUCTS =================================================");
                 product.getAllProductInfo(); // Display all products information
                 TimeUnit.SECONDS.sleep(1); // Wait for 1 second and then display a viewpage
                 customerMenu.view();
+
             case "4":
                 // Ask customer whether he/she wants to sort the product's price ascending or descending
                 System.out.println("\n================================================= SORTING PRODUCT =================================================");
@@ -68,6 +78,7 @@ public class CustomerMenu {
                 SortProduct.sortItems(Integer.parseInt(sortOption));
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
+
             case "5":
                 // Searching product by category or price range
                 System.out.println("\n================================================= SEARCHING PRODUCT =================================================");
@@ -92,9 +103,9 @@ public class CustomerMenu {
                     case "3":
                         System.out.println("Enter category: ");
                         category = scanner.nextLine();
-                        product.searchCategoryByPriceRange(category);
+                        Product.searchCategoryByPriceRange(category);
                         TimeUnit.SECONDS.sleep(1);
-                        this.view();
+                        customerMenu.view();
                     case "4":
                       
                         customerMenu.view();
@@ -106,6 +117,7 @@ public class CustomerMenu {
                         customerMenu.view();
                 }
             case "6":
+                System.out.println("\n================================================= POINTS SHOP =========================================================");
                 PointsSystem.viewPrizes(); // Display all the prizes that customers could exchange by his/her point
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
@@ -117,6 +129,7 @@ public class CustomerMenu {
                 customerMenu.view();
                 
             case "8":
+                System.out.println("\n================================================= FAQ =========================================================");
                 // Display all the questions and then the customer will choose which question he/she want to find
                 // After that, the system will display the answer of the customer's choice question
                 // The system will display question again or back to viewpage based on customer's choice
@@ -131,7 +144,9 @@ public class CustomerMenu {
                 }
 
             case "9":
-//                customerMenu.view(); // Back to the authentication system menu
+                authenticationSystem.mainMenu();
+                ;
+                // Back to the authentication system menu
 
             case "10":
                 // Display our course's information and our group's information
@@ -161,7 +176,7 @@ public class CustomerMenu {
         }
     }
 
-    public void viewHomepage(String username) throws IOException, InterruptedException {
+    public void viewHomepage(String username) throws IOException, InterruptedException, ParseException {
         System.out.println("\n================================================= HOMEPAGE =================================================");
         // Display the login status when customer login successfully
         System.out.println("\nCookies (Login Status): " + this.cookies);
@@ -192,6 +207,7 @@ public class CustomerMenu {
         Product product = new Product();
         Cart cart = new Cart();
         ArrayList<String[]> cartList = cart.cartList(member);
+        Order order = new Order();
 
         String option = UserInput.rawInput();
         switch (option) {
@@ -200,6 +216,7 @@ public class CustomerMenu {
                 product.getAllProductInfo(); // Display all products information
                 TimeUnit.SECONDS.sleep(1);
                 this.viewHomepage(username);
+
             case "2":
                 // Ask customer whether he/she wants to sort the product's price ascending or descending
                 System.out.println("\n================================================= SORTING PRODUCT =================================================");
@@ -209,6 +226,7 @@ public class CustomerMenu {
                 SortProduct.sortItems(Integer.parseInt(sortOption));
                 TimeUnit.SECONDS.sleep(1);
                 this.viewHomepage(username);
+
             case "3":
                 // Searching product by category or price range
                 System.out.println("\n================================================= SEARCHING PRODUCT =================================================");
@@ -218,6 +236,7 @@ public class CustomerMenu {
                 System.out.println("4. Back to homepage");
                 String sort = UserInput.rawInput();
                 switch (sort) {
+
                     case "1":
                         // Ask customer to enter a category and check if it has product in that category or not
                         System.out.print("Enter category: ");
@@ -225,6 +244,7 @@ public class CustomerMenu {
                         product.searchByCategory();
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
+
                     case "2":
 
                         // Ask customer to choose the price range that he/she wants to search
@@ -233,14 +253,17 @@ public class CustomerMenu {
                         product.findItemByPriceRange();
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
+
                     case "3":
                         System.out.println("Enter category: ");
                         category = scanner.nextLine();
                         product.searchCategoryByPriceRange(category);
                         TimeUnit.SECONDS.sleep(1);
-                        this.view();
+                        this.viewHomepage(username);
+
                     case "4":
                         this.viewHomepage(username);
+
                     default:
                         // If customer input another option that don't have in the searching product menu
                         // then the system will give he/she message and back to the homepage
@@ -258,6 +281,7 @@ public class CustomerMenu {
                     System.out.println("2. No");
                     String cartOption = UserInput.rawInput();
                     switch (cartOption) {
+
                         case "1":
                             product.getProductHaveId(); // Display all products having ID option
                             String choiceOrder = UserInput.rawInput();
@@ -299,8 +323,10 @@ public class CustomerMenu {
                                     TimeUnit.SECONDS.sleep(1);
                                     this.viewHomepage(username);
                             }
+
                         case "2":
                             this.viewHomepage(username);
+
                         default:
                             // If customer input another option that don't have in the menu
                             // then the system will give he/she message and back to the homepage
@@ -318,6 +344,7 @@ public class CustomerMenu {
 
                     String continueShopping = UserInput.rawInput();
                     switch (continueShopping) {
+
                         case "1":
                             product.getProductHaveId(); // Display all products having ID option
                             String choiceOrder = UserInput.rawInput();
@@ -343,6 +370,7 @@ public class CustomerMenu {
                             // After add item to cart,
                             // the system will give a message that whether a customer wants to continue to shopping or create order now
                             this.viewHomepage(username); // Back to the homepage
+
                         case "2":
                             cart.getCustomerCart(member); // Display customer's cart
                             while (cartList.size() > 1)
@@ -354,6 +382,7 @@ public class CustomerMenu {
                                 System.out.println("2. No");
                                 String delOption = UserInput.rawInput();
                                 switch (delOption) {
+
                                     case "1":
                                         cart.getCustomerCart(member); // Display all customer's cart for customer to choose which item he/she wants to delete
                                         String delProduct = UserInput.rawInput();
@@ -377,6 +406,8 @@ public class CustomerMenu {
 
                                     case "2":
                                         createOrder(member); // Create order based on customer's cart
+                                        TimeUnit.SECONDS.sleep(1);
+                                        this.viewHomepage(username);
                                     default:
                                         // If customer input another option that don't have in the menu
                                         // then the system will give he/she message and back to the homepage
@@ -400,13 +431,15 @@ public class CustomerMenu {
                             this.viewHomepage(username);
                     }
                 }
+
             case "5":
                 System.out.println("\n================================================= SEARCHING ORDER =================================================");
                 System.out.print("Please enter your order ID: "); // Ask customer to enter an order ID that he/she wants to search
                 String orderId = scanner.nextLine();
-                member.searchOrder(orderId);
+                order.searchOrder(orderId);
                 TimeUnit.SECONDS.sleep(1);
                 this.viewHomepage(username);
+
             case "6":
                 // Ask customer which information he/she wants to update
                 // After that the system will change his/her information in the text file
@@ -426,43 +459,52 @@ public class CustomerMenu {
                         String name = scanner.nextLine();
                         member.updateName("./src/customers.txt", name, username);
                         this.viewHomepage(username);
+
                     case "2":
                         System.out.print("Please enter your new email: ");
                         String email = scanner.nextLine();
                         member.updateEmail("./src/customers.txt", email, username);
                         this.viewHomepage(username);
+
                     case "3":
                         System.out.print("Please enter your new address: ");
                         String address = scanner.nextLine();
                         member.updateAddress("./src/customers.txt", address, username);
                         this.viewHomepage(username);
+
                     case "4":
                         System.out.print("Please enter your new phone: ");
                         String phone = scanner.nextLine();
                         member.updatePhone("./src/customers.txt", phone, username);
                         this.viewHomepage(username);
+
                     case "5":
                         System.out.print("Please enter your new password: ");
                         String password = scanner.nextLine();
                         member.updatePassword("./src/customers.txt", password, username);
                         this.viewHomepage(username);
+
                     case "6":
                         this.viewHomepage(username);
+
                     default:
                         System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
                 }
+
             case "7":
                 // Display the current membership of the customer
                 member.checkMembership(username);
                 TimeUnit.SECONDS.sleep(1);
                 this.viewHomepage(username);
+
             case "8":
                 // Display all types of membership
                 member.getAllMembershipTypes();
                 TimeUnit.SECONDS.sleep(1);
                 this.viewHomepage(username);
+
             case "9":
                 // Display all the prizes that customers could exchange by their point
                 // And then ask the customer to choose which item he/she wants to exchange
@@ -489,7 +531,9 @@ public class CustomerMenu {
                     System.out.println("Invalid input please try again later, you will now return to the main menu.");
                     this.viewHomepage(username);
                 }
+
             case "10":
+                System.out.println("\n================================================= FAQ =========================================================");
                 // Display all the questions and then the customer will choose which question he/she want to find
                 // After that, the system will display the answer of the customer's choice question
                 // The system will display question again or back to viewpage based on customer's choice
@@ -502,6 +546,7 @@ public class CustomerMenu {
                     System.out.println(" ");
                     FAQ.FAQPrint();
                 }
+
             case "11":
                 if (!(cartList.size() == 0))
                 // If in the customer's cart still has any item, the system will display a message
@@ -573,14 +618,16 @@ public class CustomerMenu {
                     this.view();
                 }
             case "12":
+                // Goodbye message
                 System.out.println("Thank you so much for using our system. See you soon !!!!");
                 System.out.println("COSC2081 GROUP ASSIGNMENT");
                 System.out.println("STORE ORDER MANAGEMENT SYSTEM");
                 System.out.println("Instructor: Mr. Tom Huynh & Dr. Phong Ngo");
                 System.out.println("Group: Tom's Prodigies");
+
+                // Setting up table
                 CreateTable createTable = new CreateTable();
                 createTable.setShowVerticalLines(true);
-
                 createTable.setHeaders("sID", "FULL NAME");
                 createTable.addRow("s3938490", "Nguyen Tran Ha Anh");
                 createTable.addRow("s3924716", "Hoang Tuan Minh");
@@ -588,6 +635,7 @@ public class CustomerMenu {
                 createTable.addRow("s3938143", "Nguyen Gia Bao");
                 createTable.print();
                 System.exit(1);
+
             default:
                 System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                 TimeUnit.SECONDS.sleep(1);
@@ -595,9 +643,10 @@ public class CustomerMenu {
         }
     }
 
-    public void createOrder(Customer member) throws IOException, InterruptedException
+    public void createOrder(Customer member) throws IOException, InterruptedException, ParseException
     // Create a new order for customer
     {
+        Account user = new Account();
         Order order = new Order();
         Cart cart = new Cart();
         Discount discount = new Discount();
@@ -614,7 +663,7 @@ public class CustomerMenu {
             Product product3 = new Product(productInfo1[0], productInfo1[1], Long.parseLong(productInfo1[2]), productInfo1[3]);
             order.createNewOrder(member, product3, oID, Integer.parseInt(strings[3]));
         }
-        member.searchOrder(oID);
+        order.searchOrder(oID);
         order.getTotalPaymentEachOrderId(member, oID);
         // Display a total payment before and after discount depends on membership type
         ArrayList<String[]> discountCode = discount.discountCodeList(member);
@@ -627,6 +676,7 @@ public class CustomerMenu {
             String discountOption = UserInput.rawInput();
             String discountCodeCustomer = new String();
             switch (discountOption) {
+
                 case "1":
                     /* If customer wants to use discount voucher,
                     then system will show all the vouchers that customer has
@@ -644,8 +694,9 @@ public class CustomerMenu {
                     order.getTotalPaymentAfterApplyDiscountCode(oID, discountCodeCustomer, member);
                     // Display the final total payment after customer apply discount voucher
                     TimeUnit.SECONDS.sleep(1);
+                    PointsSystem.pointsConversion(member.getcID(), oID);
                     this.viewHomepage(member.getUserName());
-                    PointsSystem.pointsConversion(member.getUserName(), oID);
+
                 case "2":
                     /* If customer doesn't want to use voucher,
                     then the system will base on order's total spending after discount by membership to give customer discount voucher
@@ -656,8 +707,8 @@ public class CustomerMenu {
                     discount.giveDiscountCode(member, totalPayment);
                     discount.displayCustomerDiscountCode(member);
                     TimeUnit.SECONDS.sleep(1);
+                    PointsSystem.pointsConversion(member.getcID(), oID);
                     this.viewHomepage(member.getUserName());
-                    PointsSystem.pointsConversion(member.getUserName(), oID);
                 default:
                     System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                     TimeUnit.SECONDS.sleep(1);
@@ -671,8 +722,8 @@ public class CustomerMenu {
                     "./src/billingHistory.txt", ",");
             Long totalPayment = Long.parseLong(orderInfo[2]);
             discount.giveDiscountCode(member, totalPayment);
+            PointsSystem.pointsConversion(member.getcID(), oID);
             this.viewHomepage(member.getUserName());
-            PointsSystem.pointsConversion(member.getUserName(), oID);
         }
     }
 }
