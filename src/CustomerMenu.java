@@ -45,21 +45,23 @@ public class CustomerMenu {
                     try {
                         System.out.print("Enter username: ");
                         String username = scanner.nextLine();
+                        String usernameNoSpace = username.trim();
                         System.out.print("Enter password: ");
                         String password = scanner.nextLine();
                 /* Verify the username and password,
                 if it doesn't correct, the system will ask customer to input again
                 if the username and password are correct, the login status will become true and display the homepage
                  */
-                        if (!customer.login(username, password)) {
+                        if (!customer.login(usernameNoSpace, password)) {
                             System.out.println("Incorrect login info, please try again!");
 
                         } else {
                             this.cookies = true;
-                            this.viewHomepage(username);
+                            this.viewHomepage(usernameNoSpace);
                         }
-                    } catch (ArrayIndexOutOfBoundsException toomuch) {
+                    } catch (Exception e) {
                         System.out.println("Incorrect login info, please try again!");
+                        this.cookies = false;
                     }
                 } while (!cookies);
 
@@ -127,21 +129,44 @@ public class CustomerMenu {
                 customer.getAllMembershipTypes(); // Display all types of membership and its discount for customer
                 TimeUnit.SECONDS.sleep(1);
                 customerMenu.view();
-                
+
             case "8":
                 System.out.println("\n================================================= FAQ =========================================================");
                 // Display all the questions and then the customer will choose which question he/she want to find
                 // After that, the system will display the answer of the customer's choice question
                 // The system will display question again or back to viewpage based on customer's choice
-                FAQ.FAQPrint();
-                System.out.print("\n" + "Press '=' to confirm exit or 1 to display the Questions again" + "\n");
-                String exit = UserInput.rawInput();
-                if (exit.equals("=")) {
-                    customerMenu.view();
-                } else {
-                    System.out.println(" ");
-                    FAQ.FAQPrint();
-                }
+                ArrayList<String[]> faq = ReadDataFromTXTFile.readAllLines("./src/FAQ.txt");
+                String question;
+                do {
+                    try {
+                        FAQ.FAQPrint();
+                        System.out.println("Enter a question's number that you want to search: ");
+                        question = scanner.nextLine();
+                        for (int i = 1; i < faq.size(); i++) {
+                            if (i == Integer.parseInt(question)) {
+                                System.out.println(faq.get(i)[1]);
+                                System.out.println("------> " + faq.get(i)[2]);
+                            }
+                        }
+                        if (Integer.parseInt(question) == 7) {
+                            FAQ.seeAll();
+                        }
+                    } catch (NumberFormatException e) {
+                        customerMenu.view();
+                    }
+                    TimeUnit.SECONDS.sleep(1);
+                    System.out.println("Please press '=' to back to homepage or 1 to display question again");
+                    question = scanner.nextLine();
+                } while (!question.equals("="));
+                customerMenu.view();
+//                System.out.print("\n" + "Press '=' to confirm exit or 1 to display the Questions again" + "\n");
+//                String exit = UserInput.rawInput();
+//                if (exit.equals("=")) {
+//                    customerMenu.view();
+//                } else {
+//                    System.out.println(" ");
+//                    FAQ.FAQPrint();
+//                }
 
             case "9":
                 authenticationSystem.mainMenu();
@@ -149,22 +174,7 @@ public class CustomerMenu {
                 // Back to the authentication system menu
 
             case "10":
-                // Display our course's information and our group's information
-                // and then exit the system
-                System.out.println("Thank you so much for using our system. See you soon !!!!!");
-                System.out.println("COSC2081 GROUP ASSIGNMENT");
-                System.out.println("STORE ORDER MANAGEMENT SYSTEM");
-                System.out.println("Instructor: Mr. Tom Huynh & Dr. Phong Ngo");
-                System.out.println("Group: Tom's Prodigies");
-                CreateTable createTable = new CreateTable();
-                createTable.setShowVerticalLines(true);
-
-                createTable.setHeaders("sID", "FULL NAME");
-                createTable.addRow("s3938490", "Nguyen Tran Ha Anh");
-                createTable.addRow("s3924716", "Hoang Tuan Minh");
-                createTable.addRow("s3938024", "Dang Kim Quang Minh");
-                createTable.addRow("s3938143", "Nguyen Gia Bao");
-                createTable.print();
+                // Exit the system
                 System.exit(1);
                 
             default:
@@ -239,8 +249,6 @@ public class CustomerMenu {
 
                     case "1":
                         // Ask customer to enter a category and check if it has product in that category or not
-                        System.out.print("Enter category: ");
-                        String category = scanner.nextLine();
                         product.searchByCategory();
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
@@ -256,7 +264,7 @@ public class CustomerMenu {
 
                     case "3":
                         System.out.println("Enter category: ");
-                        category = scanner.nextLine();
+                        String category = scanner.nextLine();
                         product.searchCategoryByPriceRange(category);
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
@@ -537,16 +545,39 @@ public class CustomerMenu {
                 // Display all the questions and then the customer will choose which question he/she want to find
                 // After that, the system will display the answer of the customer's choice question
                 // The system will display question again or back to viewpage based on customer's choice
-                FAQ.FAQPrint();
-                System.out.print("\n" + "Press '=' to confirm back to homepage or 1 to display the Questions again" + "\n");
-                String exit = UserInput.rawInput();
-                if (exit.equals("=")) {
-                    customerMenu.viewHomepage(username);
-                } else {
-                    System.out.println(" ");
-                    FAQ.FAQPrint();
-                }
-
+                ArrayList<String[]> faq = ReadDataFromTXTFile.readAllLines("./src/FAQ.txt");
+                String question;
+                do {
+                    try {
+                        FAQ.FAQPrint();
+                        System.out.println("Enter a question's number that you want to search: ");
+                        question = scanner.nextLine();
+                        for (int i = 1; i < faq.size(); i++) {
+                            if (i == Integer.parseInt(question)) {
+                                System.out.println(faq.get(i)[1]);
+                                System.out.println("------> " + faq.get(i)[2]);
+                            }
+                        }
+                        if (Integer.parseInt(question) == 7) {
+                            FAQ.seeAll();
+                        }
+                    } catch (NumberFormatException e) {
+                        this.viewHomepage(username);
+                    }
+                    TimeUnit.SECONDS.sleep(1);
+                    System.out.println("Please press '=' to back to homepage or 1 to display question again");
+                    question = scanner.nextLine();
+                } while (!question.equals("="));
+                this.viewHomepage(username);
+//                FAQ.FAQPrint();
+//                System.out.print("\n" + "Press '=' to confirm back to homepage or 1 to display the Questions again" + "\n");
+//                String exit = UserInput.rawInput();
+//                if (exit.equals("=")) {
+//                    customerMenu.viewHomepage(username);
+//                } else {
+//                    System.out.println(" ");
+//                    FAQ.FAQPrint();
+//                }
             case "11":
                 if (!(cartList.size() == 0))
                 // If in the customer's cart still has any item, the system will display a message
@@ -618,22 +649,6 @@ public class CustomerMenu {
                     this.view();
                 }
             case "12":
-                // Goodbye message
-                System.out.println("Thank you so much for using our system. See you soon !!!!");
-                System.out.println("COSC2081 GROUP ASSIGNMENT");
-                System.out.println("STORE ORDER MANAGEMENT SYSTEM");
-                System.out.println("Instructor: Mr. Tom Huynh & Dr. Phong Ngo");
-                System.out.println("Group: Tom's Prodigies");
-
-                // Setting up table
-                CreateTable createTable = new CreateTable();
-                createTable.setShowVerticalLines(true);
-                createTable.setHeaders("sID", "FULL NAME");
-                createTable.addRow("s3938490", "Nguyen Tran Ha Anh");
-                createTable.addRow("s3924716", "Hoang Tuan Minh");
-                createTable.addRow("s3938024", "Dang Kim Quang Minh");
-                createTable.addRow("s3938143", "Nguyen Gia Bao");
-                createTable.print();
                 System.exit(1);
 
             default:

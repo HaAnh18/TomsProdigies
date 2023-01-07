@@ -288,9 +288,8 @@ public class PointsSystem {
         System.out.println("Enter name: "); // Ask admin to input the product's name
         String name = scanner.nextLine();
         System.out.println("Enter points cost: "); // Ask admin to input the product's price
-        double pointCost = scanner.nextDouble();
-        scanner.nextLine();
-        pw.println(ID + "," + name + "," + pointCost + "," + category + "\n");
+        long pointCost = Long.parseLong(scanner.nextLine());
+        pw.println(ID + "," + name + "," + pointCost + "," + category);
 //        // Write product's information to items' file
         pw.close();
     }

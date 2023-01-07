@@ -18,9 +18,6 @@ public class CreateTable {
         setShowVerticalLines(false);
     }
 
-//    public void setRightAlign(boolean rightAlign) {
-//        this.rightAlign = rightAlign;
-//    }
 // When you set the setShowVerticalLines to true, the border of the table will be set under the below format.
     public void setShowVerticalLines(boolean showVerticalLines) {
         verticalSep = showVerticalLines ? "|" : "";

@@ -94,7 +94,6 @@ public class Account {
     {
         boolean isAuthentication = false;
 
-
         try {
             Scanner fileScanner = new Scanner(new File("./src/customers.txt"));
 
@@ -212,11 +211,23 @@ public class Account {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter address: ");
         String address = scanner.nextLine();
-        if (validateAddress(address))
-        // If the address satisfy the address's rules, the address will be saved in customer's information
-        {
+        String[] singleAddress = address.split(" ");
+        boolean check = false;
+        for (int i = 0; i < singleAddress.length - 1; i++) {
+            if (validateNumber(singleAddress[0])) {
+                if (validateAddress(singleAddress[i + 1])) {
+                    check = true;
+                }
+            }
+        }
+        if (check) {
             this.address = address;
         } else
+//        if (validateAddress(address))
+        // If the address satisfy the address's rules, the address will be saved in customer's information
+//        {
+//            this.address = address;
+//        } else
         // If address is incorrect, customer has to register address again
         {
             System.out.println("Invalid address");
@@ -225,10 +236,18 @@ public class Account {
         return this.address;
     }
 
+    public boolean validateNumber(String num) {
+        String rulesNumber = "-?\\d+(\\.\\d+)?";
+        Pattern pattern = Pattern.compile(rulesNumber);
+        Matcher matcher = pattern.matcher(num);
+        return matcher.matches(); // returns true if address matches, else returns false
+    }
+
     public boolean validateAddress(String address)
     // Validate the address that customer inputs
     {
-        String rulesAddress = "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)";
+//        String rulesAddress = "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)";
+        String rulesAddress = "([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)";
         Pattern pattern = Pattern.compile(rulesAddress);
         Matcher matcher = pattern.matcher(address);
         return matcher.matches(); // returns true if address matches, else returns false

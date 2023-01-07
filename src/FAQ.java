@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -18,7 +19,7 @@ public class FAQ {
 
     //This method create a menu for customer to select their FAQ option.
 
-    public static void searchQNA() throws IOException {
+    public static void searchQNA() throws IOException, ParseException, InterruptedException {
         //using method ReadDataFromTXTFile to read specific column which is QID in the text file
         String[] faq = ReadDataFromTXTFile.readColString(0, "./src/FAQ.txt", ",");
         faq = Arrays.stream(faq).distinct().toArray(String[]::new);
@@ -82,8 +83,6 @@ public class FAQ {
                 }
                 table.print();
 
-                table.setHeaders(new String[0]);
-                table.setRows(new ArrayList<String[]>());
             }
         }
     }
@@ -117,8 +116,15 @@ public class FAQ {
         for (int i = 1; i < readQuestionList.length; i++) {
             System.out.println(readQuestionList[i]);
         }
-        System.out.println("=.Exit");
+        System.out.println("7. See all");
+        System.out.println("=. Exit");
+    }
 
-        FAQ.searchQNA();
+    public static void seeAll() {
+        ArrayList<String[]> faq = ReadDataFromTXTFile.readAllLines("./src/FAQ.txt");
+        for (int i = 1; i < faq.size(); i++) {
+            System.out.println(faq.get(i)[1]);
+            System.out.println("------> " + faq.get(i)[2]);
+        }
     }
 }
