@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ReadDataFromTXTFile {
-    // https://www.youtube.com/watch?v=Ek6HFMNi3fs
     public static String[] readColString(int col, String filepath, String delimiter) throws IOException
     // Read all of a file's content within a specific column.
     {

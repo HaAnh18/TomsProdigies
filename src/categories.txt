@@ -1,5 +1,5 @@
 #ID,Category,Quantity
-1,Laptop,2
+1,Laptop,4
 2,Phone,2
 3,Earbud,1
 4,Headset,1

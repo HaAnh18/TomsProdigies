@@ -25,9 +25,9 @@ public class AdminMenu {
                     // if the username and password are not correct, the system will ask user to input again
                     // otherwise, the system will change to the homepage after login
                     Scanner scanner = new Scanner(System.in);
-                    System.out.println("Enter username: ");
+                    System.out.print("Enter username: ");
                     String username = scanner.nextLine();
-                    System.out.println("Enter password: ");
+                    System.out.print("Enter password: ");
                     String password = scanner.nextLine();
 
                     if (!admin.verifyAdmin(username, password)) {
@@ -42,22 +42,6 @@ public class AdminMenu {
             case "2":
                 authenticationSystem.mainMenu();
             case "3":
-                // Display our course's information and our group's information
-                // and then exit the system
-                System.out.println("Thank you so much for using our system. See you soon !!!!");
-                System.out.println("COSC2081 GROUP ASSIGNMENT");
-                System.out.println("STORE ORDER MANAGEMENT SYSTEM");
-                System.out.println("Instructor: Mr. Tom Huynh & Dr. Phong Ngo");
-                System.out.println("Group: Tom's Prodigies");
-                CreateTable createTable = new CreateTable();
-                createTable.setShowVerticalLines(true);
-
-                createTable.setHeaders("sID", "FULL NAME");
-                createTable.addRow("s3938490", "Nguyen Tran Ha Anh");
-                createTable.addRow("s3924716", "Hoang Tuan Minh");
-                createTable.addRow("s3938024", "Dang Kim Quang Minh");
-                createTable.addRow("s3938143", "Nguyen Gia Bao");
-                createTable.print();
                 System.exit(1);
             default:
                 // If customer input another option that don't have in the menu
@@ -112,6 +96,7 @@ public class AdminMenu {
             case "4":
                 adminMenu.viewStatistic();
             case "5":
+                order.getOrderByDate();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
             case "6":
@@ -159,7 +144,7 @@ public class AdminMenu {
                         productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1], 1, "./src/items.txt", ",");
                     }
                 }
-                System.out.println("Enter new price: ");
+                System.out.print("Enter new price: ");
                 Long price = Long.parseLong(scanner.nextLine());
                 admin.updatePrice("./src/items.txt", String.valueOf(price), productInfo[0]);
                 adminMenu.viewHomepage();
@@ -168,8 +153,9 @@ public class AdminMenu {
                 // Search the order's information based on order ID
                 System.out.println("\n================================================= SEARCHING ORDER =================================================");
                 order.getAllOrderInfo();
-                System.out.println("Enter order ID of the order that you want to update: ");
+                System.out.print("Enter order ID of the order that you want to update: ");
                 String oId = scanner.nextLine();
+                System.out.print("Update order status to:");
                 String status = scanner.nextLine().toUpperCase();
                 admin.updateDeliveryStatus("./src/ordersHistory.txt", status, oId);
                 adminMenu.viewHomepage();
@@ -184,13 +170,13 @@ public class AdminMenu {
                 String categoryOption = UserInput.rawInput();
                 switch (categoryOption) {
                     case "1":
-                        System.out.println("Enter new category: ");
+                        System.out.print("Enter new category: ");
                         String category = scanner.nextLine();
-                        product.createNewCategory(category);
+                        product.createNewCategory(category, 0);
                         adminMenu.viewHomepage();
                     case "2":
                         admin.getAllCategory();
-                        System.out.println("Enter category ID that you want to delete:");
+                        System.out.print("Enter category ID that you want to delete:");
                         String delCategory = UserInput.rawInput();
                         ArrayList<String[]> categoryList = ReadDataFromTXTFile.readAllLines("./src/categories.txt");
                         String[] categoryInfo = new String[3];
@@ -207,6 +193,7 @@ public class AdminMenu {
             case "12":
                 System.out.println("\n================================================= MANAGE POINT SHOP =================================================");
                 System.out.println("1. View exchange log");
+                System.out.println("2. View prizes");
                 System.out.println("2. Search exchange order by oID");
                 System.out.println("3. Search exchange order by cID");
                 System.out.println("4. Update pickup status");
@@ -222,77 +209,61 @@ public class AdminMenu {
                         PointsSystem.viewExchangeLog();
                         TimeUnit.SECONDS.sleep(1);
                         adminMenu.viewHomepage();
-                        break;
-
                     case "2":
-                        System.out.println("\n Please enter oID");
+                        PointsSystem.viewPrizes();
+                    case "3":
+                        System.out.print("Please enter oID:");
                         String oID = inputs.nextLine();
                         PointsSystem.searchExchangeOrderByOID(oID);
                         TimeUnit.SECONDS.sleep(1);
                         adminMenu.viewHomepage();
-                        break;
 
-                    case "3":
-                        System.out.println("\n Please enter cID");
+                    case "4":
+                        System.out.print("Please enter cID:");
                         String customerID = inputs.nextLine();
                         PointsSystem.getExchangeInfo(customerID);
                         TimeUnit.SECONDS.sleep(1);
                         adminMenu.viewHomepage();
-                        break;
 
-                    case "4":
-                        System.out.println("\n Enter oID you want to update");
+                    case "5":
+                        PointsSystem.viewExchangeLog();
+                        System.out.print("Enter oID you want to update:");
                         String targetOID = inputs.nextLine();
-                        System.out.println("\n Enter new status");
+                        System.out.print("Enter new status:");
                         String exStatus = inputs.nextLine();
                         PointsSystem.updatePickupStatus(exStatus, targetOID);
                         TimeUnit.SECONDS.sleep(1);
                         adminMenu.viewHomepage();
-                        break;
 
-                    case "5":
+                    case "6":
                         PointsSystem.addPrize();
                         TimeUnit.SECONDS.sleep(1);
                         adminMenu.viewHomepage();
-                        break;
 
-                    case "6":
+                    case "7":
                         PointsSystem.deletePrize();
                         TimeUnit.SECONDS.sleep(1);
                         adminMenu.viewHomepage();
-                        break;
 
-                    case "7":
+                    case "8":
                         adminMenu.viewHomepage();
-                        break;
+
+                    default:
+                        System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
+                        TimeUnit.SECONDS.sleep(1);
+                        adminMenu.viewHomepage();
                 }
-
-
             case "13":
                 // Admin could delete customer by using customer's ID
                 System.out.println("\n================================================= DELETING CUSTOMER =================================================");
                 admin.getAllCustomerInfo();
-                System.out.println("Enter customer ID that you want to delete: ");
+                System.out.print("Enter customer ID that you want to delete: ");
                 String delCustomer = UserInput.rawInput();
                 admin.deleteCustomer("./src/customers.txt", delCustomer, 0);
                 adminMenu.viewHomepage();
             case "14":
                 adminMenu.view();
             case "15":
-                System.out.println("Thank you so much for using our system. See you soon !!!!");
-                System.out.println("COSC2081 GROUP ASSIGNMENT");
-                System.out.println("STORE ORDER MANAGEMENT SYSTEM");
-                System.out.println("Instructor: Mr. Tom Huynh & Dr. Phong Ngo");
-                System.out.println("Group: Tom's Prodigies");
-                CreateTable createTable = new CreateTable();
-                createTable.setShowVerticalLines(true);
-
-                createTable.setHeaders("sID", "FULL NAME");
-                createTable.addRow("s3938490", "Nguyen Tran Ha Anh");
-                createTable.addRow("s3924716", "Hoang Tuan Minh");
-                createTable.addRow("s3938024", "Dang Kim Quang Minh");
-                createTable.addRow("s3938143", "Nguyen Gia Bao");
-                createTable.print();
                 System.exit(1);
             default:
                 System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");

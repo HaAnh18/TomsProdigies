@@ -38,12 +38,11 @@ public class Product {
                 pw.close();
 
                 for (String[] obj : database) {
-                    Write.rewriteFile("./src/productsSold.txt", "#ID,pID,Quantities", String.join(",", obj));
+                    Write.rewriteFile("./src/categories.txt", "#ID,pID,Quantity", String.join(",", obj));
                 }
             }
         }
         if (!checkCategory(category)) {
-            Scanner scanner = new Scanner(System.in);
             System.out.println("This category do not exist in category list yet!");
             System.out.println("Please choose your option: ");
             System.out.println("1. Create new category automatically");
@@ -51,7 +50,7 @@ public class Product {
             String option = UserInput.rawInput();
             switch (option) {
                 case "1":
-                    createNewCategory(category);
+                    createNewCategory(category, 1);
                     break;
                 case "2":
                     adminMenu.viewHomepage();
@@ -74,8 +73,6 @@ public class Product {
                 if (capital.equals(items[3])) {
                     found = true;
                     break;
-                } else {
-                    found = false;
                 }
 
             }
@@ -106,12 +103,16 @@ public class Product {
     }
 
     //This method is used to create new category and add to the categories.txt file.
-    public void createNewCategory(String category) throws IOException {
+    public void createNewCategory(String category, int quantity) throws IOException {
         Path path = Paths.get("./src/categories.txt");
         int id = (int) Files.lines(path).count();
-        PrintWriter writer = new PrintWriter(new FileWriter("./src/categories.txt", true));
-        writer.print("\n" + id + "," + category + "," + 1);
-        writer.close();
+        PrintWriter pw;
+        pw = new PrintWriter(new FileWriter("./src/categories.txt", true));
+        pw.println(id + "," + category + "," + quantity);
+        pw.close();
+//        PrintWriter pw = new PrintWriter(new FileWriter("./src/categories.txt", true));
+//        pw.println( id + "," + category + "," + 1);
+//        pw.close();
     }
 
     //This method is used to check if the category belongs to the category list in categories.txt file.
@@ -137,6 +138,32 @@ public class Product {
         }
         return found;
     }
+
+//    public void printCategory() throws FileNotFoundException {
+//        ArrayList<String[]> user = new ArrayList<>();
+//        Scanner fileProducts = new Scanner(new File("./src/categories.txt"));
+//
+//        while (fileProducts.hasNext()) {
+//            String[] productData = new String[3];
+//            String line = fileProducts.nextLine();
+//            StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
+//            String ID = stringTokenizer.nextToken();
+//            String title = stringTokenizer.nextToken();
+//            String price = stringTokenizer.nextToken();
+//            productData = new String[]{ID, title, price};
+//            user.add(productData);
+//        }
+//
+//        CreateTable createTable = new CreateTable();
+//        createTable.setShowVerticalLines(true);
+//        createTable.setHeaders("ID","CATEGORY", "QUANTITY");
+//
+//        for (int i = 1; i < user.size(); i++) {
+//            createTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2]);
+//        }
+//
+//        createTable.print();
+//    }
 
     public void getProductHaveId() throws FileNotFoundException {
         ArrayList<String[]> user = new ArrayList<>();

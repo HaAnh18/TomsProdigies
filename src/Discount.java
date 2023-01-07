@@ -94,11 +94,11 @@ public class Discount {
             // Setting up table
             CreateTable createTable = new CreateTable();
             createTable.setShowVerticalLines(true);
-            createTable.setHeaders("OPTION", "ID", "DISCOUNT CODE", "DISCOUNT AMOUNT");
+            createTable.setHeaders("OPTION", "DISCOUNT CODE", "DISCOUNT AMOUNT");
 
             // Adding content of found/available discount codes
             for (int i = 0; i < discountCode.size(); i++) {
-                createTable.addRow(String.valueOf(i + 1), discountCode.get(i)[1], discountCode.get(i)[2], discountCode.get(i)[3]);
+                createTable.addRow(String.valueOf(i + 1), discountCode.get(i)[2], discountCode.get(i)[3]);
             }
             createTable.print();
         }

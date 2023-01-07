@@ -1,9 +1,10 @@
 #ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total points
-C978,Minh Hoang,minh.hoang@gmail.com,18 Irwin Street,0987654321,Platinum,minhhoang,e10adc3949ba59abbe56e057f20f883e,169500000,0
+C978,Minh Hoang,minh.hoang@gmail.com,18 Irwin Street,0987654321,Platinum,minhhoang,e10adc3949ba59abbe56e057f20f883e,541500000,2360
 C324,Hong Wang,hong.wang@gmail.com,20 Irwin Street,0424173255,Regular,wanghong98,6c44e5cd17f0019c64b042e4a745412a,10000000,0
 C413,Linh Nguyen,linh.nguyen22@yahoomail.com,12 Brunswick Street,0424173255,Platinum,linhtb,bcd4fbde6d3c14d087b78301a1cd38c1,435000000,0
 C845,Antony Zinc,antony97@gmail.com,114 Fraser Avenue,0424512345,Silver,abookworm,56e5aa023235b331e828f612c88d8ba5,9400000,0
 C943,John Cain,john.cain@gmail.com,45 Sydney Road,0424325123,Platinum,johnthebaby,e10adc3949ba59abbe56e057f20f883e,29785000,0
 C986,Dylan Case,dylan@hotmail.com,02 West Drive,0424125598,Gold,dylanc,79d886010186eb60e3611cd4a5d0bcae,11365000,0
 C762,Ming Ka,minkuan159@gmail.com,999 svh,0963456789,Gold,Ming,5eac73d5f4641d25dbd988b429787ba7,12000000,0
-C010,Ha Anh,nana@gmail.com,12 Street,0987654321,Platinum,nana,e508a7edac21c6f07eb184fb27ccc8e5,42500000,425
+C010,Ha Anh,nana@gmail.com,12 Street,0987654321,Platinum,nana,e508a7edac21c6f07eb184fb27ccc8e5,254000000,1690
+C833,Nhi Nguyen,nhingg@gmail.com,12 Abc,1234567890,Platinum,nhiheo,6941df95a19d99b149ec18426f9a661b,196900000,1544

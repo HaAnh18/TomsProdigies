@@ -14,34 +14,6 @@ public class Admin extends Account {
         super();
     }
 
-    public static boolean dateValidate(String date)
-    // Validate the date that customer input
-    {
-        //First, we will need to seperate the day into three different component and reformat it into a string.
-
-        String[] dateComponent = date.split("/");
-        String month = dateComponent[0].replaceFirst("^0*", "");
-        String day = dateComponent[1].replaceFirst("^0*", "");
-        String year = dateComponent[2].replaceFirst("^0*", "");
-        if (Integer.parseInt(day) < 10) {
-            date = String.format("0%s" + "/" + "%s" + "/" + "%s", month, day, year);
-        } else if (Integer.parseInt(month) < 10) {
-            date = String.format("%s" + "/" + "0%s" + "/" + "%s", month, day, year);
-        } else if (Integer.parseInt(day) < 10 && Integer.parseInt(month) < 10) {
-            date = String.format("0%s" + "/" + "0%s" + "/" + "%s", month, day, year);
-        } else {
-            date = String.format("%s" + "/" + "%s" + "/" + "%s", month, day, year);
-        }
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-        format.setLenient(false);
-        try {
-            format.parse(date);
-        } catch (ParseException e) {
-            return true;
-        }
-        return false;
-    }
-
     public boolean verifyAdmin(String username, String password)
     // This method would verify username and password for admin account
     {
@@ -97,41 +69,35 @@ public class Admin extends Account {
         createTable.print(); // Print the table
     }
 
-    public void addProduct() throws IOException, ParseException, InterruptedException
-    // This method for admin to add new product
+    public static boolean dateValidate(String date)
+    // Validate the date that customer input
     {
-        Scanner scanner = new Scanner(System.in);
-        PrintWriter pw;
-        Product product = new Product();
-        pw = new PrintWriter(new FileWriter("./src/items.txt", true));
-        Path path = Paths.get("./src/items.txt");
-        int id = (int) Files.lines(path).count(); // Define the id of this product
-        System.out.println("Enter a year of this product: "); // Ask admin to input the product's year
-        int year = Integer.parseInt(scanner.nextLine());
-        String ID = String.format("I%03d-%04d", id, year); // Generate the product ID in items' file
-        System.out.println("Enter category: "); // Ask admin to input the product's category
-        String category = scanner.nextLine();
-        product.registerCategory(category); // Increase the quantity if the category had existed or create new category
-        System.out.println("Enter title: "); // Ask admin to input the product's title
-        String title = scanner.nextLine();
-        System.out.println("Enter price: "); // Ask admin to input the product's price
-        double price = scanner.nextDouble();
-        scanner.nextLine();
-        pw.println(ID + "," + title + "," + price + "," + category + "\n");
-//        // Write product's information to items' file
-        pw.close();
-    }
+        //First, we will need to seperate the day into three different component and reformat it into a string.
 
-    //This method is used to reformat the input date into a separate string for comparison.
-    public static String dateInput(String date) {
         String[] dateComponent = date.split("/");
         String month = dateComponent[0].replaceFirst("^0*", "");
         String day = dateComponent[1].replaceFirst("^0*", "");
         String year = dateComponent[2].replaceFirst("^0*", "");
-        date = month + "/" + day + "/" + year;
-        return date;
-
+        if (Integer.parseInt(day) < 10) {
+            date = String.format("0%s" + "/" + "%s" + "/" + "%s", month, day, year);
+        } else if (Integer.parseInt(month) < 10) {
+            date = String.format("%s" + "/" + "0%s" + "/" + "%s", month, day, year);
+        } else if (Integer.parseInt(day) < 10 && Integer.parseInt(month) < 10) {
+            date = String.format("0%s" + "/" + "0%s" + "/" + "%s", month, day, year);
+        } else {
+            date = String.format("%s" + "/" + "%s" + "/" + "%s", month, day, year);
+        }
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        format.setLenient(false);
+        try {
+            format.parse(date);
+        } catch (ParseException e) {
+            return true;
+        }
+        return false;
     }
+
+
 
     public void getAllCategory() throws FileNotFoundException
     // This method will display all the customers' information that existed in customers' file
@@ -398,6 +364,40 @@ public class Admin extends Account {
         revenueTable.print();
     }
 
+    //This method is used to reformat the input date into a separate string for comparison.
+    public static String dateInput(String date) {
+        String[] dateComponent = date.split("/");
+        String month = dateComponent[0].replaceFirst("^0*", "");
+        String day = dateComponent[1].replaceFirst("^0*", "");
+        String year = dateComponent[2].replaceFirst("^0*", "");
+        date = month + "/" + day + "/" + year;
+        return date;
+
+    }
+
+    public void addProduct() throws IOException, ParseException, InterruptedException
+    // This method for admin to add new product
+    {
+        Scanner scanner = new Scanner(System.in);
+        PrintWriter pw;
+        Product product = new Product();
+        pw = new PrintWriter(new FileWriter("./src/items.txt", true));
+        Path path = Paths.get("./src/items.txt");
+        int id = (int) Files.lines(path).count(); // Define the id of this product
+        System.out.println("Enter a year of this product: "); // Ask admin to input the product's year
+        int year = Integer.parseInt(scanner.nextLine());
+        String ID = String.format("I%03d-%04d", id, year); // Generate the product ID in items' file
+        System.out.println("Enter category: "); // Ask admin to input the product's category
+        String category = scanner.nextLine();
+        product.registerCategory(category); // Increase the quantity if the category had existed or create new category
+        System.out.println("Enter title: "); // Ask admin to input the product's title
+        String title = scanner.nextLine();
+        System.out.println("Enter price: "); // Ask admin to input the product's price
+        Long price = Long.parseLong(scanner.nextLine());
+        pw.println(ID + "," + title + "," + price + "," + category);
+//        // Write product's information to items' file
+        pw.close();
+    }
 
     /* This method allow admin to calculate daily revenue base on the timestamp of the purchase.*/
     public ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
@@ -413,7 +413,6 @@ public class Admin extends Account {
             System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy):");
             date = inputObj.nextLine();
         }
-        date = dateInput(date);
         //If the date is match, all the price will put in an Arraylist and total all the price.
         for (int i = 1; i < dailyRevenue.length; i++) {
             do revenueList.add(Long.valueOf(dailyRevenue[i]));

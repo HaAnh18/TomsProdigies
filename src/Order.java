@@ -62,7 +62,7 @@ public class Order {
     }
 
     /* This method will help to get the order date out of ordersHistory.txt */
-    public static ArrayList<String[]> getOrderByDate() throws IOException, ParseException {
+    public ArrayList<String[]> getOrderByDate() throws IOException, ParseException {
 
         ArrayList<String[]> dailyOrder = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
         String[] dateAndTime = ReadDataFromTXTFile.readColString(7, "./src/ordersHistory.txt", ",");
@@ -298,7 +298,7 @@ public class Order {
             // Add all the orders that have the corresponding cID
             for (String[] order : orders) {
                 createTable.addRow(order[0], order[1], order[2], order[3],
-                        order[4], order[5], order[6], order[7], order[9], order[10]);
+                        order[4], order[5], order[6], order[7], order[8], order[9]);
             }
             createTable.print();
         }
