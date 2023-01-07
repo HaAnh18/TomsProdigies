@@ -3,3 +3,5 @@
 2,Phone,2
 3,Earbud,1
 4,Headset,1
+5,PC,1
+6,GPU,1

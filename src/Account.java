@@ -211,23 +211,11 @@ public class Account {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter address: ");
         String address = scanner.nextLine();
-        String[] singleAddress = address.split(" ");
-        boolean check = false;
-        for (int i = 0; i < singleAddress.length - 1; i++) {
-            if (validateNumber(singleAddress[0])) {
-                if (validateAddress(singleAddress[i + 1])) {
-                    check = true;
-                }
-            }
-        }
-        if (check) {
+        if (validateAddress(address))
+        // If the address satisfy the address's rules, the address will be saved in customer's information
+        {
             this.address = address;
         } else
-//        if (validateAddress(address))
-        // If the address satisfy the address's rules, the address will be saved in customer's information
-//        {
-//            this.address = address;
-//        } else
         // If address is incorrect, customer has to register address again
         {
             System.out.println("Invalid address");
@@ -243,7 +231,7 @@ public class Account {
         return matcher.matches(); // returns true if address matches, else returns false
     }
 
-    public boolean validateAddress(String address)
+    public boolean validateAddressSingle(String address)
     // Validate the address that customer inputs
     {
 //        String rulesAddress = "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)";
@@ -251,6 +239,19 @@ public class Account {
         Pattern pattern = Pattern.compile(rulesAddress);
         Matcher matcher = pattern.matcher(address);
         return matcher.matches(); // returns true if address matches, else returns false
+    }
+
+    public boolean validateAddress(String address) {
+        String[] singleAddress = address.split(" ");
+        boolean check = false;
+        for (int i = 0; i < singleAddress.length - 1; i++) {
+            if (validateNumber(singleAddress[0])) {
+                if (validateAddressSingle(singleAddress[i + 1])) {
+                    check = true;
+                }
+            }
+        }
+        return check;
     }
 
     public String registerPhoneNumber()
@@ -350,12 +351,12 @@ public class Account {
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
-        for (int i = 0; i < database.size(); i++) {
-            if (database.get(i)[6].equals(userName) && validateName(newData))
+        for (String[] strings : database) {
+            if (strings[6].equals(userName) && validateName(newData))
                 /* If the system could find out the username in customers' file and the new name is validated
                  * then the system allow customer to update their information
                  */ {
-                database.get(i)[1] = newData; // The customer's information is changed in arraylist
+                strings[1] = newData; // The customer's information is changed in arraylist
             }
         }
         File file = new File(filepath);
@@ -401,6 +402,7 @@ public class Account {
     // Update a new address in customer's information
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
+//        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
         for (String[] strings : database) {
             if (strings[6].equals(userName) && validateAddress(newData))

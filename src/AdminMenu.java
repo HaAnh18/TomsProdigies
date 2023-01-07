@@ -41,8 +41,10 @@ public class AdminMenu {
 
             case "2":
                 authenticationSystem.mainMenu();
+
             case "3":
                 System.exit(1);
+
             default:
                 // If customer input another option that don't have in the menu
                 // then the system will give he/she message and back to the viewpage
@@ -83,27 +85,33 @@ public class AdminMenu {
                 product.getAllProductInfo();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
+
             case "2":
                 // Display the information of all orders
                 order.getAllOrderInfo();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
+
             case "3":
                 // Display the information of all customers
                 admin.getAllCustomerInfo();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
+
             case "4":
                 adminMenu.viewStatistic();
+
             case "5":
-                order.getOrderByDate();
+                order.printOrder(order.getOrderByDate());
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
+
             case "6":
                 // Display all the membership types
                 admin.getAllMembershipTypes();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
+
             case "7":
                 // Search the customer information by customer ID
                 System.out.print("Enter customer ID: ");
@@ -111,6 +119,7 @@ public class AdminMenu {
                 order.getOrderInfoByCID(cID);
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewHomepage();
+
             case "8":
                 // Allow user to add more product or remove any product
                 System.out.println("\n================================================= UPDATING PRODUCT =================================================");
@@ -124,14 +133,17 @@ public class AdminMenu {
                         TimeUnit.SECONDS.sleep(1);
                         adminMenu.viewHomepage();
                         adminMenu.viewHomepage();
+
                     case "2":
                         admin.deleteProduct();
                         TimeUnit.SECONDS.sleep(1);
                         adminMenu.viewHomepage();
                         adminMenu.viewHomepage();
+
                     case "3":
                         adminMenu.viewHomepage();
                 }
+
             case "9":
                 // Allow admin to change the price of the product
                 System.out.println("\n================================================= UPDATING PRICE =================================================");
@@ -153,7 +165,7 @@ public class AdminMenu {
                 // Search the order's information based on order ID
                 System.out.println("\n================================================= SEARCHING ORDER =================================================");
                 order.getAllOrderInfo();
-                System.out.print("Enter order ID of the order that you want to update: ");
+                System.out.print("Enter order ID of the order that you want to update: (e.g: O345)");
                 String oId = scanner.nextLine();
                 System.out.print("Update order status to:");
                 String status = scanner.nextLine().toUpperCase();
@@ -170,10 +182,11 @@ public class AdminMenu {
                 String categoryOption = UserInput.rawInput();
                 switch (categoryOption) {
                     case "1":
-                        System.out.print("Enter new category: ");
+                        System.out.print("Enter new category: (e.g: Laptop)");
                         String category = scanner.nextLine();
                         product.createNewCategory(category, 0);
                         adminMenu.viewHomepage();
+
                     case "2":
                         admin.getAllCategory();
                         System.out.print("Enter category ID that you want to delete:");
@@ -187,19 +200,21 @@ public class AdminMenu {
                         }
                         admin.deleteCategory("./src/categories.txt", categoryInfo[1]);
                         adminMenu.viewHomepage();
+
                     case "3":
                         adminMenu.viewHomepage();
                 }
+
             case "12":
                 System.out.println("\n================================================= MANAGE POINT SHOP =================================================");
                 System.out.println("1. View exchange log");
                 System.out.println("2. View prizes");
-                System.out.println("2. Search exchange order by oID");
-                System.out.println("3. Search exchange order by cID");
-                System.out.println("4. Update pickup status");
-                System.out.println("5. Add new prize item");
-                System.out.println("6. Delete prize item");
-                System.out.println("7. Exit");
+                System.out.println("3. Search exchange order by oID");
+                System.out.println("4. Search exchange order by cID");
+                System.out.println("5. Update pickup status");
+                System.out.println("6. Add new prize item");
+                System.out.println("7. Delete prize item");
+                System.out.println("8. Exit");
 
                 String pShopOption = UserInput.rawInput();
                 Scanner inputs = new Scanner(System.in);
@@ -209,17 +224,21 @@ public class AdminMenu {
                         PointsSystem.viewExchangeLog();
                         TimeUnit.SECONDS.sleep(1);
                         adminMenu.viewHomepage();
+
                     case "2":
                         PointsSystem.viewPrizes();
+                        TimeUnit.SECONDS.sleep(1);
+                        adminMenu.viewHomepage();
+
                     case "3":
-                        System.out.print("Please enter oID:");
+                        System.out.print("Please enter oID: (e.g: O345)");
                         String oID = inputs.nextLine();
                         PointsSystem.searchExchangeOrderByOID(oID);
                         TimeUnit.SECONDS.sleep(1);
                         adminMenu.viewHomepage();
 
                     case "4":
-                        System.out.print("Please enter cID:");
+                        System.out.print("Please enter cID: (e.g: C123)");
                         String customerID = inputs.nextLine();
                         PointsSystem.getExchangeInfo(customerID);
                         TimeUnit.SECONDS.sleep(1);
@@ -227,9 +246,9 @@ public class AdminMenu {
 
                     case "5":
                         PointsSystem.viewExchangeLog();
-                        System.out.print("Enter oID you want to update:");
+                        System.out.print("Enter oID you want to update: (e.g: O345)");
                         String targetOID = inputs.nextLine();
-                        System.out.print("Enter new status:");
+                        System.out.print("Enter new status: (e.g: DONE)");
                         String exStatus = inputs.nextLine();
                         PointsSystem.updatePickupStatus(exStatus, targetOID);
                         TimeUnit.SECONDS.sleep(1);
@@ -253,18 +272,21 @@ public class AdminMenu {
                         TimeUnit.SECONDS.sleep(1);
                         adminMenu.viewHomepage();
                 }
+
             case "13":
                 // Admin could delete customer by using customer's ID
                 System.out.println("\n================================================= DELETING CUSTOMER =================================================");
                 admin.getAllCustomerInfo();
-                System.out.print("Enter customer ID that you want to delete: ");
+                System.out.print("Enter customer ID that you want to delete: (e.g: C123)");
                 String delCustomer = UserInput.rawInput();
                 admin.deleteCustomer("./src/customers.txt", delCustomer, 0);
                 adminMenu.viewHomepage();
             case "14":
                 adminMenu.view();
+
             case "15":
                 System.exit(1);
+
             default:
                 System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                 TimeUnit.SECONDS.sleep(1);
@@ -293,37 +315,38 @@ public class AdminMenu {
                 admin.calculateRevenue(admin.getTotalRevenue());
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
+
             case "2":
                 // Display the daily revenue of the store
-//                CreateTable dailyRevenue = new CreateTable();
-//                dailyRevenue.setShowVerticalLines(true);
-//                dailyRevenue.setHeaders("DAILY REVENUE");
-//                dailyRevenue.addRow(String.valueOf(admin.getDailyRevenue()));
-//                admin.calculateRevenue(admin.getDailyRevenue());
+                admin.calculateRevenue(admin.getDailyRevenue());
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
+
             case "3":
                 // Display the most popular product in store
                 sortProduct.getBestSeller();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
+
             case "4":
                 // Display the least popular product in store
                 sortProduct.getLeastSeller();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
+
             case "5":
                 // Display the customer that spend the most in store
                 admin.getMostSpender();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
+
             case "6":
                 adminMenu.viewHomepage();
+
             default:
                 System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
-
         }
     }
 }

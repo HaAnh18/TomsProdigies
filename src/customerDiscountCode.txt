@@ -1,3 +1,4 @@
 #CID,ID,Discount code,Discount amount
 C363,945,Laptop2023,1000000
 C610,328,Laptop2023,1000000
+C762,732,Phone2023,500000

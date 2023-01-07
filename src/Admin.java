@@ -72,7 +72,7 @@ public class Admin extends Account {
     public static boolean dateValidate(String date)
     // Validate the date that customer input
     {
-        //First, we will need to seperate the day into three different component and reformat it into a string.
+        //First, we will need to separate the day into three different component and reformat it into a string.
 
         String[] dateComponent = date.split("/");
         String month = dateComponent[0].replaceFirst("^0*", "");
@@ -97,6 +97,29 @@ public class Admin extends Account {
         return false;
     }
 
+    public void addProduct() throws IOException, ParseException, InterruptedException
+    // This method for admin to add new product
+    {
+        Scanner scanner = new Scanner(System.in);
+        PrintWriter pw;
+        Product product = new Product();
+        pw = new PrintWriter(new FileWriter("./src/items.txt", true));
+        Path path = Paths.get("./src/items.txt");
+        int id = (int) Files.lines(path).count(); // Define the id of this product
+        System.out.println("Enter a year of this product: "); // Ask admin to input the product's year
+        int year = Integer.parseInt(scanner.nextLine());
+        String ID = String.format("I%03d-%04d", id, year); // Generate the product ID in items' file
+        System.out.println("Enter category: "); // Ask admin to input the product's category
+        String category = scanner.nextLine();
+        product.registerCategory(category); // Increase the quantity if the category had existed or create new category
+        System.out.println("Enter title: "); // Ask admin to input the product's title
+        String title = scanner.nextLine();
+        System.out.println("Enter price: "); // Ask admin to input the product's price
+        Long price = Long.parseLong(scanner.nextLine());
+        pw.println(ID + "," + title + "," + price + "," + category);
+//        // Write product's information to items' file
+        pw.close();
+    }
 
 
     public void getAllCategory() throws FileNotFoundException
@@ -264,7 +287,6 @@ public class Admin extends Account {
         System.out.println("Deletion successful");
     }
 
-
     public void deleteProductCategory(String filepath, String delCategory) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/items.txt");
 
@@ -284,7 +306,7 @@ public class Admin extends Account {
 
         // This method would allow system to write all data including new data into the customers' file
         for (String[] obj : database) {
-            Write.rewriteFile(filepath, "#ID,Title, Price, Category", String.join(",", obj));
+            Write.rewriteFile(filepath, "#ID,Title,Price,Category", String.join(",", obj));
         }
         System.out.println("Deletion successful");
     }
@@ -377,36 +399,10 @@ public class Admin extends Account {
 
     }
 
-    public void addProduct() throws IOException, ParseException, InterruptedException
-    // This method for admin to add new product
-    {
-        Scanner scanner = new Scanner(System.in);
-        PrintWriter pw;
-        Product product = new Product();
-        pw = new PrintWriter(new FileWriter("./src/items.txt", true));
-        Path path = Paths.get("./src/items.txt");
-        int id = (int) Files.lines(path).count(); // Define the id of this product
-        System.out.println("Enter a year of this product: "); // Ask admin to input the product's year
-        int year = Integer.parseInt(scanner.nextLine());
-        String ID = String.format("I%03d-%04d", id, year); // Generate the product ID in items' file
-        System.out.println("Enter category: "); // Ask admin to input the product's category
-        String category = scanner.nextLine();
-        product.registerCategory(category); // Increase the quantity if the category had existed or create new category
-        System.out.println("Enter title: "); // Ask admin to input the product's title
-        String title = scanner.nextLine();
-        System.out.println("Enter price: "); // Ask admin to input the product's price
-        Long price = Long.parseLong(scanner.nextLine());
-        pw.println(ID + "," + title + "," + price + "," + category);
-//        // Write product's information to items' file
-        pw.close();
-    }
-
-
     /* This method allow admin to calculate daily revenue base on the timestamp of the purchase.*/
-    public static ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
+    public ArrayList<Long> getDailyRevenue() throws IOException, ParseException {
 
         String[] dailyRevenue = ReadDataFromTXTFile.readColString(2, "./src/billingHistory.txt", ",");
-        String[] dateAndTime = ReadDataFromTXTFile.readColString(3, "./src/billingHistory.txt", ",");
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/billingHistory.txt");
         ArrayList<Long> revenueList = new ArrayList<>(dailyRevenue.length);
 
@@ -419,27 +415,15 @@ public class Admin extends Account {
         }
 
         date = dateInput(date);
-//        ArrayList<String> dates = new ArrayList<>();
-//        for (int o = 1;o < dateAndTime.length;o++) {
-//            String[] data = dateAndTime[o].split("_");
-//            String splitted = data[0].trim();
-//            dates.add(splitted);
-//        }
-//        System.out.println(dates);
 
         //If the date is match, all the price will put in an Arraylist and total all the price.
         for (int i = 1; i < database.size(); i++) {
             String[] dateSplit = database.get(i)[3].split("_");
-//            System.out.println(dateSplit[0]);
             String splitDate = dateSplit[0].replaceAll("//s", "");
             splitDate = dateInput(splitDate);
             if (splitDate.equals(date)) {
                 revenueList.add(Long.valueOf(dailyRevenue[i]));
             }
-//            do revenueList.add(Long.valueOf(dailyRevenue[i]));
-//            while (dateAndTime.equals(date));
-
-            // If the system could find out the category in items.txt file
         }
         return revenueList;
     }

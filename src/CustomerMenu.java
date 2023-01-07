@@ -43,7 +43,7 @@ public class CustomerMenu {
                 System.out.println("\n================================================= LOGIN FORM =================================================");
                 do {
                     try {
-                        System.out.print("Enter username: ");
+                        System.out.print("Enter username: (e.g: minhkuan)");
                         String username = scanner.nextLine();
                         String usernameNoSpace = username.trim();
                         System.out.print("Enter password: ");
@@ -97,20 +97,23 @@ public class CustomerMenu {
                         product.searchByCategory();
                         TimeUnit.SECONDS.sleep(1);
                         customerMenu.view();
+
                     case "2":
                         // Ask customer to choose the price range that he/she wants to search
                         product.findItemByPriceRange();
                         TimeUnit.SECONDS.sleep(1);
                         customerMenu.view();
+
                     case "3":
                         System.out.println("Enter category: ");
                         category = scanner.nextLine();
                         Product.searchCategoryByPriceRange(category);
                         TimeUnit.SECONDS.sleep(1);
                         customerMenu.view();
+
                     case "4":
-                      
                         customerMenu.view();
+
                     default:
                         // If customer input another option that don't have in the searching product menu
                         // then the system will give he/she message and back to the viewpage
@@ -159,14 +162,6 @@ public class CustomerMenu {
                     question = scanner.nextLine();
                 } while (!question.equals("="));
                 customerMenu.view();
-//                System.out.print("\n" + "Press '=' to confirm exit or 1 to display the Questions again" + "\n");
-//                String exit = UserInput.rawInput();
-//                if (exit.equals("=")) {
-//                    customerMenu.view();
-//                } else {
-//                    System.out.println(" ");
-//                    FAQ.FAQPrint();
-//                }
 
             case "9":
                 authenticationSystem.mainMenu();
@@ -201,13 +196,14 @@ public class CustomerMenu {
         System.out.println("3. Search product");
         System.out.println("4. Create order");
         System.out.println("5. Search order by order ID");
-        System.out.println("6. Update your information");
-        System.out.println("7. Check your membership");
-        System.out.println("8. List all membership types");
-        System.out.println("9. Point store");
-        System.out.println("10. FAQ");
-        System.out.println("11. Log out");
-        System.out.println("12. Exit");
+        System.out.println("6. Order history");
+        System.out.println("7. Update your information");
+        System.out.println("8. Check your membership");
+        System.out.println("9. List all membership types");
+        System.out.println("10. Point store");
+        System.out.println("11. FAQ");
+        System.out.println("12. Log out");
+        System.out.println("13. Exit");
 
         Scanner scanner = new Scanner(System.in);
         Customer member = new Customer(customerInfo[0], customerInfo[1], customerInfo[2], customerInfo[3],
@@ -254,16 +250,14 @@ public class CustomerMenu {
                         this.viewHomepage(username);
 
                     case "2":
-
                         // Ask customer to choose the price range that he/she wants to search
                         Product.printPriceRange();
-
                         product.findItemByPriceRange();
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
 
                     case "3":
-                        System.out.println("Enter category: ");
+                        System.out.println("Enter category: (e.g: laptop)");
                         String category = scanner.nextLine();
                         product.searchCategoryByPriceRange(category);
                         TimeUnit.SECONDS.sleep(1);
@@ -431,6 +425,7 @@ public class CustomerMenu {
 
                         case "3":
                             this.viewHomepage(username);
+
                         default:
                             // If customer input another option that don't have in the menu
                             // then the system will give he/she message and back to the homepage
@@ -442,13 +437,18 @@ public class CustomerMenu {
 
             case "5":
                 System.out.println("\n================================================= SEARCHING ORDER =================================================");
-                System.out.print("Please enter your order ID: "); // Ask customer to enter an order ID that he/she wants to search
+                System.out.print("Please enter your order ID: (e.g: O392)"); // Ask customer to enter an order ID that he/she wants to search
                 String orderId = scanner.nextLine();
                 order.searchOrder(orderId);
                 TimeUnit.SECONDS.sleep(1);
                 this.viewHomepage(username);
 
             case "6":
+                order.getOrderInfoByCID(member.getcID());
+                TimeUnit.SECONDS.sleep(1);
+                this.viewHomepage(username);
+
+            case "7":
                 // Ask customer which information he/she wants to update
                 // After that the system will change his/her information in the text file
                 System.out.println("\n================================================= UPDATING INFORMATION =================================================");
@@ -469,19 +469,19 @@ public class CustomerMenu {
                         this.viewHomepage(username);
 
                     case "2":
-                        System.out.print("Please enter your new email: ");
+                        System.out.print("Please enter your new email: (e.g: MrB@Company.com)");
                         String email = scanner.nextLine();
                         member.updateEmail("./src/customers.txt", email, username);
                         this.viewHomepage(username);
 
                     case "3":
-                        System.out.print("Please enter your new address: ");
+                        System.out.print("Please enter your new address: (e.g: 420 HighStr)");
                         String address = scanner.nextLine();
                         member.updateAddress("./src/customers.txt", address, username);
                         this.viewHomepage(username);
 
                     case "4":
-                        System.out.print("Please enter your new phone: ");
+                        System.out.print("Please enter your new phone: (e.g: 09********)");
                         String phone = scanner.nextLine();
                         member.updatePhone("./src/customers.txt", phone, username);
                         this.viewHomepage(username);
@@ -501,19 +501,19 @@ public class CustomerMenu {
                         this.viewHomepage(username);
                 }
 
-            case "7":
+            case "8":
                 // Display the current membership of the customer
                 member.checkMembership(username);
                 TimeUnit.SECONDS.sleep(1);
                 this.viewHomepage(username);
 
-            case "8":
+            case "9":
                 // Display all types of membership
                 member.getAllMembershipTypes();
                 TimeUnit.SECONDS.sleep(1);
                 this.viewHomepage(username);
 
-            case "9":
+            case "10":
                 // Display all the prizes that customers could exchange by their point
                 // And then ask the customer to choose which item he/she wants to exchange
                 // After that, the system will create a prize exchange order for customer
@@ -540,7 +540,7 @@ public class CustomerMenu {
                     this.viewHomepage(username);
                 }
 
-            case "10":
+            case "11":
                 System.out.println("\n================================================= FAQ =========================================================");
                 // Display all the questions and then the customer will choose which question he/she want to find
                 // After that, the system will display the answer of the customer's choice question
@@ -569,16 +569,8 @@ public class CustomerMenu {
                     question = scanner.nextLine();
                 } while (!question.equals("="));
                 this.viewHomepage(username);
-//                FAQ.FAQPrint();
-//                System.out.print("\n" + "Press '=' to confirm back to homepage or 1 to display the Questions again" + "\n");
-//                String exit = UserInput.rawInput();
-//                if (exit.equals("=")) {
-//                    customerMenu.viewHomepage(username);
-//                } else {
-//                    System.out.println(" ");
-//                    FAQ.FAQPrint();
-//                }
-            case "11":
+
+            case "12":
                 if (!(cartList.size() == 0))
                 // If in the customer's cart still has any item, the system will display a message
                 // that will show three options for customer to choose:
@@ -621,6 +613,7 @@ public class CustomerMenu {
                                         if (cartList.size() == 0) {
                                             System.out.println("Your cart is empty!");
                                         }
+
                                     case "2":
                                         createOrder(member);
 
@@ -636,10 +629,12 @@ public class CustomerMenu {
                         }
                         case "2":
                             this.view();
+
                         case "3":
                             cart.deleteAllItemsInCart("./src/customerCart.txt", member.getcID());
                             System.out.println("Delete all items successfully!");
                             this.view();
+
                         default:
                             System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                             TimeUnit.SECONDS.sleep(1);
@@ -648,7 +643,7 @@ public class CustomerMenu {
                 } else {
                     this.view();
                 }
-            case "12":
+            case "13":
                 System.exit(1);
 
             default:

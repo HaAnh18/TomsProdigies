@@ -17,7 +17,6 @@ public class Order {
     private String orderStatus;
     private String deliveryStatus;
 
-    private String date;
 
     // Constructor
     public Order(String oID, Long paymentPrice, String orderDate, String orderStatus, String deliveryStatus) {
@@ -59,28 +58,6 @@ public class Order {
         // Delete Item in cart after created an order
         Cart cart = new Cart();
         cart.deleteItemInCart("./src/customerCart.txt", customer.getcID(), product);
-    }
-
-    /* This method will help to get the order date out of ordersHistory.txt */
-    public ArrayList<String[]> getOrderByDate() throws IOException, ParseException {
-
-        ArrayList<String[]> dailyOrder = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
-        String[] dateAndTime = ReadDataFromTXTFile.readColString(7, "./src/ordersHistory.txt", ",");
-        Scanner inputObj = new Scanner(System.in);
-        Order order = new Order();
-        System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");
-        String date = inputObj.nextLine();
-        while (Admin.dateValidate(date)) /* validate if the timestamp is match to the user's input */ {
-            System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");
-            date = inputObj.nextLine();
-
-        }
-        date = Admin.dateInput(date);
-        do {
-            order.getAllOrderInfo();
-        }
-        while (dateAndTime.equals(date));
-        return dailyOrder;
     }
 
     public void searchOrder(String oId)
@@ -364,11 +341,44 @@ public class Order {
         writer.close();
     }
 
-    // Getter method for order date
-    public String getOrderDate() {
-        return orderDate;
+    /* This method will help to get the order date out of ordersHistory.txt */
+    public ArrayList<String[]> getOrderByDate() throws IOException, ParseException {
+
+        ArrayList<String[]> orderList = ReadDataFromTXTFile.readAllLines("./src/ordersHistory.txt");
+        ArrayList<String[]> dailyOrder = new ArrayList<>();
+        Scanner inputObj = new Scanner(System.in);
+        System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");
+        String date = inputObj.nextLine();
+        while (Admin.dateValidate(date)) /* validate if the timestamp is match to the user's input */ {
+            System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");
+            date = inputObj.nextLine();
+
+        }
+        date = Admin.dateInput(date);
+        for (int i = 1; i < orderList.size(); i++) {
+            String[] dateSplit = orderList.get(i)[7].split("_");
+            String splitDate = dateSplit[0].replaceAll("//s", "");
+            splitDate = Admin.dateInput(splitDate);
+            if (splitDate.equals(date)) {
+                dailyOrder.add(orderList.get(i));
+            }
+        }
+        return dailyOrder;
     }
 
+    public void printOrder(ArrayList<String[]> dailyOrder) {
+        CreateTable createTable = new CreateTable();
+        createTable.setShowVerticalLines(true);
+        createTable.setHeaders("OID", "CID", "MEMBERSHIP", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
+                "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
+
+        // Add all the orders that have the corresponding cID
+        for (String[] order : dailyOrder) {
+            createTable.addRow(order[0], order[1], order[2], order[3],
+                    order[4], order[5], order[6], order[7], order[8], order[9]);
+        }
+        createTable.print();
+    }
 }
 
 

@@ -4,19 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FAQ {
-
-    // Attributes
-    private int qnaID;
-    private String question;
-    private String answer;
-
-    //Constructor for FAQ class.
-    public FAQ(int qnaID, String question, String answer) {
-        this.qnaID = qnaID;
-        this.question = question;
-        this.answer = answer;
-    }
-
     //This method create a menu for customer to select their FAQ option.
 
     public static void searchQNA() throws IOException, ParseException, InterruptedException {
