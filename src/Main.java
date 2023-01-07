@@ -1,12 +1,15 @@
+import menu.AuthenticationSystem;
+
 import java.io.IOException;
 import java.text.ParseException;
-
 
 public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException, ParseException {
-        CustomerMenu customerMenu = new CustomerMenu();
-        customerMenu.view();
+        AuthenticationSystem authenticationSystem = new AuthenticationSystem();
+        authenticationSystem.mainMenu();
+//        CustomerMenu customerMenu = new CustomerMenu();
+//        customerMenu.view();
 //        customerMenu.viewHomepage("minhhoang");
 //        Discount discount = new Discount();
 //        Order order = new Order();

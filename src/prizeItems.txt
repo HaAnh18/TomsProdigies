@@ -1,3 +1,0 @@
-#ID,Title, Points, Category
-I005-2015,Harman Kardon,5000,Earbud
-I006-2014,Marshall,10000,Headset
