@@ -67,7 +67,7 @@ public class Order {
         pw.close();
 
         // Delete Item in cart after created an order
-        Cart cart = new Cart();
+        Cart cart = new Cart(customer);
         cart.deleteItemInCart("./src/dataFile/customerCart.txt", customer.getcID(), product);
     }
 
@@ -144,8 +144,8 @@ public class Order {
         Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + totalPaymentAfterDiscount);
 
         // update methods for corresponding attributes
-        customer.updateTotalSpending("./src/dataFile/customers.txt", String.valueOf(totalSpending), customer.getUserName());
-        customer.updateMembership("./src/dataFile/customers.txt", customer.getUserName());
+        customer.updateTotalSpending("./src/dataFile/customers.txt", String.valueOf(totalSpending), customer.getUsername());
+        customer.updateMembership("./src/dataFile/customers.txt", customer.getUsername());
 
         // Setting up table and print out the before and after total payment with membership type
         CreateTable createTable = new CreateTable();
@@ -205,8 +205,8 @@ public class Order {
         Long totalSpending = customer.setTotalSpending(customer.getTotalSpending() + (finalPrice));
 
         // Update TotalSpending and Membership for customer based on new totalSpending
-        customer.updateTotalSpending("./src/dataFile/customers.txt", String.valueOf(totalSpending), customer.getUserName());
-        customer.updateMembership("./src/dataFile/customers.txt", customer.getUserName());
+        customer.updateTotalSpending("./src/dataFile/customers.txt", String.valueOf(totalSpending), customer.getUsername());
+        customer.updateMembership("./src/dataFile/customers.txt", customer.getUsername());
 
         // Setting up table and adding content
         CreateTable createTable = new CreateTable();

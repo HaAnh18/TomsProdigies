@@ -21,20 +21,21 @@ public class Account {
     private String address;
     private String phone;
     private String customerType;
-    private String userName;
+    private String username;
     private String password;
     private Long totalSpending;
     private Long totalPoint;
 
     // Constructor
-    public Account(String cID, String name, String email, String address, String phone, String customerType, String userName, String password, Long totalSpending, Long totalPoint) {
+    public Account(String cID, String name, String email, String address, String phone,
+                   String customerType, String userName, String password, Long totalSpending, Long totalPoint) {
         this.cID = cID;
         this.name = name;
         this.email = email;
         this.address = address;
         this.phone = phone;
         this.customerType = customerType;
-        this.userName = userName;
+        this.username = userName;
         this.password = password;
         this.totalSpending = totalSpending;
         this.totalPoint = totalPoint;
@@ -52,7 +53,7 @@ public class Account {
         Random rd = new Random();
         int id = rd.nextInt(999);
         cID = validateCId(String.format("C%03d", id));
-        userName = registerUsername();
+        username = registerUsername();
         name = registerName();
         email = registerEmail();
         address = registerAddress();
@@ -62,7 +63,7 @@ public class Account {
         totalSpending = (long) 0; // When customer register his/her account, their total spending will be set to 0
         totalPoint = (long) 0;
         pw.println(cID + "," + name + "," + email + "," + address + "," + phone + "," + customerType + ","
-                + userName + "," + password + "," + totalSpending + "," + totalPoint);
+                + username + "," + password + "," + totalSpending + "," + totalPoint);
         // FileMethods.Write customer's information to customers file
         pw.close();
     }
@@ -143,13 +144,13 @@ public class Account {
                     System.out.println("Username had been existed");
                     registerUsername();
                 } else {
-                    userName = username;
+                    this.username = username;
                 }
             }
         } catch (FileNotFoundException fe) {
             fe.printStackTrace();
         }
-        return userName;
+        return this.username;
     }
 
     public String registerName()
@@ -603,18 +604,18 @@ public class Account {
     }
 
     // Getter method for username
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     // Getter method for customer's total spending
-    public double getTotalSpending() {
+    public Long getTotalSpending() {
         return totalSpending;
     }
 
     // Setter method for customer's total spending
-    public Long setTotalSpending(double totalSpending) {
-        this.totalSpending = (long) totalSpending;
-        return (long) totalSpending;
+    public Long setTotalSpending(Long totalSpending) {
+        this.totalSpending = totalSpending;
+        return this.totalSpending;
     }
 }

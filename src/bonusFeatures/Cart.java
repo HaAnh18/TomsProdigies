@@ -12,11 +12,17 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Cart {
-    // Constructor
-    public Cart() {
+    private Customer customer = new Customer();
+
+    public Cart(Customer customer) throws IOException {
+        this.customer = customer;
     }
 
-    public ArrayList<String[]> cartList(Customer customer)
+    // Constructor
+    public Cart() throws IOException {
+    }
+
+    public ArrayList<String[]> cartList()
     // Get all the product that have in that customer's cart
     {
         ArrayList<String[]> products = new ArrayList<>();
@@ -31,7 +37,7 @@ public class Cart {
         } return products;
     }
 
-    public void addToCart(Customer customer, Product product, int quantity) throws IOException {
+    public void addToCart(Product product, int quantity) throws IOException {
         // Add new items into a customer's cart
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/dataFile/customerCart.txt", true));
@@ -46,7 +52,7 @@ public class Cart {
         pw.close();
     }
 
-    public void getCustomerCart(Customer customer) {
+    public void getCustomerCart() {
         //prompt a specific customer's cart into the terminal for them to view
         ArrayList<String[]> products = new ArrayList<>();
 

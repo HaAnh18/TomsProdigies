@@ -223,8 +223,8 @@ public class CustomerMenu {
                 customerInfo[4], customerInfo[5], customerInfo[6], customerInfo[7],
                 Long.parseLong(customerInfo[8]), Long.parseLong(customerInfo[9]));
         Product product = new Product();
-        Cart cart = new Cart();
-        ArrayList<String[]> cartList = cart.cartList(member);
+        Cart cart = new Cart(member);
+        ArrayList<String[]> cartList = cart.cartList();
         Order order = new Order();
 
         String option = UserInput.rawInput();
@@ -317,7 +317,7 @@ public class CustomerMenu {
                             }
                             Product product1 = new Product((productInfo[0]), productInfo[1],
                                     Long.parseLong((productInfo[2])), productInfo[3]);
-                            cart.addToCart(member, product1, quantity);
+                            cart.addToCart(product1, quantity);
                             // After add item to cart,
                             // the system will give a message that whether a customer wants to continue to shopping or create order now
                             System.out.println("\n================================================= CONTINUE TO SHOPPING OR CREATE ORDER =================================================");
@@ -349,7 +349,7 @@ public class CustomerMenu {
                             this.viewHomepage(username);
                     }
                 } else {
-                    cart.getCustomerCart(member); // Display the customer's cart
+                    cart.getCustomerCart(); // Display the customer's cart
                     // Ask customer whether he/she wants to continue adding item or create order now
                     System.out.println("\n================================================= CONTINUE ADD ITEM(S) OR CREATE ORDER NOW =================================================");
                     System.out.println("1. Continue add item(s)");
@@ -380,13 +380,13 @@ public class CustomerMenu {
                             }
                             Product product1 = new Product((productInfo[0]), productInfo[1],
                                     Long.parseLong((productInfo[2])), productInfo[3]);
-                            cart.addToCart(member, product1, quantity);
+                            cart.addToCart(product1, quantity);
                             // After add item to cart,
                             // the system will give a message that whether a customer wants to continue to shopping or create order now
                             this.viewHomepage(username); // Back to the homepage
 
                         case "2":
-                            cart.getCustomerCart(member); // Display customer's cart
+                            cart.getCustomerCart(); // Display customer's cart
                             while (cartList.size() > 1)
                             // While the customer's cart has more than 1 item,
                             // the system will ask customer does he/she want to delete any item
@@ -398,7 +398,7 @@ public class CustomerMenu {
                                 switch (delOption) {
 
                                     case "1":
-                                        cart.getCustomerCart(member); // Display all customer's cart for customer to choose which item he/she wants to delete
+                                        cart.getCustomerCart(); // Display all customer's cart for customer to choose which item he/she wants to delete
                                         String delProduct = UserInput.rawInput();
 
                                         String[] itemInfo = new String[3];
@@ -415,7 +415,7 @@ public class CustomerMenu {
                                                 Long.parseLong((itemInfo[2])), itemInfo[3]);
                                         // The system will delete the item that customer had chosen
                                         cart.deleteItemInCart("./src/dataFile/customerCart.txt", member.getcID(), product2);
-                                        cart.getCustomerCart(member);
+                                        cart.getCustomerCart();
                                         this.viewHomepage(username);
 
                                     case "2":
@@ -606,14 +606,14 @@ public class CustomerMenu {
                             while (cartList.size() > 1)
                             // If customer's cart has more than 1 item, the system will ask if customer wants to delete any items
                             {
-                                cart.getCustomerCart(member);
+                                cart.getCustomerCart();
                                 System.out.println("Do you want to delete any item?");
                                 System.out.println("1. Yes");
                                 System.out.println("2. No");
                                 String delOption = UserInput.rawInput();
                                 switch (delOption) {
                                     case "1":
-                                        cart.getCustomerCart(member);
+                                        cart.getCustomerCart();
                                         String choiceOrder = UserInput.rawInput();
 
                                         String[] productInfo = new String[3];
@@ -673,9 +673,9 @@ public class CustomerMenu {
     // Create a new order for customer
     {
         Order order = new Order();
-        Cart cart = new Cart();
+        Cart cart = new Cart(member);
         Discount discount = new Discount();
-        ArrayList<String[]> cartList = cart.cartList(member);
+        ArrayList<String[]> cartList = cart.cartList();
         Random rd = new Random();
         int i = rd.nextInt(999);
         String oID = order.oIDDataForValidate(String.format("T%03d", i)); // Generate the order id randomly and it is unique
@@ -720,7 +720,7 @@ public class CustomerMenu {
                     // Display the final total payment after customer apply discount voucher
                     TimeUnit.SECONDS.sleep(1);
                     PointsSystem.pointsConversion(member.getcID(), oID);
-                    this.viewHomepage(member.getUserName());
+                    this.viewHomepage(member.getUsername());
 
                 case "2":
                     /* If customer doesn't want to use voucher,
@@ -733,11 +733,11 @@ public class CustomerMenu {
                     discount.displayCustomerDiscountCode(member);
                     TimeUnit.SECONDS.sleep(1);
                     PointsSystem.pointsConversion(member.getcID(), oID);
-                    this.viewHomepage(member.getUserName());
+                    this.viewHomepage(member.getUsername());
                 default:
                     System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                     TimeUnit.SECONDS.sleep(1);
-                    this.viewHomepage(member.getUserName());
+                    this.viewHomepage(member.getUsername());
             }
         } else {
             /* If customer doesn't have discount voucher,
@@ -748,7 +748,7 @@ public class CustomerMenu {
             Long totalPayment = Long.parseLong(orderInfo[2]);
             discount.giveDiscountCode(member, totalPayment);
             PointsSystem.pointsConversion(member.getcID(), oID);
-            this.viewHomepage(member.getUserName());
+            this.viewHomepage(member.getUsername());
         }
     }
 }
