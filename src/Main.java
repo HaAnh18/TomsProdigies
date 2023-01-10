@@ -8,7 +8,19 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException, ParseException {
         AuthenticationSystem authenticationSystem = new AuthenticationSystem();
         authenticationSystem.mainMenu();
-//        CustomerMenu customerMenu = new CustomerMenu();
+//        String[] orderInfo = ReadDataFromTXTFile.readSpecificLine("T842", 0,
+//                "./src/dataFile/billingHistory.txt", ",");
+//        Long totalPayment = Long.parseLong(orderInfo[2]);
+//        Discount discount = new Discount();
+//        String[] customerInfo = ReadDataFromTXTFile.readSpecificLine("nana", 6, "./src/dataFile/customers.txt", ",");
+//
+//        Customer member = new Customer(customerInfo[0], customerInfo[1], customerInfo[2], customerInfo[3],
+//                customerInfo[4], customerInfo[5], customerInfo[6], customerInfo[7],
+//                Long.parseLong(customerInfo[8]), Long.parseLong(customerInfo[9]));
+//
+//        discount.giveDiscountCode(member, totalPayment);
+//        discount.displayCustomerDiscountCode(member);
+////        CustomerMenu customerMenu = new CustomerMenu();
 //        customerMenu.view();
 //        customerMenu.viewHomepage("minhhoang");
 //        Discount discount = new Discount();

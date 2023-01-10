@@ -37,7 +37,6 @@ public class PointsSystem {
             }
             // Read all line in customers.txt file and put all data in arraylist
         }
-        System.out.println(newPoints);
 
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(cID)) {

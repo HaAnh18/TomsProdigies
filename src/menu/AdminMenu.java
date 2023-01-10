@@ -176,7 +176,7 @@ public class AdminMenu {
             case "10":
                 System.out.println("\n================================================= UPDATING ORDER'S STATUS =================================================");
                 order.getAllOrderInfo();
-                System.out.print("Enter order ID of the order that you want to update: (e.g: T345)");
+                System.out.print("Enter order ID of the order that you want to update (e.g: T345): ");
                 String oId = scanner.nextLine();
                 System.out.print("Update order status to (e.g: DONE):");
                 String status = scanner.nextLine().toUpperCase();
@@ -193,7 +193,7 @@ public class AdminMenu {
                 String categoryOption = UserInput.rawInput();
                 switch (categoryOption) {
                     case "1":
-                        System.out.print("Enter new category: (e.g: Laptop)");
+                        System.out.print("Enter new category (e.g: Laptop): ");
                         String category = scanner.nextLine();
                         product.createNewCategory(category, 0);
                         adminMenu.viewHomepage();

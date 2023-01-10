@@ -115,15 +115,15 @@ public class Admin extends Account {
         pw = new PrintWriter(new FileWriter("./src/dataFile/items.txt", true));
         Path path = Paths.get("./src/dataFile/items.txt");
         int id = (int) Files.lines(path).count(); // Define the id of this product
-        System.out.println("Enter a year of this product: "); // Ask admin to input the product's year
+        System.out.println("Enter a year of this product (e.g: 2232): "); // Ask admin to input the product's year
         int year = Integer.parseInt(scanner.nextLine());
         String ID = String.format("I%03d-%04d", id, year); // Generate the product ID in items' file
-        System.out.println("Enter category: "); // Ask admin to input the product's category
+        System.out.println("Enter category (e.g: Laptop): "); // Ask admin to input the product's category
         String category = scanner.nextLine();
         product.registerCategory(category); // Increase the quantity if the category had existed or create new category
-        System.out.println("Enter title: "); // Ask admin to input the product's title
+        System.out.println("Enter title (e.g: Asus ZenBook) : "); // Ask admin to input the product's title
         String title = scanner.nextLine();
-        System.out.println("Enter price: "); // Ask admin to input the product's price
+        System.out.println("Enter price(e.g: 10000000): "); // Ask admin to input the product's price
         Long price = Long.parseLong(scanner.nextLine());
         pw.println(ID + "," + title + "," + price + "," + category);
 //        // FileMethods.Write product's information to items' file

@@ -57,7 +57,7 @@ public class CustomerMenu {
                 System.out.println("\n================================================= LOGIN FORM =================================================");
                 do {
                     try {
-                        System.out.print("Enter username: (e.g: minhkuan)");
+                        System.out.print("Enter username: ");
                         String username = scanner.nextLine();
                         String usernameNoSpace = username.trim();
                         System.out.print("Enter password: ");
@@ -269,7 +269,7 @@ public class CustomerMenu {
                         this.viewHomepage(username);
 
                     case "3":
-                        System.out.println("Enter category: (e.g: laptop)");
+                        System.out.println("Enter category (e.g: laptop): ");
                         String category = scanner.nextLine();
                         product.searchCategoryByPriceRange(category);
                         TimeUnit.SECONDS.sleep(1);
