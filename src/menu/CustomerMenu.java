@@ -677,7 +677,6 @@ public class CustomerMenu {
     // Create a new order for customer
     {
         Cart cart = new Cart(member);
-        Discount discount = new Discount();
         ArrayList<String[]> cartList = cart.cartList();
         Random rd = new Random();
         int i = rd.nextInt(999);
@@ -692,10 +691,11 @@ public class CustomerMenu {
             Product product3 = new Product(productInfo1[0], productInfo1[1], Long.parseLong(productInfo1[2]), productInfo1[3]);
             newOrder.createNewOrder(product3, Integer.parseInt(strings[3]));
         }
+        Discount discount = new Discount(member, newOrder);
         newOrder.searchOrder(oID);
         newOrder.getTotalPaymentEachOrderId();
         // Display a total payment before and after discount depends on membership type
-        ArrayList<String[]> discountCode = discount.discountCodeList(member);
+        ArrayList<String[]> discountCode = discount.discountCodeList();
         if (!(discountCode.size() == 0))
         // If customer has discount voucher, then system will ask whether the customer wants to use it or not
         {
@@ -710,7 +710,7 @@ public class CustomerMenu {
                     /* If customer wants to use discount voucher,
                     then system will show all the vouchers that customer has
                      */
-                    discount.displayCustomerDiscountCode(member);
+                    discount.displayCustomerDiscountCode();
                     String choiceOrder1 = UserInput.rawInput();
                     /* Users.Customer will input their choice
                     and the system will discount based on his/her used voucher
@@ -733,8 +733,8 @@ public class CustomerMenu {
                     String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
                             "./src/dataFile/billingHistory.txt", ",");
                     Long totalPayment = Long.parseLong(orderInfo[2]);
-                    discount.giveDiscountCode(member, totalPayment);
-                    discount.displayCustomerDiscountCode(member);
+                    discount.giveDiscountCode();
+                    discount.displayCustomerDiscountCode();
                     TimeUnit.SECONDS.sleep(1);
                     PointsSystem.pointsConversion(member.getcID(), oID);
                     this.viewHomepage(member.getUsername());
@@ -751,7 +751,7 @@ public class CustomerMenu {
             String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
                     "./src/dataFile/billingHistory.txt", ",");
             Long totalPayment = Long.parseLong(orderInfo[2]);
-            discount.giveDiscountCode(member, newOrder.getPaymentPriceBeforeDiscount());
+            discount.giveDiscountCode();
             PointsSystem.pointsConversion(member.getcID(), oID);
             this.viewHomepage(member.getUsername());
         }

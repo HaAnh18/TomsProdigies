@@ -3,6 +3,7 @@ package bonusFeatures;
 import fileMethods.CreateTable;
 import fileMethods.ReadDataFromTXTFile;
 import fileMethods.Write;
+import order.Order;
 import users.Customer;
 
 import java.io.*;
@@ -14,53 +15,58 @@ import java.util.Scanner;
 public class Discount {
     private String discountCode;
     private Long discountAmount;
+    private Customer customer;
+    private Order order;
 
+    public Discount(Customer customer, Order order) {
+        this.customer = customer;
+        this.order = order;
+    }
 
     public Discount() {
     }
 
-    public void giveDiscountCode(Customer customer, Long totalPayment) throws IOException {
+    public void giveDiscountCode() throws IOException {
 
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/dataFile/customerDiscountCode.txt", true));
         Random rd = new Random();
         int i = rd.nextInt(999);
         String code = validateDiscountCode(String.format("%03d", i));
-        String cID = customer.getcID();
-        Long discountAmount = (long) 0;
         ArrayList<String[]> discountType = ReadDataFromTXTFile.readAllLines("./src/dataFile/discountType.txt");
 
         /// Give discount code based on the totalPayment amount
         // 10000000 < totalPayment < 20000000
-        if (totalPayment > Long.parseLong(discountType.get(1)[1]) && totalPayment < Long.parseLong(discountType.get(2)[1])) {
+        if (order.getPaymentPriceDiscountByMembership() > Long.parseLong(discountType.get(1)[1]) && order.getPaymentPriceDiscountByMembership() < Long.parseLong(discountType.get(2)[1])) {
             System.out.println("Your bill have 1 voucher");
-            discountCode = discountType.get(1)[0];
-            discountAmount = Long.parseLong(discountType.get(1)[2]);
+            setDiscountCode(discountType.get(1)[0]);
+            setDiscountAmount(Long.parseLong(discountType.get(1)[2]));
 
             // 20000000 < totalPayment < 30000000
-        } else if (totalPayment >= Long.parseLong(discountType.get(2)[1]) && totalPayment < Long.parseLong(discountType.get(3)[1])) {
+        } else if (order.getPaymentPriceDiscountByMembership() >= Long.parseLong(discountType.get(2)[1]) && order.getPaymentPriceDiscountByMembership() < Long.parseLong(discountType.get(3)[1])) {
             System.out.println("Your bill have 1 voucher");
-            discountCode = discountType.get(2)[0];
-            discountAmount = Long.parseLong(discountType.get(2)[2]);
+            setDiscountCode(discountType.get(2)[0]);
+            setDiscountAmount(Long.parseLong(discountType.get(2)[2]));
 
             // 30000000 < totalPayment < 50000000
-        } else if (totalPayment >= Long.parseLong(discountType.get(3)[1]) && totalPayment < Long.parseLong(discountType.get(4)[1])) {
+        } else if (order.getPaymentPriceDiscountByMembership() >= Long.parseLong(discountType.get(3)[1]) && order.getPaymentPriceDiscountByMembership() < Long.parseLong(discountType.get(4)[1])) {
             System.out.println("Your bill have 1 voucher");
-            discountCode = discountType.get(3)[0];
-            discountAmount = Long.parseLong(discountType.get(3)[2]);
+            setDiscountCode(discountType.get(3)[0]);
+            setDiscountAmount(Long.parseLong(discountType.get(3)[2]));
 
             // 50000000 < totalPayment
-        } else if (totalPayment >= Long.parseLong(discountType.get(4)[1])) {
+        } else if (order.getPaymentPriceDiscountByMembership() >= Long.parseLong(discountType.get(4)[1])) {
             System.out.println("Your bill have 1 voucher");
-            discountCode = discountType.get(4)[0];
-            discountAmount = Long.parseLong(discountType.get(4)[2]);
+            setDiscountCode(discountType.get(4)[0]);
+            setDiscountAmount(Long.parseLong(discountType.get(4)[2]));
+
         } else {
             discountCode = null;
         }
 
-        //
+
         if (!(discountCode == null)) {
-            pw.println(cID + "," + code + "," + discountCode + "," + discountAmount);
+            pw.println(customer.getcID() + "," + code + "," + discountCode + "," + discountAmount);
             pw.close();
         }
     }
@@ -87,7 +93,7 @@ public class Discount {
     }
 
 
-    public void displayCustomerDiscountCode(Customer customer) {
+    public void displayCustomerDiscountCode() {
         ArrayList<String[]> discountCode = new ArrayList<>();
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customerDiscountCode.txt");
@@ -116,7 +122,7 @@ public class Discount {
     }
 
 
-    public ArrayList<String[]> discountCodeList(Customer customer)
+    public ArrayList<String[]> discountCodeList()
     // Get all the product that have in that customer's cart
     {
         ArrayList<String[]> discountCode = new ArrayList<>();
@@ -154,5 +160,21 @@ public class Discount {
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
+    }
+
+    public String getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
+    }
+
+    public Long getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(Long discountAmount) {
+        this.discountAmount = discountAmount;
     }
 }
