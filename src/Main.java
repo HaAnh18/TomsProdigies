@@ -1,36 +1,14 @@
-import fileMethods.ReadDataFromTXTFile;
-import fileMethods.UserInput;
 import menu.AuthenticationSystem;
-import order.Order;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException, ParseException {
         AuthenticationSystem authenticationSystem = new AuthenticationSystem();
-//        authenticationSystem.mainMenu();
-        Order order = new Order();
-        order.getAllOrderInfo();
-        ArrayList<String[]> orderList = ReadDataFromTXTFile.readAllLines("./src/dataFile/orderHistory.txt");
-        String choiceOrder = UserInput.rawInput();
-        String[] orderInfo = new String[3];
-        Order orderInformation = new Order();
-        for (int i = 1; i < orderList.size(); i++) {
-            System.out.println(i);
-            System.out.println(Arrays.toString(orderList.get(i)));
-            if (i == (Integer.parseInt(choiceOrder))) {
-                orderInfo = ReadDataFromTXTFile.readSpecificLine(orderList.get(i)[1], 1, "./src/dataFile/orderHistory.txt", ",");
-                orderInformation = new Order(orderInfo[0], Long.parseLong(orderInfo[1]), Long.parseLong(orderInfo[2]),
-                        Long.parseLong(orderInfo[3]), orderInfo[4],
-                        orderInfo[5], orderInfo[6]);
-                System.out.println(orderInformation.getDeliveryStatus());
-            }
-        }
-        orderInformation.updateDeliveryStatus("./src/dataFile/orderHistory.txt", "Done");
+        authenticationSystem.mainMenu();
+
 //        order.getAllOrderInfo();
 //        String[] customerInfo = ReadDataFromTXTFile.readSpecificLine("nana", 6, "./src/dataFile/customers.txt", ",");
 //        Customer member = new Customer(customerInfo[0], customerInfo[1], customerInfo[2], customerInfo[3],

@@ -32,13 +32,8 @@ public class Order {
     private Customer customer;
 
 
-    public Order(String oID, Long paymentPriceBeforeDiscount,
-                 Long paymentPriceDiscountByMembership, Long getPaymentPriceDiscountByVoucher,
-                 String orderDate, String orderStatus, String deliveryStatus) {
+    public Order(String oID, String orderDate, String orderStatus, String deliveryStatus) {
         this.oID = oID;
-        this.paymentPriceBeforeDiscount = paymentPriceBeforeDiscount;
-        this.paymentPriceDiscountByMembership = paymentPriceDiscountByMembership;
-        this.paymentPriceDiscountByVoucher = getPaymentPriceDiscountByVoucher;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
         this.deliveryStatus = deliveryStatus;
@@ -274,11 +269,11 @@ public class Order {
 
         // Setting up table
         CreateTable.setShowVerticalLines(true);
-        CreateTable.setHeaders("ID", "OID", "CID", "PID", "QUANTITY", "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
+        CreateTable.setHeaders("OID", "CID", "PID", "QUANTITY", "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
 
         // For each line, assign all content into table
         for (int i = 1; i < orders.size(); i++) {
-            CreateTable.addRow(String.valueOf(i), orders.get(i)[0], orders.get(i)[1], orders.get(i)[2],
+            CreateTable.addRow(orders.get(i)[0], orders.get(i)[1], orders.get(i)[2],
                     orders.get(i)[3], orders.get(i)[4], orders.get(i)[5],
                     orders.get(i)[6]);
         }
@@ -444,7 +439,7 @@ public class Order {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
-    public void updateDeliveryStatus(String filepath, String newData) throws IOException
+    public void updateDeliveryStatus(String filepath, String newData, String oID) throws IOException
     // This method allow admin to modify a delivery status of order that had existed in items' file
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
@@ -454,8 +449,7 @@ public class Order {
                 /* If the system could find out the oID in ordersHistory's file
                  * then the system allow admin to update the order's delivery status
                  */ {
-                this.setDeliveryStatus(newData.toUpperCase());
-                strings[6] = this.getDeliveryStatus(); // Modify the order's delivery status
+                strings[6] = newData.toUpperCase(); // Modify the order's delivery status
             }
         }
         File file = new File(filepath);
@@ -465,7 +459,7 @@ public class Order {
         pw.close();
 
         for (String[] strings : database) {
-            Write.rewriteFile(filepath, "#OID,CID,PID,Membership,Payment price,Timestamp,Total spending,order.Order status,Delivery status", String.join(",", strings));
+            Write.rewriteFile(filepath, "#OID,CID,PID,Quantity,Order date,Order status,Delivery status", String.join(",", strings));
             // This method would allow system to write all data including new data into the items' file
         }
     }

@@ -177,21 +177,11 @@ public class AdminMenu {
             case "10":
                 System.out.println("\n================================================= UPDATING ORDER'S STATUS =================================================");
                 order.getAllOrderInfo();
-                ArrayList<String[]> orderList = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
-                String choiceOrder = UserInput.rawInput();
-                String[] orderInfo = new String[3];
-                Order orderInformation = new Order();
-                for (int i = 0; i < orderList.size(); i++) {
-                    if (i == (Integer.parseInt(choiceOrder) - 1)) {
-                        orderInfo = ReadDataFromTXTFile.readSpecificLine(orderList.get(i)[1], 1, "./src/dataFile/items.txt", ",");
-                        orderInformation = new Order(orderInfo[0], Long.parseLong(orderInfo[1]), Long.parseLong(orderInfo[2]),
-                                Long.parseLong(orderInfo[3]), orderInfo[4],
-                                orderInfo[5], orderInfo[6]);
-                    }
-                }
+                System.out.print("Enter order ID to update delivery status (e.g: T001): ");
+                String oId = scanner.nextLine();
                 System.out.print("Update order status to (e.g: DONE):");
                 String status = scanner.nextLine().toUpperCase();
-                orderInformation.updateDeliveryStatus("./src/dataFile/ordersHistory.txt", status);
+                order.updateDeliveryStatus("./src/dataFile/ordersHistory.txt", status, oId);
                 adminMenu.viewHomepage();
 
             case "11":

@@ -249,7 +249,7 @@ public class Admin extends Account {
         }
 
         deleteProductCategory("./src/dataFile/items.txt", delCategory);
-        System.out.println("Deletion successful");
+//        System.out.println("Deletion successful");
     }
 
 
