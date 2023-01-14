@@ -22,36 +22,40 @@ import java.util.Collections;
 public class CreateTable {
     // Attributes
     private static final String HORIZONTAL_SEP = "-";
-    private String verticalSep;
-    private String joinSep;
-    private String[] headers;
-    private ArrayList<String[]> rows = new ArrayList<>();
-    private boolean rightAlign;
+    private static String verticalSep;
+    private static String joinSep;
+    private static String[] headers;
+    private static ArrayList<String[]> rows = new ArrayList<>();
+    private static boolean rightAlign;
 
     // Constructor
     public CreateTable() {
         setShowVerticalLines(false);
     }
 
+    public static void setRightAlign(boolean rightAlign) {
+        CreateTable.rightAlign = rightAlign;
+    }
+
     // When you set the setShowVerticalLines to true, the border of the table will be set under the below format.
-    public void setShowVerticalLines(boolean showVerticalLines) {
+    public static void setShowVerticalLines(boolean showVerticalLines) {
         verticalSep = showVerticalLines ? "|" : "";
         joinSep = showVerticalLines ? "*" : " ";
     }
 
-    public void setHeaders(String... headers)
+    public static void setHeaders(String... headers)
     // Set header for the table
     {
-        this.headers = headers;
+        CreateTable.headers = headers;
     }
 
-    public void addRow(String... cells)
+    public static void addRow(String... cells)
     // Add new row for the table
     {
         rows.add(cells);
     }
 
-    public void print()
+    public static void print()
     // Print the table
     { /*If the user input the header, the header will become !=null and all the borders will be measured.*/
         int[] maxWidths = headers != null ?
@@ -84,7 +88,7 @@ public class CreateTable {
     }
 
     //This method is used to print the information in the line column.
-    private void printLine(int[] columnWidths) {
+    private static void printLine(int[] columnWidths) {
         for (int i = 0; i < columnWidths.length; i++) {
             String line = String.join("", Collections.nCopies(columnWidths[i] +
                     verticalSep.length() + 1, HORIZONTAL_SEP));
@@ -94,7 +98,7 @@ public class CreateTable {
     }
 
     //This method is used to print the information in the row column.
-    private void printRow(String[] cells, int[] maxWidths) {
+    private static void printRow(String[] cells, int[] maxWidths) {
         for (int i = 0; i < cells.length; i++) {
             String s = cells[i];
             String verStrTemp = i == cells.length - 1 ? verticalSep : "";
@@ -107,8 +111,7 @@ public class CreateTable {
         System.out.println();
     }
 
-    public void setRows(ArrayList<String[]> rows) {
-        CreateTable table = new CreateTable();
-        table.rows = rows;
+    public static void setRows(ArrayList<String[]> rows) {
+        CreateTable.rows = rows;
     }
 }

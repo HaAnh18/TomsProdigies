@@ -1,5 +1,6 @@
 package users;
 
+import bonusFeatures.Cart;
 import fileMethods.CreateTable;
 import fileMethods.ReadDataFromTXTFile;
 import fileMethods.UserInput;
@@ -27,12 +28,8 @@ public class Admin extends Account {
     // This method would verify username and password for admin account
     {
         String hashPassword = this.hashing(password); // Hash the input password
-        if (username.equals("admin") && hashPassword.equals("751cb3f4aa17c36186f4856c8982bf27"))
         // If the username and password after hashing are correct
-        {
-            return true;
-        }
-        return false;
+        return username.equals("admin") && hashPassword.equals("751cb3f4aa17c36186f4856c8982bf27");
     }
 
     public static boolean dateValidate(String date)
@@ -86,24 +83,27 @@ public class Admin extends Account {
             String username = stringTokenizer.nextToken();
             String password = stringTokenizer.nextToken();
             String totalSpending = String.valueOf(stringTokenizer.nextToken());
-            data = new String[]{ID, name, username, email, address, phone, membership, totalSpending};
+            String totalPoint = String.valueOf(stringTokenizer.nextToken());
+            data = new String[]{ID, name, username, email, address, phone, membership, totalSpending, totalPoint};
             // Add one customer's information to an array
             user.add(data); // Add one customer's information in an arraylist
         }
 
-        CreateTable createTable = new CreateTable(); // Create table to display customers' information
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("CID", "NAME", "USERNAME", "EMAIL", "ADDRESS", "PHONE", "MEMBERSHIP", "TOTAL SPENDING");
+        // Create table to display customers' information
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("CID", "NAME", "USERNAME", "EMAIL", "ADDRESS", "PHONE", "MEMBERSHIP", "TOTAL SPENDING", "TOTAL POINT");
         // Set header for the table
 
         for (int i = 1; i < user.size(); i++)
         // This for loop will add every single customer's information in the table to display
         {
-            createTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3],
-                    user.get(i)[4], user.get(i)[5], user.get(i)[6], user.get(i)[7]);
+            CreateTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3],
+                    user.get(i)[4], user.get(i)[5], user.get(i)[6], user.get(i)[7], user.get(i)[8]);
         }
 
-        createTable.print(); // Print the table
+        CreateTable.print(); // Print the table
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
     public void addProduct() throws IOException, ParseException, InterruptedException
@@ -151,66 +151,20 @@ public class Admin extends Account {
             categoryList.add(data); // Add one customer's information in an arraylist
         }
 
-        CreateTable createTable = new CreateTable(); // Create table to display customers' information
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("ID", "CATEGORY", "QUANTITY"); // Set header for the table
+        // Create table to display customers' information
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("ID", "CATEGORY", "QUANTITY"); // Set header for the table
 
         for (int i = 1; i < categoryList.size(); i++)
         // This for loop will add every single category's information in the table to display
         {
-            createTable.addRow(categoryList.get(i)[0], categoryList.get(i)[1], categoryList.get(i)[2]);
+            CreateTable.addRow(categoryList.get(i)[0], categoryList.get(i)[1], categoryList.get(i)[2]);
         }
-        createTable.print(); // Print the table
+        CreateTable.print(); // Print the table
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
-    public void updatePrice(String filepath, String newData, String pID) throws IOException
-    // This method allow admin to modify a product's price that had existed in items' file
-    {
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
-        for (String[] strings : database) {
-            if (strings[0].equals(pID))
-                /* If the system could find out the pID in items' file
-                 * then the system allow admin to update the product's price
-                 */ {
-                strings[2] = newData; // Modify the product's price
-            }
-        }
-        File file = new File(filepath);
-        PrintWriter pw = new PrintWriter(file);
-
-        pw.write(""); // The file would erase all the data in items' file
-        pw.close();
-
-        for (String[] strings : database) {
-            Write.rewriteFile(filepath, "#ID,Title, Price, Category", String.join(",", strings));
-            // This method would allow system to write all data including new data into the items' file
-        }
-    }
-
-    public void updateDeliveryStatus(String filepath, String newData, String oID) throws IOException
-    // This method allow admin to modify a delivery status of order that had existed in items' file
-    {
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
-
-        for (String[] strings : database) {
-            if (strings[0].equals(oID))
-                /* If the system could find out the oID in ordersHistory's file
-                 * then the system allow admin to update the order's delivery status
-                 */ {
-                strings[8] = newData.toUpperCase(); // Modify the order's delivery status
-            }
-        }
-        File file = new File(filepath);
-        PrintWriter pw = new PrintWriter(file);
-
-        pw.write(""); // The file would erase all the data in items' file
-        pw.close();
-
-        for (String[] strings : database) {
-            Write.rewriteFile(filepath, "#OID,CID,PID,Membership,Payment price,Timestamp,Total spending,order.Order status,Delivery status", String.join(",", strings));
-            // This method would allow system to write all data including new data into the items' file
-        }
-    }
 
     public void deleteProduct() throws IOException
     // This method allow admin to delete a product that had existed in items' file
@@ -250,9 +204,9 @@ public class Admin extends Account {
     {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
-        for (int i = 0; i < database.size(); i++) {
-            if (!database.get(i)[col].equals(delCustomer)) {
-                newDatabase.add(database.get(i)); // Add all customers except the deleted customer
+        for (String[] strings : database) {
+            if (!strings[col].equals(delCustomer)) {
+                newDatabase.add(strings); // Add all customers except the deleted customer
             }
         }
         PrintWriter pw = new PrintWriter("./src/dataFile/customers.txt");
@@ -265,6 +219,8 @@ public class Admin extends Account {
                     String.join(",", obj));
             // This method would allow system to write all data including new data into the customers' file
         }
+        Cart cart = new Cart();
+        cart.deleteAllItemsInCart("./src/dataFile/customerCart.txt", delCustomer);
         System.out.println("Deletion successful");
     }
 
@@ -307,11 +263,11 @@ public class Admin extends Account {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
 
         // Loop through all the product ID
-        for (int i = 0; i < database.size(); i++) {
+        for (String[] strings : database) {
 
             // If a category is the same, it will change the category of that product to None
-            if (database.get(i)[3].equals(delCategory)) {
-                database.get(i)[3] = "None";
+            if (strings[3].equals(delCategory)) {
+                strings[3] = "None";
             }
         }
 
@@ -348,11 +304,12 @@ public class Admin extends Account {
         for (Long aLong : moneyList) {
             sum += aLong;
         }
-        CreateTable revenueTable = new CreateTable();
-        revenueTable.setShowVerticalLines(true);
-        revenueTable.setHeaders("TOTAL REVENUE");
-        revenueTable.addRow(String.valueOf(sum));
-        revenueTable.print();
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("TOTAL REVENUE");
+        CreateTable.addRow(String.valueOf(sum));
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
 
@@ -370,8 +327,6 @@ public class Admin extends Account {
     public void getMostSpender() throws IOException
     // Display all information of customer who spend the most in our system
     {
-        CreateTable createTable = new CreateTable();
-
         // Get total spending column
         String[] readSpending = ReadDataFromTXTFile.readColString(8, "./src/dataFile/customers.txt", ",");
 
@@ -387,14 +342,14 @@ public class Admin extends Account {
         SortProduct.sortDescending(spendingList);
 
         // Creating and printing out the information
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("CID", "NAME", "USERNAME", "EMAIL", "ADDRESS", "PHONE", "MEMBERSHIP", "TOTAL SPENDING");
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("CID", "NAME", "USERNAME", "EMAIL", "ADDRESS", "PHONE", "MEMBERSHIP", "TOTAL SPENDING");
 
         // Get the first person on the list (Max spenders as the list have been sorted to Ascend from Max)
         String[] mostSpender = ReadDataFromTXTFile.readSpecificLine(Long.toString(spendingList.get(0)), 8, "./src/dataFile/customers.txt", ",");
 
         // Add that person into an ArrayList, so it can be displayed on the table
-        createTable.addRow(mostSpender[0],
+        CreateTable.addRow(mostSpender[0],
                 mostSpender[1],
                 mostSpender[6],
                 mostSpender[2],
@@ -403,7 +358,9 @@ public class Admin extends Account {
                 mostSpender[5],
                 mostSpender[8]);
 
-        createTable.print();
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
     /* This method allow admin to calculate daily revenue base on the timestamp of the purchase.*/
@@ -433,6 +390,115 @@ public class Admin extends Account {
             }
         }
         return revenueList;
+    }
+
+    public void getBestSeller() throws IOException {
+        // Initialise maxCount
+        int maxCount = 0;
+
+        ArrayList<String[]> productInfo = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
+        // Reading column quantities in productsSold file
+        String[] productList = ReadDataFromTXTFile.readColString(2, "./src/dataFile/productsSold.txt", ",");
+
+        // Read all products in productsSold
+        ArrayList<String[]> allProduct = ReadDataFromTXTFile.readAllLines("./src/dataFile/productsSold.txt");
+
+        // An ArrayList used to get the numbersSold for that item
+        ArrayList<Integer> countProduct = new ArrayList<>();
+
+        // Adding each item sales number into an Arraylist
+        for (int a = 1; a < productList.length; a++) {
+            int m = Integer.parseInt(productList[a]);
+            countProduct.add(m);
+        }
+
+        // Getting the max amount of product sales as parameter
+        for (Integer integer : countProduct) {
+            if (integer > maxCount) {
+                maxCount = integer;
+            }
+        }
+        // ArrauList to store potential bestSeller product
+        String[] bestSeller = new String[0];
+
+        // Loop through all items to find corresponding numbersSold to compare
+        for (int p = 1; p < allProduct.size(); p++) {
+            // If the product sales amount match the max amount
+            if (Integer.parseInt(allProduct.get(p)[2]) == maxCount) {
+                bestSeller = (allProduct.get(p)); // The product is added into bestSeller
+            }
+        }
+
+        // Setting up table
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY", "NUMBER SOLD");
+
+        for (int i = 1; i < productInfo.size(); i++) {
+            if (productInfo.get(i)[1].equals(bestSeller[1])) {
+                CreateTable.addRow(productInfo.get(i)[0], productInfo.get(i)[1], productInfo.get(i)[2],
+                        productInfo.get(i)[2], bestSeller[2]);
+            }
+
+        }
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
+        // Getting the info of bestSeller product and adding it into the table
+    }
+
+    public void getLeastSeller() throws IOException {
+        // Initialise minCount
+        int minCount = 1000000;
+
+        ArrayList<String[]> productInfo = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
+
+        // Reading column quantities in productsSold file
+        String[] productList = ReadDataFromTXTFile.readColString(2, "./src/dataFile/productsSold.txt", ",");
+
+        // Read all products in productsSold
+        ArrayList<String[]> allProduct = ReadDataFromTXTFile.readAllLines("./src/dataFile/productsSold.txt");
+
+        // An ArrayList used to get the numbersSold for that item
+        ArrayList<Integer> countProduct = new ArrayList<>();
+
+        // Adding each item sales number into an Arraylist
+        for (int a = 1; a < productList.length; a++) {
+            int m = Integer.parseInt(productList[a]);
+            countProduct.add(m);
+        }
+
+        // Getting the min amount of product sales as parameter
+        for (Integer integer : countProduct) {
+            if (integer < minCount) {
+                minCount = integer;
+            }
+        }
+
+        // Arrau to store potential bestSeller product
+        String[] leastSeller = new String[0];
+
+        for (int p = 1; p < allProduct.size(); p++) {
+            // If the product sales amount match the max amount
+            if (Integer.parseInt(allProduct.get(p)[2]) == minCount) {
+                leastSeller = (allProduct.get(p)); // The product is added into bestSeller
+
+            }
+        }
+
+        // Setting up table
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY", "NUMBER SOLD");
+
+        for (int i = 1; i < productInfo.size(); i++) {
+            if (productInfo.get(i)[1].equals(leastSeller[1])) {
+                CreateTable.addRow(productInfo.get(i)[0], productInfo.get(i)[1], productInfo.get(i)[2],
+                        productInfo.get(i)[2], leastSeller[2]);
+            }
+
+        }
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
 }

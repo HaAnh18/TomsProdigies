@@ -6,7 +6,6 @@ import fileMethods.ReadDataFromTXTFile;
 import fileMethods.UserInput;
 import order.Order;
 import product.Product;
-import product.SortProduct;
 import users.Admin;
 
 import java.io.IOException;
@@ -160,27 +159,39 @@ public class AdminMenu {
                 // Allow admin to change the price of the product
                 System.out.println("\n================================================= UPDATING PRICE =================================================");
                 product.getProductHaveId();
-                String choiceOrder = UserInput.rawInput();
+                String productChoice = UserInput.rawInput();
                 ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
                 String[] productInfo = new String[3];
+                Product productInformation = new Product();
                 for (int i = 0; i < productList.size(); i++) {
-                    if (i == Integer.parseInt(choiceOrder)) {
+                    if (i == Integer.parseInt(productChoice)) {
                         productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1], 1, "./src/dataFile/items.txt", ",");
+                        productInformation = new Product(productInfo[0], productInfo[1], Long.parseLong(productInfo[2]), productInfo[3]);
                     }
                 }
                 System.out.print("Enter new price: ");
                 Long price = Long.parseLong(scanner.nextLine());
-                admin.updatePrice("./src/dataFile/items.txt", String.valueOf(price), productInfo[0]);
+                productInformation.updatePrice("./src/dataFile/items.txt", String.valueOf(price));
                 adminMenu.viewHomepage();
 
             case "10":
                 System.out.println("\n================================================= UPDATING ORDER'S STATUS =================================================");
                 order.getAllOrderInfo();
-                System.out.print("Enter order ID of the order that you want to update (e.g: T345): ");
-                String oId = scanner.nextLine();
+                ArrayList<String[]> orderList = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
+                String choiceOrder = UserInput.rawInput();
+                String[] orderInfo = new String[3];
+                Order orderInformation = new Order();
+                for (int i = 0; i < orderList.size(); i++) {
+                    if (i == (Integer.parseInt(choiceOrder) - 1)) {
+                        orderInfo = ReadDataFromTXTFile.readSpecificLine(orderList.get(i)[1], 1, "./src/dataFile/items.txt", ",");
+                        orderInformation = new Order(orderInfo[0], Long.parseLong(orderInfo[1]), Long.parseLong(orderInfo[2]),
+                                Long.parseLong(orderInfo[3]), orderInfo[4],
+                                orderInfo[5], orderInfo[6]);
+                    }
+                }
                 System.out.print("Update order status to (e.g: DONE):");
                 String status = scanner.nextLine().toUpperCase();
-                admin.updateDeliveryStatus("./src/dataFile/ordersHistory.txt", status, oId);
+                orderInformation.updateDeliveryStatus("./src/dataFile/ordersHistory.txt", status);
                 adminMenu.viewHomepage();
 
             case "11":
@@ -319,7 +330,6 @@ public class AdminMenu {
         Admin admin = new Admin();
         AdminMenu adminMenu = new AdminMenu();
         String adChoice = UserInput.rawInput();
-        SortProduct sortProduct = new SortProduct();
         switch (adChoice) {
             case "1":
                 // Display the total revenue of the store
@@ -335,13 +345,13 @@ public class AdminMenu {
 
             case "3":
                 // Display the most popular product in store
-                sortProduct.getBestSeller();
+                admin.getBestSeller();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
 
             case "4":
                 // Display the least popular product in store
-                sortProduct.getLeastSeller();
+                admin.getLeastSeller();
                 TimeUnit.SECONDS.sleep(1);
                 adminMenu.viewStatistic();
 

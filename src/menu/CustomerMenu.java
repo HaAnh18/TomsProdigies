@@ -9,7 +9,6 @@ import fileMethods.UserInput;
 import order.Order;
 import product.Product;
 import product.SortProduct;
-import users.Account;
 import users.Customer;
 
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class CustomerMenu {
         CustomerMenu customerMenu = new CustomerMenu();
         Scanner scanner = new Scanner(System.in);
         String option = UserInput.rawInput();
-        Account customer = new Account();
+        Customer customer = new Customer();
         Product product = new Product();
         AuthenticationSystem authenticationSystem = new AuthenticationSystem();
         Order order = new Order();
@@ -327,7 +326,7 @@ public class CustomerMenu {
                             String shoppingChoice = UserInput.rawInput();
                             switch (shoppingChoice) {
                                 case "1":
-                                    createOrder(member); // Create order based on customer's cart
+                                    this.createOrder(member); // Create order based on customer's cart
                                 case "2":
                                     this.viewHomepage(username);
                                 default:
@@ -419,7 +418,7 @@ public class CustomerMenu {
                                         this.viewHomepage(username);
 
                                     case "2":
-                                        createOrder(member); // Create order based on customer's cart
+                                        this.createOrder(member); // Create order based on customer's cart
                                         TimeUnit.SECONDS.sleep(1);
                                         this.viewHomepage(username);
                                     default:
@@ -432,7 +431,7 @@ public class CustomerMenu {
                             }
                             // If the customer's has only 1 item, then the system will create order
                         {
-                            createOrder(member);
+                            this.createOrder(member);
                         }
 
                         case "3":
@@ -477,25 +476,29 @@ public class CustomerMenu {
                     case "1":
                         System.out.print("Please enter your new name (e.g: Ha Anh): ");
                         String name = scanner.nextLine();
-                        member.updateName("./src/dataFile/customers.txt", name, username);
+                        member.updateInfo("./src/dataFile/customers.txt", name, choice);
+//                        member.updateName("./src/dataFile/customers.txt", name);
                         this.viewHomepage(username);
 
                     case "2":
                         System.out.print("Please enter your new email (e.g: tomsprodigies@gmail.com): ");
                         String email = scanner.nextLine();
-                        member.updateEmail("./src/dataFile/customers.txt", email, username);
+                        member.updateInfo("./src/dataFile/customers.txt", email, choice);
+//                        member.updateEmail("./src/dataFile/customers.txt", email);
                         this.viewHomepage(username);
 
                     case "3":
                         System.out.print("Please enter your new address (e.g: 702 Nguyen Van Linh Street): ");
                         String address = scanner.nextLine();
-                        member.updateAddress("./src/dataFile/customers.txt", address, username);
+                        member.updateInfo("./src/dataFile/customers.txt", address, choice);
+//                        member.updateAddress("./src/dataFile/customers.txt", address);
                         this.viewHomepage(username);
 
                     case "4":
                         System.out.print("Please enter your new phone (e.g: 09********): ");
                         String phone = scanner.nextLine();
-                        member.updatePhone("./src/dataFile/customers.txt", phone, username);
+                        member.updateInfo("./src/dataFile/customers.txt", phone, choice);
+//                        member.updatePhone("./src/dataFile/customers.txt", phone);
                         this.viewHomepage(username);
 
                     case "5":
@@ -505,7 +508,8 @@ public class CustomerMenu {
                                 "        Password must contain at least one uppercase Latin character [A-Z].\n" +
                                 "        Password must contain a length of at least 8 characters and a maximum of 20 characters): ");
                         String password = scanner.nextLine();
-                        member.updatePassword("./src/dataFile/customers.txt", password, username);
+                        member.updateInfo("./src/dataFile/customers.txt", password, choice);
+//                        member.updatePassword("./src/dataFile/customers.txt", password);
                         this.viewHomepage(username);
 
                     case "6":
@@ -519,7 +523,7 @@ public class CustomerMenu {
 
             case "8":
                 // Display the current membership of the customer
-                member.checkMembership(username);
+                member.checkMembership();
                 TimeUnit.SECONDS.sleep(1);
                 this.viewHomepage(username);
 
@@ -631,7 +635,7 @@ public class CustomerMenu {
                                         }
 
                                     case "2":
-                                        createOrder(member);
+                                        this.createOrder(member);
 
                                     default:
                                         System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
@@ -641,7 +645,7 @@ public class CustomerMenu {
                             }
                             // Else create order
                         {
-                            createOrder(member);
+                            this.createOrder(member);
                         }
                         case "2":
                             this.view();
@@ -672,13 +676,13 @@ public class CustomerMenu {
     public void createOrder(Customer member) throws IOException, InterruptedException, ParseException
     // Create a new order for customer
     {
-        Order order = new Order();
         Cart cart = new Cart(member);
         Discount discount = new Discount();
         ArrayList<String[]> cartList = cart.cartList();
         Random rd = new Random();
         int i = rd.nextInt(999);
-        String oID = order.oIDDataForValidate(String.format("T%03d", i)); // Generate the order id randomly and it is unique
+        String oID = Order.oIDDataForValidate(String.format("T%03d", i)); // Generate the order id randomly and it is unique
+        Order newOrder = new Order(oID, member);
         for (String[] strings : cartList)
         /* this method will loop every item in customer's cart
         and create a new order for those items which have the same order id
@@ -686,10 +690,10 @@ public class CustomerMenu {
             String[] productInfo1 = new String[3];
             productInfo1 = ReadDataFromTXTFile.readSpecificLine(strings[1], 1, "./src/dataFile/items.txt", ",");
             Product product3 = new Product(productInfo1[0], productInfo1[1], Long.parseLong(productInfo1[2]), productInfo1[3]);
-            order.createNewOrder(member, product3, oID, Integer.parseInt(strings[3]));
+            newOrder.createNewOrder(product3, Integer.parseInt(strings[3]));
         }
-        order.searchOrder(oID);
-        order.getTotalPaymentEachOrderId(member, oID);
+        newOrder.searchOrder(oID);
+        newOrder.getTotalPaymentEachOrderId();
         // Display a total payment before and after discount depends on membership type
         ArrayList<String[]> discountCode = discount.discountCodeList(member);
         if (!(discountCode.size() == 0))
@@ -716,7 +720,7 @@ public class CustomerMenu {
                             discountCodeCustomer = discountCode.get(m)[1];
                         }
                     }
-                    order.getTotalPaymentAfterApplyDiscountCode(oID, discountCodeCustomer, member);
+                    newOrder.getTotalPaymentAfterApplyDiscountCode(discountCodeCustomer);
                     // Display the final total payment after customer apply discount voucher
                     TimeUnit.SECONDS.sleep(1);
                     PointsSystem.pointsConversion(member.getcID(), oID);
@@ -734,6 +738,7 @@ public class CustomerMenu {
                     TimeUnit.SECONDS.sleep(1);
                     PointsSystem.pointsConversion(member.getcID(), oID);
                     this.viewHomepage(member.getUsername());
+
                 default:
                     System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
                     TimeUnit.SECONDS.sleep(1);
@@ -746,7 +751,7 @@ public class CustomerMenu {
             String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
                     "./src/dataFile/billingHistory.txt", ",");
             Long totalPayment = Long.parseLong(orderInfo[2]);
-            discount.giveDiscountCode(member, totalPayment);
+            discount.giveDiscountCode(member, newOrder.getPaymentPriceBeforeDiscount());
             PointsSystem.pointsConversion(member.getcID(), oID);
             this.viewHomepage(member.getUsername());
         }

@@ -13,6 +13,8 @@ import java.util.Scanner;
 
 public class Discount {
     private String discountCode;
+    private Long discountAmount;
+
 
     public Discount() {
     }
@@ -100,15 +102,16 @@ public class Discount {
         if (!(discountCode.size() == 0)) { // Print out discount codes if available
 
             // Setting up table
-            CreateTable createTable = new CreateTable();
-            createTable.setShowVerticalLines(true);
-            createTable.setHeaders("OPTION", "DISCOUNT CODE", "DISCOUNT AMOUNT");
+            CreateTable.setShowVerticalLines(true);
+            CreateTable.setHeaders("OPTION", "DISCOUNT CODE", "DISCOUNT AMOUNT");
 
             // Adding content of found/available discount codes
             for (int i = 0; i < discountCode.size(); i++) {
-                createTable.addRow(String.valueOf(i + 1), discountCode.get(i)[2], discountCode.get(i)[3]);
+                CreateTable.addRow(String.valueOf(i + 1), discountCode.get(i)[2], discountCode.get(i)[3]);
             }
-            createTable.print();
+            CreateTable.print();
+            CreateTable.setHeaders(new String[0]);
+            CreateTable.setRows(new ArrayList<String[]>());
         }
     }
 
