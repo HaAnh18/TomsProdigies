@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Cart {
     private Customer customer = new Customer();
 
+    // Constructor
     public Cart(Customer customer) throws IOException {
         this.customer = customer;
     }
