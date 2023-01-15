@@ -22,7 +22,6 @@ import java.util.Scanner;
 public class Order {
     // Attributes
     private String oID;
-    ArrayList<Product> listOfProduct = new ArrayList<>();
     private Long paymentPriceBeforeDiscount;
     private Long paymentPriceDiscountByMembership;
     private String orderDate;
@@ -464,29 +463,29 @@ public class Order {
         }
     }
 
-    public String getoID() {
-        return oID;
-    }
-
-    public void setoID(String oID) {
-        this.oID = oID;
-    }
-
-    public Long getPaymentPriceBeforeDiscount() {
-        return paymentPriceBeforeDiscount;
-    }
-
-    public void setPaymentPriceBeforeDiscount(Long paymentPriceBeforeDiscount) {
-        this.paymentPriceBeforeDiscount = paymentPriceBeforeDiscount;
-    }
+//    public String getoID() {
+//        return oID;
+//    }
+//
+//    public void setoID(String oID) {
+//        this.oID = oID;
+//    }
+//
+//    public Long getPaymentPriceBeforeDiscount() {
+//        return paymentPriceBeforeDiscount;
+//    }
+//
+//    public void setPaymentPriceBeforeDiscount(Long paymentPriceBeforeDiscount) {
+//        this.paymentPriceBeforeDiscount = paymentPriceBeforeDiscount;
+//    }
 
     public Long getPaymentPriceDiscountByMembership() {
         return paymentPriceDiscountByMembership;
     }
 
-    public void setPaymentPriceDiscountByMembership(Long paymentPriceDiscountByMembership) {
-        this.paymentPriceDiscountByMembership = paymentPriceDiscountByMembership;
-    }
+//    public void setPaymentPriceDiscountByMembership(Long paymentPriceDiscountByMembership) {
+//        this.paymentPriceDiscountByMembership = paymentPriceDiscountByMembership;
+//    }
 
     public Long getPaymentPriceDiscountByVoucher() {
         return paymentPriceDiscountByVoucher;
@@ -496,29 +495,29 @@ public class Order {
         this.paymentPriceDiscountByVoucher = paymentPriceDiscountByVoucher;
     }
 
-    public String getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public String getDeliveryStatus() {
-        return deliveryStatus;
-    }
-
-    public void setDeliveryStatus(String deliveryStatus) {
-        this.deliveryStatus = deliveryStatus;
-    }
+//    public String getOrderDate() {
+//        return orderDate;
+//    }
+//
+//    public void setOrderDate(String orderDate) {
+//        this.orderDate = orderDate;
+//    }
+//
+//    public String getOrderStatus() {
+//        return orderStatus;
+//    }
+//
+//    public void setOrderStatus(String orderStatus) {
+//        this.orderStatus = orderStatus;
+//    }
+//
+//    public String getDeliveryStatus() {
+//        return deliveryStatus;
+//    }
+//
+//    public void setDeliveryStatus(String deliveryStatus) {
+//        this.deliveryStatus = deliveryStatus;
+//    }
 
     public Customer getCustomer() {
         return customer;

@@ -59,6 +59,7 @@ public class Account {
     public Account() {
     }
 
+
     public String hashing(String password)
     // Hashing the customer's password
     {

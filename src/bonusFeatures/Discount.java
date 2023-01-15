@@ -162,17 +162,17 @@ public class Discount {
         }
     }
 
-    public String getDiscountCode() {
-        return discountCode;
-    }
+//    public String getDiscountCode() {
+//        return discountCode;
+//    }
 
     public void setDiscountCode(String discountCode) {
         this.discountCode = discountCode;
     }
 
-    public Long getDiscountAmount() {
-        return discountAmount;
-    }
+//    public Long getDiscountAmount() {
+//        return discountAmount;
+//    }
 
     public void setDiscountAmount(Long discountAmount) {
         this.discountAmount = discountAmount;
