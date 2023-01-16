@@ -177,7 +177,7 @@ public class Product {
             String option = UserInput.rawInput();
             switch (option) {
                 case "1":
-                    createNewCategory(category, 1);
+                    createNewCategory(capital, 1);
                     break;
                 case "2":
                     adminMenu.viewHomepage();
