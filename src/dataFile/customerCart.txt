@@ -1,4 +1,1 @@
 #CID,product's title,Single unit price,Quantity,Total payment
-C010,Dell XPS 17,50000000,1,50000000
-C010,Macbook Pro 15,43000000,1,43000000
-C010,Harman Kardon,2100000,1,2100000

@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: COSC2081 Programming 1
+  Semester: 2022C
+  Assessment: Assignment 3
+  Author: Tom's Prodigies
+  ID: Nguyen Tran Ha Anh - s3938490
+      Hoang Tuan Minh - s3924716
+      Dang Kim Quang Minh - s3938024
+      Nguyen Gia Bao - s3938143
+  Acknowledgement:
+
+*/
+
 package order;
 
 import bonusFeatures.Cart;
@@ -31,6 +45,7 @@ public class Order {
     private Customer customer;
 
 
+    // Constructor
     public Order(String oID, String orderDate, String orderStatus, String deliveryStatus) {
         this.oID = oID;
         this.orderDate = orderDate;
@@ -51,6 +66,7 @@ public class Order {
     public Order() {
     }
 
+    // Check the new order has been register yet or not
     public static String oIDDataForValidate(String oId) {
         try {
             // Read each line in ordersHistory
@@ -76,6 +92,7 @@ public class Order {
         return oId;
     }
 
+    // Create a new order for customer
     public void createNewOrder(Product product, int quantity) throws IOException {
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/dataFile/ordersHistory.txt", true));
@@ -103,9 +120,8 @@ public class Order {
         cart.deleteItemInCart("./src/dataFile/customerCart.txt", customer.getcID(), product);
     }
 
-    public void searchOrder(String oId)
     // Searching the order by using order ID
-    {
+    public void searchOrder(String oId) {
         ArrayList<String[]> orders = new ArrayList<>(); // Create a new arraylist to store order information
         ArrayList<String[]> listOfProduct = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
         ArrayList<String[]> productInfo = new ArrayList<>();
@@ -127,14 +143,13 @@ public class Order {
             CreateTable.setShowVerticalLines(true);
             CreateTable.setHeaders("OID", "CID", "PID", "SINGLE UNIT PRICE", "QUANTITY", "PAYMENT PRICE",
                     "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
-            /* Set header for the order information table */
+            // Set header for the order information table
             for (int i = 0; i < orders.size(); i++) {
                 Long totalPaymentEachProduct = Long.parseLong(productInfo.get(i)[2]) * Integer.parseInt(orders.get(i)[3]);
                 CreateTable.addRow(orders.get(i)[0], orders.get(i)[1], orders.get(i)[2], productInfo.get(i)[2], orders.get(i)[3],
                         String.valueOf(totalPaymentEachProduct), orders.get(i)[4], orders.get(i)[5], orders.get(i)[6]);
-                /* Add information to each row in table */
+                // Add information to each row in table
             }
-//            }
             CreateTable.print();
             CreateTable.setHeaders(new String[0]);
             CreateTable.setRows(new ArrayList<String[]>());
@@ -143,6 +158,7 @@ public class Order {
         }
     }
 
+    // Display a total payment in each order
     public void getTotalPaymentEachOrderId() throws IOException {
         ArrayList<String[]> orders = new ArrayList<>();
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
@@ -153,16 +169,6 @@ public class Order {
                 orders.add(database.get(i)); // Add order to ArrayList of orders
             }
         }
-
-//        Long totalPayment = (long) 0;
-//        Long totalPaymentAfterDiscount = (long) 0;
-//        String membership = "";
-
-        // Adding in the total payment using each
-//        for (String[] order : orders) {
-//            totalPayment += (long) Integer.parseInt(order[6]);
-//            membership = order[2];
-//        }
 
         // Based on the membership assigned above, it will calculate totalPayment with discount
         switch (customer.getCustomerType()) {
@@ -208,8 +214,8 @@ public class Order {
         pw.close();
     }
 
+    // Reading from 2 different files to get the corresponding info with each other
     public void getTotalPaymentAfterApplyDiscountCode(String dId) throws IOException {
-        // Reading from 2 different files to get the corresponding info with each other
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customerDiscountCode.txt");
         ArrayList<String[]> orderInfo = ReadDataFromTXTFile.readAllLines("./src/dataFile/billingHistory.txt");
 
@@ -262,8 +268,8 @@ public class Order {
         discount.deleteDiscountCode("./src/dataFile/customerDiscountCode.txt", dId);
     }
 
+    // Read all line in ordersHistory
     public void getAllOrderInfo() {
-        // Read all line in ordersHistory
         ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
 
         // Setting up table
@@ -281,6 +287,7 @@ public class Order {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
+    // Display all the billing history
     public void getAllBillingHistory() {
         ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/dataFile/billingHistory.txt");
 
@@ -298,6 +305,7 @@ public class Order {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
+    // Display all the order's information of specific customer
     public void getOrderInfoByCID(String cID) {
         ArrayList<String[]> orders = new ArrayList<>();
 
@@ -312,7 +320,7 @@ public class Order {
                         productInfo.add(strings);
                     }
                 }
-                orders.add(database.get(i)); //
+                orders.add(database.get(i));
             }
         }
 
@@ -330,7 +338,7 @@ public class Order {
                 Long totalPaymentEachProduct = Long.parseLong(productInfo.get(i)[2]) * Integer.parseInt(orders.get(i)[3]);
                 CreateTable.addRow(orders.get(i)[0], orders.get(i)[1], orders.get(i)[2], productInfo.get(i)[2], orders.get(i)[3],
                         String.valueOf(totalPaymentEachProduct), orders.get(i)[4], orders.get(i)[5], orders.get(i)[6]);
-                /* Add information to each row in table */
+                // Add information to each row in table
             }
             CreateTable.print();
             CreateTable.setHeaders(new String[0]);
@@ -394,13 +402,12 @@ public class Order {
         PrintWriter writer = new PrintWriter(new FileWriter("./src/dataFile/productsSold.txt", true));
 
         // Append new product based on product name and quantity
-        writer.print("\n" + id + "," + product + "," + quantity);
+        writer.println(id + "," + product + "," + quantity);
         writer.close();
     }
 
-    /* This method will help to get the order date out of ordersHistory.txt */
+    // This method will help to get the order date out of ordersHistory.txt
     public ArrayList<String[]> getOrderByDate() {
-
         ArrayList<String[]> orderList = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
         ArrayList<String[]> dailyOrder = new ArrayList<>();
         Scanner inputObj = new Scanner(System.in);
@@ -432,6 +439,7 @@ public class Order {
         return dailyOrder;
     }
 
+    // Display all orders in particular day
     public void printOrder(ArrayList<String[]> dailyOrder) {
         if (dailyOrder.size() > 0) {
             CreateTable.setShowVerticalLines(true);
@@ -451,9 +459,8 @@ public class Order {
         }
     }
 
-    public void updateDeliveryStatus(String filepath, String newData, String oID) throws IOException
     // This method allow admin to modify a delivery status of order that had existed in items' file
-    {
+    public void updateDeliveryStatus(String filepath, String newData, String oID) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
 
         for (String[] strings : database) {
@@ -476,6 +483,7 @@ public class Order {
         }
     }
 
+    // Display the total payment on that order for customer
     public void printPayment() {
         CreateTable.setShowVerticalLines(true);
         CreateTable.setHeaders("FINAL PAYMENT PRICE");
@@ -485,66 +493,28 @@ public class Order {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
-    public String getoID() {
-        return oID;
-    }
 
-    public void setoID(String oID) {
-        this.oID = oID;
-    }
-
-    public Long getPaymentPriceBeforeDiscount() {
-        return paymentPriceBeforeDiscount;
-    }
-
-    public void setPaymentPriceBeforeDiscount(Long paymentPriceBeforeDiscount) {
-        this.paymentPriceBeforeDiscount = paymentPriceBeforeDiscount;
-    }
-
+    // Getter method for payment price discount by membership
     public Long getPaymentPriceDiscountByMembership() {
         return paymentPriceDiscountByMembership;
     }
 
-    public void setPaymentPriceDiscountByMembership(Long paymentPriceDiscountByMembership) {
-        this.paymentPriceDiscountByMembership = paymentPriceDiscountByMembership;
-    }
-
+    // Getter method for payment price discount by voucher
     public Long getPaymentPriceDiscountByVoucher() {
         return paymentPriceDiscountByVoucher;
     }
 
+    // Setter method for payment price discount by voucher
     public void setPaymentPriceDiscountByVoucher(Long paymentPriceDiscountByVoucher) {
         this.paymentPriceDiscountByVoucher = paymentPriceDiscountByVoucher;
     }
 
-    public String getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public String getDeliveryStatus() {
-        return deliveryStatus;
-    }
-
-    public void setDeliveryStatus(String deliveryStatus) {
-        this.deliveryStatus = deliveryStatus;
-    }
-
+    // Getter method for customer
     public Customer getCustomer() {
         return customer;
     }
 
+    // Setter method for customer
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }

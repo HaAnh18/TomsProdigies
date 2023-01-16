@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: COSC2081 Programming 1
+  Semester: 2022C
+  Assessment: Assignment 3
+  Author: Tom's Prodigies
+  ID: Nguyen Tran Ha Anh - s3938490
+      Hoang Tuan Minh - s3924716
+      Dang Kim Quang Minh - s3938024
+      Nguyen Gia Bao - s3938143
+  Acknowledgement:
+
+*/
+
 package bonusFeatures;
 
 import fileMethods.CreateTable;
@@ -13,21 +27,24 @@ import java.util.Scanner;
 
 
 public class Discount {
+    // Attributes
     private String discountCode;
     private Long discountAmount;
     private Customer customer;
     private Order order;
 
+    // Constructor
     public Discount(Customer customer, Order order) {
         this.customer = customer;
         this.order = order;
     }
 
+    // Constructor
     public Discount() {
     }
 
+    // Give discount voucher based on customer's total payment
     public void giveDiscountCode() throws IOException {
-
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/dataFile/customerDiscountCode.txt", true));
         Random rd = new Random();
@@ -72,7 +89,8 @@ public class Discount {
     }
 
 
-    public String validateDiscountCode(String id) { // Used to create unique discount code for customer
+    // Used to create unique discount code for customer
+    public String validateDiscountCode(String id) {
         try {
             Scanner fileScanner = new Scanner(new File("./src/dataFile/ordersHistory.txt"));
             while (fileScanner.hasNext()) {
@@ -93,6 +111,7 @@ public class Discount {
     }
 
 
+    // Display all the discount voucher that customer has
     public void displayCustomerDiscountCode() {
         ArrayList<String[]> discountCode = new ArrayList<>();
 
@@ -122,26 +141,24 @@ public class Discount {
     }
 
 
-    public ArrayList<String[]> discountCodeList()
     // Get all the product that have in that customer's cart
-    {
+    public ArrayList<String[]> discountCodeList() {
         ArrayList<String[]> discountCode = new ArrayList<>();
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customerDiscountCode.txt");
 
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(customer.getcID()))
-                /* If the system could find out the customer's ID in ordersHistory's file
-                 */ {
+            /// If the system could find out the customer's ID in ordersHistory's file
+            {
                 discountCode.add(database.get(i));
             }
         }
         return discountCode;
     }
 
-    public void deleteDiscountCode(String filepath, String id) throws IOException
     // This method allow admin to delete a customer that had existed in customers' file
-    {
+    public void deleteDiscountCode(String filepath, String id) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customerDiscountCode.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
 
@@ -162,18 +179,13 @@ public class Discount {
         }
     }
 
-//    public String getDiscountCode() {
-//        return discountCode;
-//    }
 
+    // Getter method for discount code
     public void setDiscountCode(String discountCode) {
         this.discountCode = discountCode;
     }
 
-//    public Long getDiscountAmount() {
-//        return discountAmount;
-//    }
-
+    // Setter method for discount amount
     public void setDiscountAmount(Long discountAmount) {
         this.discountAmount = discountAmount;
     }

@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: COSC2081 Programming 1
+  Semester: 2022C
+  Assessment: Assignment 3
+  Author: Tom's Prodigies
+  ID: Nguyen Tran Ha Anh - s3938490
+      Hoang Tuan Minh - s3924716
+      Dang Kim Quang Minh - s3938024
+      Nguyen Gia Bao - s3938143
+  Acknowledgement:
+
+*/
+
 package users;
 
 import fileMethods.CreateTable;
@@ -13,18 +27,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Customer extends Account {
+
+    // Constructor
     public Customer(String cID, String name, String email, String address,
                     String phone, String customerType, String userName,
                     String password, Long totalSpending, Long totalPoints) throws IOException {
         super(cID, name, email, address, phone, customerType, userName, password, totalSpending, totalPoints);
     }
 
-    public Customer() throws IOException {
+    // Constructor
+    public Customer() {
     }
 
-    public void register() throws IOException
     // Register the customer's account
-    {
+    public void register() throws IOException {
         PrintWriter pw;
         pw = new PrintWriter(new FileWriter("./src/dataFile/customers.txt", true));
         Random rd = new Random();
@@ -45,9 +61,8 @@ public class Customer extends Account {
         pw.close();
     }
 
-    public String validateCId(String cID)
     // Validate customer ID to make sure that CID of each customer will be unique
-    {
+    public String validateCId(String cID) {
         try {
             Scanner fileScanner = new Scanner(new File("./src/dataFile/customers.txt"));
 
@@ -73,6 +88,7 @@ public class Customer extends Account {
         return getcID();
     }
 
+    // Get all the username that had already register
     public ArrayList<String> getAllUsername() {
         ArrayList<String> allUsername = new ArrayList<>();
         try {
@@ -88,9 +104,8 @@ public class Customer extends Account {
         return allUsername;
     }
 
-    public boolean login(String username, String password)
     // Login if he/she had account already
-    {
+    public boolean login(String username, String password) {
         boolean isAuthentication = false;
 
         try {
@@ -117,9 +132,8 @@ public class Customer extends Account {
         return isAuthentication;
     }
 
-    public String registerUsername()
     // Register the username
-    {
+    public String registerUsername() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter username (e.g: mingka): ");
         String username = scanner.nextLine();
@@ -131,9 +145,8 @@ public class Customer extends Account {
         return username;
     }
 
-    public String registerName()
     // Register the customer's name
-    {
+    public String registerName() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your name (Ha Anh): ");
         String name = scanner.nextLine();
@@ -148,9 +161,8 @@ public class Customer extends Account {
         return getName();
     }
 
-    public boolean validateName(String name)
     // Validate the name that customer inputs
-    {
+    public boolean validateName(String name) {
         String rulesName = "(\\b[A-Z]{1}[a-z]+)( )([A-Z]{1}[a-z]+\\b)";
         // Users.Customer's name must contain letters only and have white space
         Pattern pattern = Pattern.compile(rulesName);
@@ -158,9 +170,8 @@ public class Customer extends Account {
         return matcher.matches(); // Returns true if name matches, else returns false
     }
 
-    public String registerEmail()
     // Register the customer's email
-    {
+    public String registerEmail() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter email (e.g: tomsprodigies@gmail.com): ");
         String email = scanner.nextLine();
@@ -177,22 +188,20 @@ public class Customer extends Account {
         return getEmail();
     }
 
-    public boolean validateEmail(String email)
     // Validate the email that customer inputs
-    {
+    public boolean validateEmail(String email) {
         String emailRules = "^[a-zA-Z0-9_+&*-]+(?:\\." +
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
                 "A-Z]{2,7}$";
-        //Compile regular expression to get the pattern
+        // Compile regular expression to get the pattern
         Pattern pattern = Pattern.compile(emailRules);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches(); // returns true if email matches, else returns false
     }
 
-    public String registerAddress()
     // Register the customer's address
-    {
+    public String registerAddress() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter address (e.g: 702 Nguyen Van Linh Street): ");
         String address = scanner.nextLine();
@@ -209,6 +218,7 @@ public class Customer extends Account {
         return getAddress();
     }
 
+    // Validate the number in address
     public boolean validateNumber(String num) {
         String rulesNumber = "-?\\d+(\\.\\d+)?";
         Pattern pattern = Pattern.compile(rulesNumber);
@@ -216,16 +226,15 @@ public class Customer extends Account {
         return matcher.matches(); // returns true if address matches, else returns false
     }
 
-    public boolean validateAddressSingle(String address)
     // Validate the address that customer inputs
-    {
-//        String rulesAddress = "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)";
+    public boolean validateAddressSingle(String address) {
         String rulesAddress = "([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)";
         Pattern pattern = Pattern.compile(rulesAddress);
         Matcher matcher = pattern.matcher(address);
         return matcher.matches(); // returns true if address matches, else returns false
     }
 
+    // Validate the whole address
     public boolean validateAddress(String address) {
         String[] singleAddress = address.split(" ");
         boolean check = false;
@@ -239,9 +248,8 @@ public class Customer extends Account {
         return check;
     }
 
-    public String registerPhoneNumber()
     // Register the phone number
-    {
+    public String registerPhoneNumber() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter phone number (e.g: 09********): ");
         String phone = scanner.nextLine();
@@ -258,18 +266,16 @@ public class Customer extends Account {
         return getPhone();
     }
 
-    public boolean validatePhoneNumber(String phoneNumber)
     // Validate the phone number that customer input
-    {
+    public boolean validatePhoneNumber(String phoneNumber) {
         String rulesPhoneNumber = "^\\d{10}$"; // Phone number only contains 10 digits from 0 to 9
         Pattern pattern = Pattern.compile(rulesPhoneNumber);
         Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.matches(); // returns true if phone number matches, else returns false
     }
 
-    public String registerPassword()
     // Register the password
-    {
+    public String registerPassword() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter password \n" +
                 "        (Password must contain at least one digit [0-9].\n" +
@@ -290,9 +296,8 @@ public class Customer extends Account {
         return getPassword();
     }
 
-    public boolean validatePassword(String password)
     // Validate the password that customer inputs
-    {
+    public boolean validatePassword(String password) {
         String rulesPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}$";
         /* Password must contain at least one digit [0-9].
         Password must contain at least one lowercase Latin character [a-z].
@@ -303,11 +308,15 @@ public class Customer extends Account {
         return matcher.matches(); // returns true if password matches, else returns false
     }
 
+    // Update information for customer
     public void updateInfo(String filepath, String newData, String option) throws IOException, InterruptedException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines(filepath);
         switch (option) {
             case "1":
                 if (validateName(newData)) {
+                    /* If the system could find out the username in customers' file and the new name is validated
+                     * then the system allow customer to update their information
+                     */
                     this.setName(newData);
                     for (String[] strings : database) {
                         if (strings[6].equals(getUsername())) {
@@ -338,62 +347,62 @@ public class Customer extends Account {
                     System.out.println("INVALID EMAIL SO YOU WILL BE BACK TO HOMEPAGE IN A SECOND!!!");
                     TimeUnit.SECONDS.sleep(1);
                 }
-                    break;
-                case "3":
-                    if (validateAddress(newData))
-                        /* If the system could find out the username in customers' file and the new address is validated
-                         * then the system allow customer to update their information
-                         */ {
-                        this.setAddress(newData);
-                        for (String[] strings : database) {
-                            if (strings[6].equals(getUsername())) {
-                                strings[3] = getAddress(); // The customer's information is changed in arraylist
-                                System.out.println("UPDATE SUCCESSFULLY!!!");
-                                TimeUnit.SECONDS.sleep(1);
-                            }
+                break;
+            case "3":
+                if (validateAddress(newData))
+                    /* If the system could find out the username in customers' file and the new address is validated
+                     * then the system allow customer to update their information
+                     */ {
+                    this.setAddress(newData);
+                    for (String[] strings : database) {
+                        if (strings[6].equals(getUsername())) {
+                            strings[3] = getAddress(); // The customer's information is changed in arraylist
+                            System.out.println("UPDATE SUCCESSFULLY!!!");
+                            TimeUnit.SECONDS.sleep(1);
                         }
-                    } else {
-                        System.out.println("INVALID ADDRESS SO YOU WILL BE BACK TO HOMEPAGE IN A SECOND!!!");
-                        TimeUnit.SECONDS.sleep(1);
                     }
-                    break;
-                case "4":
-                    if (validatePhoneNumber(newData))
-                        /* If the system could find out the username in customers' file and the new phone number is validated
-                         * then the system allow customer to update their information
-                         */ {
-                        this.setPhone(newData);
-                        for (String[] strings : database) {
-                            if (strings[6].equals(getUsername())) {
-                                strings[4] = getPhone(); // The customer's information is changed in arraylist
-                                System.out.println("UPDATE SUCCESSFULLY!!!");
-                                TimeUnit.SECONDS.sleep(1);
-                            }
+                } else {
+                    System.out.println("INVALID ADDRESS SO YOU WILL BE BACK TO HOMEPAGE IN A SECOND!!!");
+                    TimeUnit.SECONDS.sleep(1);
+                }
+                break;
+            case "4":
+                if (validatePhoneNumber(newData))
+                    /* If the system could find out the username in customers' file and the new phone number is validated
+                     * then the system allow customer to update their information
+                     */ {
+                    this.setPhone(newData);
+                    for (String[] strings : database) {
+                        if (strings[6].equals(getUsername())) {
+                            strings[4] = getPhone(); // The customer's information is changed in arraylist
+                            System.out.println("UPDATE SUCCESSFULLY!!!");
+                            TimeUnit.SECONDS.sleep(1);
                         }
-                    } else {
-                        System.out.println("INVALID PHONE NUMBER SO YOU WILL BE BACK TO HOMEPAGE IN A SECOND!!!");
-                        TimeUnit.SECONDS.sleep(1);
                     }
-                    break;
-                case "5":
-                    if (validatePassword(newData))
-                        /* If the system could find out the username in customers' file and the new password is validated
-                         * then the system allow customer to update their information
-                         */ {
-                        this.setPassword(newData);
-                        for (String[] strings : database) {
-                            if (strings[6].equals(getUsername())) {
-                                strings[7] = getEmail(); // The customer's information is changed in arraylist
-                                System.out.println("UPDATE SUCCESSFULLY!!!");
-                                TimeUnit.SECONDS.sleep(1);
-                            }
+                } else {
+                    System.out.println("INVALID PHONE NUMBER SO YOU WILL BE BACK TO HOMEPAGE IN A SECOND!!!");
+                    TimeUnit.SECONDS.sleep(1);
+                }
+                break;
+            case "5":
+                if (validatePassword(newData))
+                    /* If the system could find out the username in customers' file and the new password is validated
+                     * then the system allow customer to update their information
+                     */ {
+                    this.setPassword(newData);
+                    for (String[] strings : database) {
+                        if (strings[6].equals(getUsername())) {
+                            strings[7] = getEmail(); // The customer's information is changed in arraylist
+                            System.out.println("UPDATE SUCCESSFULLY!!!");
+                            TimeUnit.SECONDS.sleep(1);
                         }
-                    } else {
-                        System.out.println("INVALID PASSWORD SO YOU WILL BE BACK TO HOMEPAGE IN A SECOND!!!");
-                        TimeUnit.SECONDS.sleep(1);
                     }
-                    break;
-            }
+                } else {
+                    System.out.println("INVALID PASSWORD SO YOU WILL BE BACK TO HOMEPAGE IN A SECOND!!!");
+                    TimeUnit.SECONDS.sleep(1);
+                }
+                break;
+        }
         File file = new File(filepath);
         PrintWriter pw = new PrintWriter(file);
 
@@ -408,11 +417,9 @@ public class Customer extends Account {
     }
 
 
-    public void checkMembership() throws IOException
     // Display the customer's membership status
-    {
-//        String[] database = ReadDataFromTXTFile.readSpecificLine(userName, 6, "./src/dataFile/customers.txt", ",");
-//        // Read all information of this customer
+    public void checkMembership() throws IOException {
+        // Read all information of this customer
         CreateTable.setShowVerticalLines(true);
         CreateTable.setHeaders("MEMBERSHIP");
         CreateTable.addRow(this.getCustomerType()); // Print the membership status of this customer
@@ -422,9 +429,8 @@ public class Customer extends Account {
     }
 
 
-    public void updateTotalSpending(String filepath, String newData) throws IOException
     // Update total spending of customer after he/she finished every order
-    {
+    public void updateTotalSpending(String filepath, String newData) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         // Read all line in customers.txt file and put all data in arraylist
         for (String[] strings : database) {
@@ -451,9 +457,8 @@ public class Customer extends Account {
     }
 
 
-    public void updateMembership(String filepath) throws IOException
     // Update customer's membership when he/she reached the minimum spending in every membership's requirement
-    {
+    public void updateMembership(String filepath) throws IOException {
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines(filepath);
         // Read all line in customers.txt file and put all data in arraylist
