@@ -1,13 +1,36 @@
 import menu.AuthenticationSystem;
+import product.Product;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException, ParseException {
         AuthenticationSystem authenticationSystem = new AuthenticationSystem();
         authenticationSystem.mainMenu();
+        Product product = new Product();
+        Scanner scanner = new Scanner(System.in);
+//        int s = Integer.parseInt(scanner.nextLine());
+
+//        product.getAllCategory();
+//        Customer customer = new Customer();
+//        System.out.println(customer.registerUsername());
+//        order.getAllOrderInfo();
+//        String[] customerInfo = ReadDataFromTXTFile.readSpecificLine("nana", 6, "./src/dataFile/customers.txt", ",");
+//        Customer member = new Customer(customerInfo[0], customerInfo[1], customerInfo[2], customerInfo[3],
+//                customerInfo[4], customerInfo[5], customerInfo[6], customerInfo[7],
+//                Long.parseLong(customerInfo[8]), Long.parseLong(customerInfo[9]));
+//        CustomerMenu customerMenu = new CustomerMenu();
+//        customerMenu.createOrder(member);
+//        order.searchOrder("");
+//        String[] customerInfo = ReadDataFromTXTFile.readSpecificLine("nana123", 6, "./src/dataFile/customers.txt", ",");
+//        Customer member = new Customer(customerInfo[0], customerInfo[1], customerInfo[2], customerInfo[3],
+//                customerInfo[4], customerInfo[5], customerInfo[6], customerInfo[7],
+//                Long.parseLong(customerInfo[8]), Long.parseLong(customerInfo[9]));
+//        System.out.println(member.getCustomerType());
+//        System.out.println(customerInfo[5]);
 //        String[] orderInfo = ReadDataFromTXTFile.readSpecificLine("T842", 0,
 //                "./src/dataFile/billingHistory.txt", ",");
 //        Long totalPayment = Long.parseLong(orderInfo[2]);

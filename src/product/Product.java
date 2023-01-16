@@ -36,20 +36,19 @@ public class Product {
     /* This method will help user to search by category */
     public void searchByCategory() throws IOException {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Please enter the category:");
+        System.out.println("Please enter the category (e.g: laptop):");
         String category = sc.nextLine();
-        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        String capital = category.toUpperCase();
         try {
-            Scanner fileScanner = new Scanner(new File("./src/dataFile/items.txt"));
+            Scanner fileScanner = new Scanner(new File("./src/dataFile/categories.txt"));
             boolean found = false;
             while (fileScanner.hasNext()) {
                 String data = fileScanner.nextLine();
                 String[] items = data.split(",");
-                if (capital.equals(items[3])) {
+                if (capital.equals(items[1])) {
                     found = true;
                     break;
                 }
-
             }
             if (found) {
                 ArrayList<String[]> categories = new ArrayList<>();
@@ -61,13 +60,18 @@ public class Product {
                         categories.add(database.get(i));
                     }
                 }
-                CreateTable createTable = new CreateTable();
-                createTable.setShowVerticalLines(true);
-                createTable.setHeaders("ID", "Title", "Prices", "Category");
-                for (String[] categoryOutput : categories) {
-                    createTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
+                if (categories.size() > 0) {
+                    CreateTable.setShowVerticalLines(true);
+                    CreateTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
+                    for (String[] categoryOutput : categories) {
+                        CreateTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
+                    }
+                    CreateTable.print();
+                    CreateTable.setHeaders(new String[0]);
+                    CreateTable.setRows(new ArrayList<String[]>());
+                } else {
+                    System.out.println("THIS CATEGORY DOES NOT HAVE ITEMS YET!!!");
                 }
-                createTable.print();
             } else {
                 System.out.println("This category is not existed!");
                 searchByCategory();
@@ -79,7 +83,7 @@ public class Product {
 
     public void searchCategoryByPriceRange(String category) {
         //transforming user input to the right format.
-        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        String capital = category.toUpperCase();
 
         //create a empty Arraylist to store data after searching.
         ArrayList<String[]> categories = new ArrayList<>();
@@ -100,57 +104,58 @@ public class Product {
 
 //        ArrayList<String[]> matchResult = new ArrayList<>(this.getMatchResult(category[0]).size());
 
-        CreateTable table = new CreateTable();
 
         switch (option) {
             case "1":
-                for (int i = 0; i < categories.size(); i++) {
-                    Long priceItem = Long.parseLong(categories.get(i)[2]);
+                for (String[] strings : categories) {
+                    Long priceItem = Long.parseLong(strings[2]);
                     if (0 <= priceItem && priceItem < 25000000) {
-                        table.addRow(categories.get(i)[0], categories.get(i)[1], categories.get(i)[2], categories.get(i)[3]);
+                        CreateTable.addRow(strings[0], strings[1], strings[2], strings[3]);
                     }
                 }
                 System.out.println("Price range: 0 --> 25 mil");
                 break;
             case "2":
-                for (int i = 0; i < categories.size(); i++) {
-                    Long priceItem = Long.parseLong(categories.get(i)[2]);
+                for (String[] strings : categories) {
+                    Long priceItem = Long.parseLong(strings[2]);
                     if (25000000 <= priceItem && priceItem < 50000000) {
-                        table.addRow(categories.get(i)[0], categories.get(i)[1], categories.get(i)[2], categories.get(i)[3]);
+                        CreateTable.addRow(strings[0], strings[1], strings[2], strings[3]);
                     }
                 }
                 System.out.println("Price range: 25 mil --> 50 mil");
                 break;
             case "3":
-                for (int i = 0; i < categories.size(); i++) {
-                    Long priceItem = Long.parseLong(categories.get(i)[2]);
+                for (String[] strings : categories) {
+                    Long priceItem = Long.parseLong(strings[2]);
                     if (50000000 <= priceItem && priceItem < 75000000) {
-                        table.addRow(categories.get(i)[0], categories.get(i)[1], categories.get(i)[2], categories.get(i)[3]);
+                        CreateTable.addRow(strings[0], strings[1], strings[2], strings[3]);
                     }
                 }
                 System.out.println("Price range: 50 mil --> 75 mil");
                 break;
             case "4":
-                for (int i = 0; i < categories.size(); i++) {
-                    Long priceItem = Long.parseLong(categories.get(i)[2]);
+                for (String[] strings : categories) {
+                    Long priceItem = Long.parseLong(strings[2]);
                     if (75000000 <= priceItem && priceItem < 100000000) {
-                        table.addRow(categories.get(i)[0], categories.get(i)[1], categories.get(i)[2], categories.get(i)[3]);
+                        CreateTable.addRow(strings[0], strings[1], strings[2], strings[3]);
                     }
                 }
                 System.out.println("Price range: 75 mil --> 100 mil");
                 break;
             // for menu add 1 more but will be menu.something();
         }
-        table.setShowVerticalLines(true);
-        table.setHeaders("ID", "Title", "Prices", "Category");
-        table.print();
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("ID", "Title", "Prices", "Category");
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
 
     }
 
     public void registerCategory(String category) throws IOException, InterruptedException, ParseException {
         AdminMenu adminMenu = new AdminMenu();
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/categories.txt");
-        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        String capital = category.toUpperCase();
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(capital)) {
                 database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + 1);
@@ -172,7 +177,7 @@ public class Product {
             String option = UserInput.rawInput();
             switch (option) {
                 case "1":
-                    createNewCategory(category, 1);
+                    createNewCategory(capital, 1);
                     break;
                 case "2":
                     adminMenu.viewHomepage();
@@ -195,7 +200,7 @@ public class Product {
 
         //Reformat the input to suitable for matching values.
 
-        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        String capital = category.toUpperCase();
         boolean found = false;
         try {
             Scanner fileScanner = new Scanner(new File("./src/dataFile/categories.txt"));
@@ -230,15 +235,16 @@ public class Product {
             user.add(productData);
         }
 
-        CreateTable createTable = new CreateTable();
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("OPTION", "ID", "TITLE", "PRICE", "CATEGORY");
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("OPTION", "ID", "TITLE", "PRICE", "CATEGORY");
 
         for (int i = 1; i < user.size(); i++) {
-            createTable.addRow(String.valueOf(i), user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3]);
+            CreateTable.addRow(String.valueOf(i), user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3]);
         }
 
-        createTable.print();
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
     public void printPriceRange() {
@@ -266,7 +272,6 @@ public class Product {
         ArrayList<String[]> items = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
 
         String option = UserInput.rawInput();
-        CreateTable table = new CreateTable();
 
         switch (option) {
             //case 1: find the product between the price of 0 to 25000000.
@@ -274,7 +279,7 @@ public class Product {
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
                     if (0 <= priceItem && priceItem < 25000000) {
-                        table.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
+                        CreateTable.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
                     }
                 }
                 System.out.println("Price range: 0 --> 25 mil");
@@ -286,7 +291,7 @@ public class Product {
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
                     if (25000000 <= priceItem && priceItem < 50000000) {
-                        table.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
+                        CreateTable.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
                     }
                 }
                 System.out.println("Price range: 25 mil --> 50 mil");
@@ -297,7 +302,7 @@ public class Product {
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
                     if (50000000 <= priceItem && priceItem < 75000000) {
-                        table.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
+                        CreateTable.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
                     }
                 }
                 System.out.println("Price range: 50 mil --> 75 mil");
@@ -309,16 +314,18 @@ public class Product {
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
                     if (75000000 <= priceItem && priceItem < 100000000) {
-                        table.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
+                        CreateTable.addRow(items.get(i)[0], items.get(i)[1], items.get(i)[2], items.get(i)[3]);
                     }
                 }
                 System.out.println("Price range: 75 mil --> 100 mil");
                 break;
             // for menu add 1 more but will be menu.something();
         }
-        table.setShowVerticalLines(true);
-        table.setHeaders("ID", "Title", "Prices", "Category");
-        table.print();
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("ID", "Title", "Prices", "Category");
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
     // This method is used to gather and print all the product information.
@@ -340,15 +347,57 @@ public class Product {
 
         }
         //Print out the table contain all the product information.
-        CreateTable createTable = new CreateTable();
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
 
         for (int i = 1; i < user.size(); i++) {
-            createTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3]);
+            CreateTable.addRow(user.get(i)[0], user.get(i)[1], user.get(i)[2], user.get(i)[3]);
         }
 
-        createTable.print();
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
+    }
+
+    public void updatePrice(String filepath, String newData) throws IOException
+    // This method allow admin to modify a product's price that had existed in items' file
+    {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
+        for (String[] strings : database) {
+            if (strings[0].equals(this.getID()))
+                /* If the system could find out the pID in items' file
+                 * then the system allow admin to update the product's price
+                 */ {
+                this.setPrice(Long.parseLong(newData));
+                strings[2] = String.valueOf(this.getPrice()); // Modify the product's price
+            }
+        }
+        File file = new File(filepath);
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.write(""); // The file would erase all the data in items' file
+        pw.close();
+
+        for (String[] strings : database) {
+            Write.rewriteFile(filepath, "#ID,Title, Price, Category", String.join(",", strings));
+            // This method would allow system to write all data including new data into the items' file
+        }
+    }
+
+    public void getAllCategory() {
+        ArrayList<String[]> allCategory = ReadDataFromTXTFile.readAllLines("./src/dataFile/categories.txt");
+        ArrayList<String> category = new ArrayList<>();
+        for (String[] strings : allCategory) {
+            category.add(strings[1]);
+        }
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("CATEGORY");
+        for (int i = 1; i < category.size(); i++) {
+            CreateTable.addRow(category.get(i));
+        }
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
     //     Getter method for pID

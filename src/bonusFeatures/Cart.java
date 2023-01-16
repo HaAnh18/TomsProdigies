@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Cart {
     private Customer customer = new Customer();
 
+    // Constructor
     public Cart(Customer customer) throws IOException {
         this.customer = customer;
     }
@@ -65,14 +66,15 @@ public class Cart {
             }
         }
         // prompt a specific customer's cart contents into the terminal under the table format rule
-        CreateTable createTable = new CreateTable();
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("OPTION", "CID", "PRODUCT'S TITLE", "QUANTITY", "SINGLE UNIT PRICE", "TOTAL PAYMENT");
-        for (int i= 0 ; i< products.size(); i++) {
-            createTable.addRow(String.valueOf(i+1),products.get(i)[0], products.get(i)[1], products.get(i)[2],
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("OPTION", "CID", "PRODUCT'S TITLE", "QUANTITY", "SINGLE UNIT PRICE", "TOTAL PAYMENT");
+        for (int i = 0; i < products.size(); i++) {
+            CreateTable.addRow(String.valueOf(i + 1), products.get(i)[0], products.get(i)[1], products.get(i)[2],
                     products.get(i)[3], products.get(i)[4]);
         }
-        createTable.print();
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
     public void deleteAllItemsInCart(String filepath, String cId) throws IOException {

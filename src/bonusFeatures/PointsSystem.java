@@ -78,15 +78,16 @@ public class PointsSystem {
         }
 
         // Set up table
-        CreateTable createTable = new CreateTable();
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("OPTION", "ID", "TITLE", "POINTS", "CATEGORY");
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("OPTION", "ID", "TITLE", "POINTS", "CATEGORY");
 
         // Add all lines into table with options
         for (int i = 1; i < prizeItems.size(); i++) {
-            createTable.addRow(String.valueOf(i), prizeItems.get(i)[0], prizeItems.get(i)[1], prizeItems.get(i)[2], prizeItems.get(i)[3]);
+            CreateTable.addRow(String.valueOf(i), prizeItems.get(i)[0], prizeItems.get(i)[1], prizeItems.get(i)[2], prizeItems.get(i)[3]);
         }
-        createTable.print();
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
     public static void exchangeItem(String user, String itemID) throws IOException {
@@ -150,7 +151,7 @@ public class PointsSystem {
         // Create oID for each exchange
         Random rd = new Random();
         int randNum = rd.nextInt(999);
-        String oID = order.oIDDataForValidate(String.format("O%03d", randNum));
+        String oID = Order.oIDDataForValidate(String.format("O%03d", randNum));
 
         pw.println(oID + "," + user + "," + itemID + "," + Cost + ","
                 + exchangeDate + "," + exchangeStatus + "," + pickupStatus);
@@ -161,19 +162,20 @@ public class PointsSystem {
 
     public static void printConfirmation(String oID) throws IOException {
         // Set up table
-        CreateTable table = new CreateTable();
-        table.setShowVerticalLines(true);
-        table.setHeaders("order.Order ID", "cID", "prizeID", "Point Cost", "Date Exchanged", "Exchange Status", "Pickup Status");
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("order.Order ID", "cID", "prizeID", "Point Cost", "Date Exchanged", "Exchange Status", "Pickup Status");
 
         // Get line in .txt file with parameter oID
         String[] exchangeConfirmation = ReadDataFromTXTFile.readSpecificLine(oID, 0, "./src/dataFile/prizeExHistory.txt", ",");
 
         // Add content to table
-        table.addRow(exchangeConfirmation[0], exchangeConfirmation[1], exchangeConfirmation[2], exchangeConfirmation[3],
+        CreateTable.addRow(exchangeConfirmation[0], exchangeConfirmation[1], exchangeConfirmation[2], exchangeConfirmation[3],
                 exchangeConfirmation[4], exchangeConfirmation[5], exchangeConfirmation[6]);
 
         // Print out the table
-        table.print();
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
     public static void getExchangeInfo(String cID) {
@@ -193,36 +195,38 @@ public class PointsSystem {
         } else {
 
             // Setting up table
-            CreateTable createTable = new CreateTable();
-            createTable.setShowVerticalLines(true);
-            createTable.setHeaders("OID", "CID", "PID", "POINT COSTS",
+            CreateTable.setShowVerticalLines(true);
+            CreateTable.setHeaders("OID", "CID", "PID", "POINT COSTS",
                     "EXCHANGE DATE", "EXCHANGE STATUS", "PICKUP STATUS");
 
             // Add all the exchangeHistory that have the corresponding cID
             for (String[] order : orders) {
-                createTable.addRow(order[0], order[1], order[2], order[3],
+                CreateTable.addRow(order[0], order[1], order[2], order[3],
                         order[4], order[5], order[6]);
             }
-            createTable.print();
+            CreateTable.print();
+            CreateTable.setHeaders(new String[0]);
+            CreateTable.setRows(new ArrayList<String[]>());
         }
     }
 
     public static void viewExchangeLog() {
         // Read all line in prizeExHistory
         ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeExHistory.txt");
-        CreateTable createTable = new CreateTable();
 
         // Setting up table
-        createTable.setShowVerticalLines(true);
-        createTable.setHeaders("OID", "CID", "PID", "POINTS COST", "DATE EXCHANGED", "EXCHANGE STATUS", "PICKUP STATUS");
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("OID", "CID", "PID", "POINTS COST", "DATE EXCHANGED", "EXCHANGE STATUS", "PICKUP STATUS");
 
         // For each line, assign all content into table
         for (int i = 1; i < orders.size(); i++) {
-            createTable.addRow(orders.get(i)[0], orders.get(i)[1], orders.get(i)[2],
+            CreateTable.addRow(orders.get(i)[0], orders.get(i)[1], orders.get(i)[2],
                     orders.get(i)[3], orders.get(i)[4], orders.get(i)[5],
                     orders.get(i)[6]);
         }
-        createTable.print();
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
     public static void updatePickupStatus(String newData, String oID) throws IOException
@@ -264,16 +268,17 @@ public class PointsSystem {
             }
         }
         if (!(orders.size() == 0)) {
-            CreateTable createTable = new CreateTable();
-            createTable.setShowVerticalLines(true);
-            createTable.setHeaders("OID", "CID", "PID", "POINTS COST", "DATE EXCHANGED", "EXCHANGE STATUS", "PICKUP STATUS");
+            CreateTable.setShowVerticalLines(true);
+            CreateTable.setHeaders("OID", "CID", "PID", "POINTS COST", "DATE EXCHANGED", "EXCHANGE STATUS", "PICKUP STATUS");
             /* Set header for the order information table */
             for (String[] order : orders) {
-                createTable.addRow(order[0], order[1], order[2], order[3],
+                CreateTable.addRow(order[0], order[1], order[2], order[3],
                         order[4], order[5], order[6]);
                 /* Add information to each row in table */
             }
-            createTable.print();
+            CreateTable.print();
+            CreateTable.setHeaders(new String[0]);
+            CreateTable.setRows(new ArrayList<String[]>());
         } else {
             System.out.println("THERE IS NO ORDER HAVE THIS ID");
         }

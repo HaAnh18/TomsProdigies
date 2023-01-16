@@ -5,6 +5,7 @@ import fileMethods.UserInput;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class AuthenticationSystem {
@@ -13,15 +14,16 @@ public class AuthenticationSystem {
         System.out.println("STORE ORDER MANAGEMENT SYSTEM");
         System.out.println("Instructor: Mr. Tom Huynh & Dr. Phong Ngo");
         System.out.println("Group: Tom's Prodigies");
-        CreateTable createTable = new CreateTable();
-        createTable.setShowVerticalLines(true);
+        CreateTable.setShowVerticalLines(true);
 
-        createTable.setHeaders("sID", "FULL NAME");
-        createTable.addRow("s3938490", "Nguyen Tran Ha Anh");
-        createTable.addRow("s3924716", "Hoang Tuan Minh");
-        createTable.addRow("s3938024", "Dang Kim Quang Minh");
-        createTable.addRow("s3938143", "Nguyen Gia Bao");
-        createTable.print();
+        CreateTable.setHeaders("sID", "FULL NAME");
+        CreateTable.addRow("s3938490", "Nguyen Tran Ha Anh");
+        CreateTable.addRow("s3924716", "Hoang Tuan Minh");
+        CreateTable.addRow("s3938024", "Dang Kim Quang Minh");
+        CreateTable.addRow("s3938143", "Nguyen Gia Bao");
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
 
         System.out.println("\n================================================= WELCOME TO TOM'S PRODIGIES STORE =================================================");
         System.out.println("1. Use as a customer");

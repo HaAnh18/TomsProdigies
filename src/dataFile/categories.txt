@@ -1,8 +1,9 @@
 #ID,Category,Quantity
-1,Laptop,10
-2,Phone,2
-3,Earbud,1
-4,Headset,1
+1,LAPTOP,3
+2,PHONE,2
+3,EARBUD,1
+4,HEADSET,1
 5,PC,1
 6,GPU,1
-7,Mouse,0
+7,MOUSE,0
+8,HEADPHONE,1
