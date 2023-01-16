@@ -22,9 +22,5 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException, ParseException {
         AuthenticationSystem authenticationSystem = new AuthenticationSystem();
         authenticationSystem.mainMenu();
-//        Product product = new Product();
-//        Scanner scanner = new Scanner(System.in);
-//        String c = scanner.nextLine();
-//        product.registerCategory(c);
     }
 }
