@@ -404,38 +404,51 @@ public class Order {
         ArrayList<String[]> orderList = ReadDataFromTXTFile.readAllLines("./src/dataFile/ordersHistory.txt");
         ArrayList<String[]> dailyOrder = new ArrayList<>();
         Scanner inputObj = new Scanner(System.in);
-        System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");
-        String date = inputObj.nextLine();
-        while (Admin.dateValidate(date)) /* validate if the timestamp is match to the user's input */ {
-            System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");
-            date = inputObj.nextLine();
+        boolean dateValidate = false;
+        do {
+            try {
+                System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");
+                String date = inputObj.nextLine();
+                while (Admin.dateValidate(date)) /* validate if the timestamp is match to the user's input */ {
+                    System.out.println("Enter the date to get the daily order (MM/dd/yyyy):");
+                    date = inputObj.nextLine();
 
-        }
-        date = Admin.dateInput(date);
-        for (int i = 1; i < orderList.size(); i++) {
-            String[] dateSplit = orderList.get(i)[4].split("_");
-            String splitDate = dateSplit[0].replaceAll("//s", "");
-            splitDate = Admin.dateInput(splitDate);
-            if (splitDate.equals(date)) {
-                dailyOrder.add(orderList.get(i));
+                }
+                date = Admin.dateInput(date);
+                dateValidate = true;
+                for (int i = 1; i < orderList.size(); i++) {
+                    String[] dateSplit = orderList.get(i)[4].split("_");
+                    String splitDate = dateSplit[0].replaceAll("//s", "");
+                    splitDate = Admin.dateInput(splitDate);
+                    if (splitDate.equals(date)) {
+                        dailyOrder.add(orderList.get(i));
+                    }
+                }
+                return dailyOrder;
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("INVALID DATE");
             }
-        }
+        } while (!dateValidate);
         return dailyOrder;
     }
 
     public void printOrder(ArrayList<String[]> dailyOrder) {
-        CreateTable.setShowVerticalLines(true);
-        CreateTable.setHeaders("OID", "CID", "PID", "QUANTITY",
-                "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
+        if (dailyOrder.size() > 0) {
+            CreateTable.setShowVerticalLines(true);
+            CreateTable.setHeaders("OID", "CID", "PID", "QUANTITY",
+                    "ORDER DATE", "ORDER STATUS", "DELIVERING STATUS");
 
-        // Add all the orders that have the corresponding cID
-        for (String[] order : dailyOrder) {
-            CreateTable.addRow(order[0], order[1], order[2], order[3],
-                    order[4], order[5], order[6]);
+            // Add all the orders that have the corresponding cID
+            for (String[] order : dailyOrder) {
+                CreateTable.addRow(order[0], order[1], order[2], order[3],
+                        order[4], order[5], order[6]);
+            }
+            CreateTable.print();
+            CreateTable.setHeaders(new String[0]);
+            CreateTable.setRows(new ArrayList<String[]>());
+        } else {
+            System.out.println("THERE IS NO ORDER IN THIS DAY!!!");
         }
-        CreateTable.print();
-        CreateTable.setHeaders(new String[0]);
-        CreateTable.setRows(new ArrayList<String[]>());
     }
 
     public void updateDeliveryStatus(String filepath, String newData, String oID) throws IOException
@@ -463,29 +476,38 @@ public class Order {
         }
     }
 
-//    public String getoID() {
-//        return oID;
-//    }
-//
-//    public void setoID(String oID) {
-//        this.oID = oID;
-//    }
-//
-//    public Long getPaymentPriceBeforeDiscount() {
-//        return paymentPriceBeforeDiscount;
-//    }
-//
-//    public void setPaymentPriceBeforeDiscount(Long paymentPriceBeforeDiscount) {
-//        this.paymentPriceBeforeDiscount = paymentPriceBeforeDiscount;
-//    }
+    public void printPayment() {
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("FINAL PAYMENT PRICE");
+        CreateTable.addRow(String.valueOf(this.getPaymentPriceDiscountByMembership()));
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
+    }
+
+    public String getoID() {
+        return oID;
+    }
+
+    public void setoID(String oID) {
+        this.oID = oID;
+    }
+
+    public Long getPaymentPriceBeforeDiscount() {
+        return paymentPriceBeforeDiscount;
+    }
+
+    public void setPaymentPriceBeforeDiscount(Long paymentPriceBeforeDiscount) {
+        this.paymentPriceBeforeDiscount = paymentPriceBeforeDiscount;
+    }
 
     public Long getPaymentPriceDiscountByMembership() {
         return paymentPriceDiscountByMembership;
     }
 
-//    public void setPaymentPriceDiscountByMembership(Long paymentPriceDiscountByMembership) {
-//        this.paymentPriceDiscountByMembership = paymentPriceDiscountByMembership;
-//    }
+    public void setPaymentPriceDiscountByMembership(Long paymentPriceDiscountByMembership) {
+        this.paymentPriceDiscountByMembership = paymentPriceDiscountByMembership;
+    }
 
     public Long getPaymentPriceDiscountByVoucher() {
         return paymentPriceDiscountByVoucher;
@@ -495,29 +517,29 @@ public class Order {
         this.paymentPriceDiscountByVoucher = paymentPriceDiscountByVoucher;
     }
 
-//    public String getOrderDate() {
-//        return orderDate;
-//    }
-//
-//    public void setOrderDate(String orderDate) {
-//        this.orderDate = orderDate;
-//    }
-//
-//    public String getOrderStatus() {
-//        return orderStatus;
-//    }
-//
-//    public void setOrderStatus(String orderStatus) {
-//        this.orderStatus = orderStatus;
-//    }
-//
-//    public String getDeliveryStatus() {
-//        return deliveryStatus;
-//    }
-//
-//    public void setDeliveryStatus(String deliveryStatus) {
-//        this.deliveryStatus = deliveryStatus;
-//    }
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public String getDeliveryStatus() {
+        return deliveryStatus;
+    }
+
+    public void setDeliveryStatus(String deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
 
     public Customer getCustomer() {
         return customer;

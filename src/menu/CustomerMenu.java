@@ -61,10 +61,10 @@ public class CustomerMenu {
                         String usernameNoSpace = username.trim();
                         System.out.print("Enter password: ");
                         String password = scanner.nextLine();
-                /* Verify the username and password,
-                if it doesn't correct, the system will ask customer to input again
-                if the username and password are correct, the login status will become true and display the homepage
-                 */
+                        /* Verify the username and password,
+                        if it doesn't correct, the system will ask customer to input again
+                        if the username and password are correct, the login status will become true and display the homepage
+                         */
                         if (!customer.login(usernameNoSpace, password)) {
                             System.out.println("Incorrect login info, please try again!");
                             this.cookies = false;
@@ -106,6 +106,7 @@ public class CustomerMenu {
                 switch (sort) {
                     case "1":
                         // Ask customer to enter a category and check if it has product in that category or not
+                        product.getAllCategory();
                         product.searchByCategory();
                         TimeUnit.SECONDS.sleep(1);
                         customerMenu.view();
@@ -117,6 +118,7 @@ public class CustomerMenu {
                         customerMenu.view();
 
                     case "3":
+                        product.getAllCategory();
                         System.out.println("Enter category (e.g: laptop): ");
                         String category = scanner.nextLine();
                         product.searchCategoryByPriceRange(category);
@@ -256,6 +258,7 @@ public class CustomerMenu {
 
                     case "1":
                         // Ask customer to enter a category and check if it has product in that category or not
+                        product.getAllCategory();
                         product.searchByCategory();
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
@@ -268,6 +271,7 @@ public class CustomerMenu {
                         this.viewHomepage(username);
 
                     case "3":
+                        product.getAllCategory();
                         System.out.println("Enter category (e.g: laptop): ");
                         String category = scanner.nextLine();
                         product.searchCategoryByPriceRange(category);
@@ -298,25 +302,40 @@ public class CustomerMenu {
                         case "1":
                             product.getProductHaveId(); // Display all products having ID option
                             String choiceOrder = UserInput.rawInput();
-                            System.out.print("Please enter a quantity that you want to add: ");
-                            int quantity = Integer.parseInt(scanner.nextLine());
-                            // Ask customer to enter the quantity that he/she wants to add to cart
-                            ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
+                            int quantity;
+                            boolean check = false;
+                            do {
+                                try {
+                                    System.out.print("Please enter a quantity that you want to add: ");
+                                    quantity = Integer.parseInt(scanner.nextLine());
+                                    check = true;
+                                    // Ask customer to enter the quantity that he/she wants to add to cart
+                                    ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
 
-                            String[] productInfo = new String[3];
-                            for (int i = 0; i < productList.size(); i++)
-                            /* The system will loop through the items file
-                            and find the item that customer wants to add to cart,
-                            then the system will store that item in the customer's cart file
-                             */ {
-                                if (i == Integer.parseInt(choiceOrder)) {
-                                    productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1],
-                                            1, "./src/dataFile/items.txt", ",");
+                                    String[] productInfo = new String[3];
+                                    if (Integer.parseInt(choiceOrder) < productList.size()) {
+                                        for (int i = 0; i < productList.size(); i++)
+                                    /* The system will loop through the items file
+                                    and find the item that customer wants to add to cart,
+                                    then the system will store that item in the customer's cart file
+                                     */ {
+                                            if (i == Integer.parseInt(choiceOrder)) {
+                                                productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1],
+                                                        1, "./src/dataFile/items.txt", ",");
+                                            }
+                                        }
+                                        Product product1 = new Product((productInfo[0]), productInfo[1],
+                                                Long.parseLong((productInfo[2])), productInfo[3]);
+                                        cart.addToCart(product1, quantity);
+                                    } else {
+                                        System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
+                                        TimeUnit.SECONDS.sleep(1);
+                                        this.viewHomepage(username);
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Invalid quantity, please try again");
                                 }
-                            }
-                            Product product1 = new Product((productInfo[0]), productInfo[1],
-                                    Long.parseLong((productInfo[2])), productInfo[3]);
-                            cart.addToCart(product1, quantity);
+                            } while (!check);
                             // After add item to cart,
                             // the system will give a message that whether a customer wants to continue to shopping or create order now
                             System.out.println("\n================================================= CONTINUE TO SHOPPING OR CREATE ORDER =================================================");
@@ -361,25 +380,40 @@ public class CustomerMenu {
                         case "1":
                             product.getProductHaveId(); // Display all products having ID option
                             String choiceOrder = UserInput.rawInput();
-                            System.out.print("Please enter a quantity that you want to add: ");
-                            int quantity = Integer.parseInt(scanner.nextLine());
-                            // Ask customer to enter the quantity that he/she wants to add to cart
-                            ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
+                            int quantity;
+                            boolean check = false;
+                            do {
+                                try {
+                                    System.out.print("Please enter a quantity that you want to add: ");
+                                    quantity = Integer.parseInt(scanner.nextLine());
+                                    check = true;
+                                    // Ask customer to enter the quantity that he/she wants to add to cart
+                                    ArrayList<String[]> productList = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
 
-                            String[] productInfo = new String[3];
-                            for (int i = 0; i < productList.size(); i++)
-                            /* The system will loop through the items file
-                            and find the item that customer wants to add to cart,
-                            then the system will store that item in the customer's cart file
-                             */ {
-                                if (i == Integer.parseInt(choiceOrder)) {
-                                    productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1],
-                                            1, "./src/dataFile/items.txt", ",");
+                                    String[] productInfo = new String[3];
+                                    if (Integer.parseInt(choiceOrder) < productList.size()) {
+                                        for (int i = 0; i < productList.size(); i++)
+                                    /* The system will loop through the items file
+                                    and find the item that customer wants to add to cart,
+                                    then the system will store that item in the customer's cart file
+                                     */ {
+                                            if (i == Integer.parseInt(choiceOrder)) {
+                                                productInfo = ReadDataFromTXTFile.readSpecificLine(productList.get(i)[1],
+                                                        1, "./src/dataFile/items.txt", ",");
+                                            }
+                                        }
+                                        Product product1 = new Product((productInfo[0]), productInfo[1],
+                                                Long.parseLong((productInfo[2])), productInfo[3]);
+                                        cart.addToCart(product1, quantity);
+                                    } else {
+                                        System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
+                                        TimeUnit.SECONDS.sleep(1);
+                                        this.viewHomepage(username);
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Invalid quantity, please try again");
                                 }
-                            }
-                            Product product1 = new Product((productInfo[0]), productInfo[1],
-                                    Long.parseLong((productInfo[2])), productInfo[3]);
-                            cart.addToCart(product1, quantity);
+                            } while (!check);
                             // After add item to cart,
                             // the system will give a message that whether a customer wants to continue to shopping or create order now
                             this.viewHomepage(username); // Back to the homepage
@@ -401,21 +435,27 @@ public class CustomerMenu {
                                         String delProduct = UserInput.rawInput();
 
                                         String[] itemInfo = new String[3];
-                                        for (int i = 0; i < cartList.size(); i++)
-                                        // The system will loop through all the items in customer's cart
-                                        // to delete the item that customer to choose based on the option
-                                        {
-                                            if (i == (Integer.parseInt(delProduct) - 1)) {
-                                                itemInfo = ReadDataFromTXTFile.readSpecificLine(cartList.get(i)[1],
-                                                        1, "./src/dataFile/items.txt", ",");
+                                        if (Integer.parseInt(delProduct) <= cartList.size()) {
+                                            for (int i = 0; i < cartList.size(); i++)
+                                            // The system will loop through all the items in customer's cart
+                                            // to delete the item that customer to choose based on the option
+                                            {
+                                                if (i == (Integer.parseInt(delProduct) - 1)) {
+                                                    itemInfo = ReadDataFromTXTFile.readSpecificLine(cartList.get(i)[1],
+                                                            1, "./src/dataFile/items.txt", ",");
+                                                }
                                             }
+                                            Product product2 = new Product((itemInfo[0]), itemInfo[1],
+                                                    Long.parseLong((itemInfo[2])), itemInfo[3]);
+                                            // The system will delete the item that customer had chosen
+                                            cart.deleteItemInCart("./src/dataFile/customerCart.txt", member.getcID(), product2);
+                                            cart.getCustomerCart();
+                                            this.viewHomepage(username);
+                                        } else {
+                                            System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
+                                            TimeUnit.SECONDS.sleep(1);
+                                            this.viewHomepage(username);
                                         }
-                                        Product product2 = new Product((itemInfo[0]), itemInfo[1],
-                                                Long.parseLong((itemInfo[2])), itemInfo[3]);
-                                        // The system will delete the item that customer had chosen
-                                        cart.deleteItemInCart("./src/dataFile/customerCart.txt", member.getcID(), product2);
-                                        cart.getCustomerCart();
-                                        this.viewHomepage(username);
 
                                     case "2":
                                         this.createOrder(member); // Create order based on customer's cart
@@ -477,28 +517,24 @@ public class CustomerMenu {
                         System.out.print("Please enter your new name (e.g: Ha Anh): ");
                         String name = scanner.nextLine();
                         member.updateInfo("./src/dataFile/customers.txt", name, choice);
-//                        member.updateName("./src/dataFile/customers.txt", name);
                         this.viewHomepage(username);
 
                     case "2":
                         System.out.print("Please enter your new email (e.g: tomsprodigies@gmail.com): ");
                         String email = scanner.nextLine();
                         member.updateInfo("./src/dataFile/customers.txt", email, choice);
-//                        member.updateEmail("./src/dataFile/customers.txt", email);
                         this.viewHomepage(username);
 
                     case "3":
                         System.out.print("Please enter your new address (e.g: 702 Nguyen Van Linh Street): ");
                         String address = scanner.nextLine();
                         member.updateInfo("./src/dataFile/customers.txt", address, choice);
-//                        member.updateAddress("./src/dataFile/customers.txt", address);
                         this.viewHomepage(username);
 
                     case "4":
                         System.out.print("Please enter your new phone (e.g: 09********): ");
                         String phone = scanner.nextLine();
                         member.updateInfo("./src/dataFile/customers.txt", phone, choice);
-//                        member.updatePhone("./src/dataFile/customers.txt", phone);
                         this.viewHomepage(username);
 
                     case "5":
@@ -509,7 +545,6 @@ public class CustomerMenu {
                                 "        Password must contain a length of at least 8 characters and a maximum of 20 characters): ");
                         String password = scanner.nextLine();
                         member.updateInfo("./src/dataFile/customers.txt", password, choice);
-//                        member.updatePassword("./src/dataFile/customers.txt", password);
                         this.viewHomepage(username);
 
                     case "6":
@@ -621,17 +656,23 @@ public class CustomerMenu {
                                         String choiceOrder = UserInput.rawInput();
 
                                         String[] productInfo = new String[3];
-                                        for (int i = 0; i < cartList.size(); i++) {
-                                            if (i == Integer.parseInt(choiceOrder)) {
-                                                productInfo = ReadDataFromTXTFile.readSpecificLine(cartList.get(i)[1],
-                                                        1, "./src/dataFile/items.txt", ",");
+                                        if (Integer.parseInt(choiceOrder) <= cartList.size()) {
+                                            for (int i = 0; i < cartList.size(); i++) {
+                                                if (i == Integer.parseInt(choiceOrder)) {
+                                                    productInfo = ReadDataFromTXTFile.readSpecificLine(cartList.get(i)[1],
+                                                            1, "./src/dataFile/items.txt", ",");
+                                                }
                                             }
-                                        }
-                                        Product product1 = new Product((productInfo[0]), productInfo[1],
-                                                Long.parseLong((productInfo[2])), productInfo[3]);
-                                        cart.deleteItemInCart("./src/dataFile/customerCart.txt", member.getcID(), product1);
-                                        if (cartList.size() == 0) {
-                                            System.out.println("Your cart is empty!");
+                                            Product product1 = new Product((productInfo[0]), productInfo[1],
+                                                    Long.parseLong((productInfo[2])), productInfo[3]);
+                                            cart.deleteItemInCart("./src/dataFile/customerCart.txt", member.getcID(), product1);
+                                            if (cartList.size() == 0) {
+                                                System.out.println("Your cart is empty!");
+                                            }
+                                        } else {
+                                            System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
+                                            TimeUnit.SECONDS.sleep(1);
+                                            this.viewHomepage(username);
                                         }
 
                                     case "2":
@@ -715,12 +756,17 @@ public class CustomerMenu {
                     /* Users.Customer will input their choice
                     and the system will discount based on his/her used voucher
                      */
-                    for (int m = 0; m < discountCode.size(); m++) {
-                        if (m == Integer.parseInt(choiceOrder1) - 1) {
-                            discountCodeCustomer = discountCode.get(m)[1];
+                    if (Integer.parseInt(choiceOrder1) - 1 < discountCode.size()) {
+                        for (int m = 0; m < discountCode.size(); m++) {
+                            if (m == Integer.parseInt(choiceOrder1) - 1) {
+                                discountCodeCustomer = discountCode.get(m)[1];
+                            }
                         }
+                        newOrder.getTotalPaymentAfterApplyDiscountCode(discountCodeCustomer);
+                    } else {
+                        System.out.println("THERE IS NO MATCHING RESULT!!!");
+                        newOrder.printPayment();
                     }
-                    newOrder.getTotalPaymentAfterApplyDiscountCode(discountCodeCustomer);
                     // Display the final total payment after customer apply discount voucher
                     TimeUnit.SECONDS.sleep(1);
                     PointsSystem.pointsConversion(member.getcID(), oID);
@@ -730,9 +776,6 @@ public class CustomerMenu {
                     /* If customer doesn't want to use voucher,
                     then the system will base on order's total spending after discount by membership to give customer discount voucher
                      */
-                    String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
-                            "./src/dataFile/billingHistory.txt", ",");
-                    Long totalPayment = Long.parseLong(orderInfo[2]);
                     discount.giveDiscountCode();
                     discount.displayCustomerDiscountCode();
                     TimeUnit.SECONDS.sleep(1);

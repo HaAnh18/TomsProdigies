@@ -1,7 +1,7 @@
 #ID,Title,Quantity
-1,Dell XPS 17,83
-2,Macbook Pro 15,28
-3,Samsung Galaxy S22,5
+1,Dell XPS 17,87
+2,Macbook Pro 15,30
+3,Samsung Galaxy S22,4
 4,Marshall,11
 5,Harman Kardon,5
 6,Iphone 13 PM,5

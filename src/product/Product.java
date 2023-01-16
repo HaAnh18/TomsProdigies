@@ -36,20 +36,19 @@ public class Product {
     /* This method will help user to search by category */
     public void searchByCategory() throws IOException {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Please enter the category:");
+        System.out.println("Please enter the category (e.g: laptop):");
         String category = sc.nextLine();
-        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        String capital = category.toUpperCase();
         try {
-            Scanner fileScanner = new Scanner(new File("./src/dataFile/items.txt"));
+            Scanner fileScanner = new Scanner(new File("./src/dataFile/categories.txt"));
             boolean found = false;
             while (fileScanner.hasNext()) {
                 String data = fileScanner.nextLine();
                 String[] items = data.split(",");
-                if (capital.equals(items[3])) {
+                if (capital.equals(items[1])) {
                     found = true;
                     break;
                 }
-
             }
             if (found) {
                 ArrayList<String[]> categories = new ArrayList<>();
@@ -61,14 +60,18 @@ public class Product {
                         categories.add(database.get(i));
                     }
                 }
-                CreateTable.setShowVerticalLines(true);
-                CreateTable.setHeaders("ID", "Title", "Prices", "Category");
-                for (String[] categoryOutput : categories) {
-                    CreateTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
+                if (categories.size() > 0) {
+                    CreateTable.setShowVerticalLines(true);
+                    CreateTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
+                    for (String[] categoryOutput : categories) {
+                        CreateTable.addRow(categoryOutput[0], categoryOutput[1], categoryOutput[2], categoryOutput[3]);
+                    }
+                    CreateTable.print();
+                    CreateTable.setHeaders(new String[0]);
+                    CreateTable.setRows(new ArrayList<String[]>());
+                } else {
+                    System.out.println("THIS CATEGORY DOES NOT HAVE ITEMS YET!!!");
                 }
-                CreateTable.print();
-                CreateTable.setHeaders(new String[0]);
-                CreateTable.setRows(new ArrayList<String[]>());
             } else {
                 System.out.println("This category is not existed!");
                 searchByCategory();
@@ -80,7 +83,7 @@ public class Product {
 
     public void searchCategoryByPriceRange(String category) {
         //transforming user input to the right format.
-        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        String capital = category.toUpperCase();
 
         //create a empty Arraylist to store data after searching.
         ArrayList<String[]> categories = new ArrayList<>();
@@ -152,7 +155,7 @@ public class Product {
     public void registerCategory(String category) throws IOException, InterruptedException, ParseException {
         AdminMenu adminMenu = new AdminMenu();
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/categories.txt");
-        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        String capital = category.toUpperCase();
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[1].equals(capital)) {
                 database.get(i)[2] = String.valueOf(Integer.parseInt(database.get(i)[2]) + 1);
@@ -197,7 +200,7 @@ public class Product {
 
         //Reformat the input to suitable for matching values.
 
-        String capital = category.substring(0, 1).toUpperCase() + category.substring(1);
+        String capital = category.toUpperCase();
         boolean found = false;
         try {
             Scanner fileScanner = new Scanner(new File("./src/dataFile/categories.txt"));
@@ -379,6 +382,22 @@ public class Product {
             Write.rewriteFile(filepath, "#ID,Title, Price, Category", String.join(",", strings));
             // This method would allow system to write all data including new data into the items' file
         }
+    }
+
+    public void getAllCategory() {
+        ArrayList<String[]> allCategory = ReadDataFromTXTFile.readAllLines("./src/dataFile/categories.txt");
+        ArrayList<String> category = new ArrayList<>();
+        for (String[] strings : allCategory) {
+            category.add(strings[1]);
+        }
+        CreateTable.setShowVerticalLines(true);
+        CreateTable.setHeaders("CATEGORY");
+        for (int i = 1; i < category.size(); i++) {
+            CreateTable.addRow(category.get(i));
+        }
+        CreateTable.print();
+        CreateTable.setHeaders(new String[0]);
+        CreateTable.setRows(new ArrayList<String[]>());
     }
 
     //     Getter method for pID

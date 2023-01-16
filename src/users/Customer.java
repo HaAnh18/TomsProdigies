@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,6 +73,21 @@ public class Customer extends Account {
         return getcID();
     }
 
+    public ArrayList<String> getAllUsername() {
+        ArrayList<String> allUsername = new ArrayList<>();
+        try {
+            Scanner fileScanner = new Scanner(new File("./src/dataFile/customers.txt"));
+            while (fileScanner.hasNext()) {
+                String line = fileScanner.nextLine();
+                String[] values = line.split(","); // Split each value in each line by comma
+                allUsername.add(values[6]);
+            }
+        } catch (FileNotFoundException fe) {
+            fe.printStackTrace();
+        }
+        return allUsername;
+    }
+
     public boolean login(String username, String password)
     // Login if he/she had account already
     {
@@ -107,26 +123,12 @@ public class Customer extends Account {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter username (e.g: mingka): ");
         String username = scanner.nextLine();
-
-        try {
-            Scanner fileScanner = new Scanner(new File("./src/dataFile/customers.txt"));
-
-            while (fileScanner.hasNext()) {
-                String line = fileScanner.nextLine();
-                String[] values = line.split(","); // Split each value in each line by comma
-                if (username.equals(values[6]))
-                // If the username had been existed, the customer had to create another username
-                {
-                    System.out.println("Username had been existed");
-                    registerUsername();
-                } else {
-                    setUsername(username);
-                }
-            }
-        } catch (FileNotFoundException fe) {
-            fe.printStackTrace();
+        while (getAllUsername().contains(username)) {
+            System.out.println("Username is already exist!!!!");
+            System.out.print("Username: ");
+            username = scanner.nextLine();
         }
-        return getUsername();
+        return username;
     }
 
     public String registerName()
@@ -301,57 +303,97 @@ public class Customer extends Account {
         return matcher.matches(); // returns true if password matches, else returns false
     }
 
-    public void updateInfo(String filepath, String newData, String option) throws IOException {
+    public void updateInfo(String filepath, String newData, String option) throws IOException, InterruptedException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines(filepath);
-        for (String[] strings : database) {
-            switch (option) {
-                case "1":
-                    if (strings[6].equals(this.getUsername()) && validateName(newData))
-                        /* If the system could find out the username in customers' file and the new name is validated
-                         * then the system allow customer to update their information
-                         */ {
-                        this.setName(newData);
-                        strings[1] = this.getName(); // The customer's information is changed in arraylist
+        switch (option) {
+            case "1":
+                if (validateName(newData)) {
+                    this.setName(newData);
+                    for (String[] strings : database) {
+                        if (strings[6].equals(getUsername())) {
+                            strings[1] = getName();
+                            System.out.println("UPDATE SUCCESSFULLY!!!");
+                            TimeUnit.SECONDS.sleep(1);
+                        }
                     }
-                    break;
-                case "2":
-                    if (strings[6].equals(this.getUsername()) && validateEmail(newData))
-                        /* If the system could find out the username in customers' file and the new email is validated
-                         * then the system allow customer to update their information
-                         */ {
-                        this.setEmail(newData);
-                        strings[2] = this.getEmail(); // The customer's information is changed in arraylist
+                } else {
+                    System.out.println("INVALID NAME SO YOU WILL BE BACK TO HOMEPAGE IN A SECOND!!!");
+                    TimeUnit.SECONDS.sleep(1);
+                }
+                break;
+            case "2":
+                if (validateEmail(newData))
+                    /* If the system could find out the username in customers' file and the new email is validated
+                     * then the system allow customer to update their information
+                     */ {
+                    this.setEmail(newData);
+                    for (String[] strings : database) {
+                        if (strings[6].equals(getUsername())) {
+                            strings[2] = getEmail(); // The customer's information is changed in arraylist
+                            System.out.println("UPDATE SUCCESSFULLY!!!");
+                            TimeUnit.SECONDS.sleep(1);
+                        }
                     }
+                } else {
+                    System.out.println("INVALID EMAIL SO YOU WILL BE BACK TO HOMEPAGE IN A SECOND!!!");
+                    TimeUnit.SECONDS.sleep(1);
+                }
                     break;
                 case "3":
-                    if (strings[6].equals(this.getUsername()) && validateAddress(newData))
+                    if (validateAddress(newData))
                         /* If the system could find out the username in customers' file and the new address is validated
                          * then the system allow customer to update their information
                          */ {
                         this.setAddress(newData);
-                        strings[3] = this.getAddress(); // The customer's information is changed in arraylist
+                        for (String[] strings : database) {
+                            if (strings[6].equals(getUsername())) {
+                                strings[3] = getAddress(); // The customer's information is changed in arraylist
+                                System.out.println("UPDATE SUCCESSFULLY!!!");
+                                TimeUnit.SECONDS.sleep(1);
+                            }
+                        }
+                    } else {
+                        System.out.println("INVALID ADDRESS SO YOU WILL BE BACK TO HOMEPAGE IN A SECOND!!!");
+                        TimeUnit.SECONDS.sleep(1);
                     }
                     break;
                 case "4":
-                    if (strings[6].equals(getUsername()) && validatePhoneNumber(newData))
+                    if (validatePhoneNumber(newData))
                         /* If the system could find out the username in customers' file and the new phone number is validated
                          * then the system allow customer to update their information
                          */ {
                         this.setPhone(newData);
-                        strings[4] = this.getPhone(); // The customer's information is changed
+                        for (String[] strings : database) {
+                            if (strings[6].equals(getUsername())) {
+                                strings[4] = getPhone(); // The customer's information is changed in arraylist
+                                System.out.println("UPDATE SUCCESSFULLY!!!");
+                                TimeUnit.SECONDS.sleep(1);
+                            }
+                        }
+                    } else {
+                        System.out.println("INVALID PHONE NUMBER SO YOU WILL BE BACK TO HOMEPAGE IN A SECOND!!!");
+                        TimeUnit.SECONDS.sleep(1);
                     }
                     break;
                 case "5":
-                    if (strings[6].equals(this.getUsername()) && validatePassword(newData))
+                    if (validatePassword(newData))
                         /* If the system could find out the username in customers' file and the new password is validated
                          * then the system allow customer to update their information
                          */ {
-                        this.setPassword(this.hashing(newData));
-                        strings[7] = this.getPassword(); // The customer's information is changed
+                        this.setPassword(newData);
+                        for (String[] strings : database) {
+                            if (strings[6].equals(getUsername())) {
+                                strings[7] = getEmail(); // The customer's information is changed in arraylist
+                                System.out.println("UPDATE SUCCESSFULLY!!!");
+                                TimeUnit.SECONDS.sleep(1);
+                            }
+                        }
+                    } else {
+                        System.out.println("INVALID PASSWORD SO YOU WILL BE BACK TO HOMEPAGE IN A SECOND!!!");
+                        TimeUnit.SECONDS.sleep(1);
                     }
                     break;
             }
-        }
         File file = new File(filepath);
         PrintWriter pw = new PrintWriter(file);
 
@@ -364,151 +406,6 @@ public class Customer extends Account {
             // This method would allow system to write all data including new data into the customers' file
         }
     }
-
-
-//    public void updateName(String filepath, String newData) throws IOException
-//    // Update a new name in customer's information
-//    {
-//        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines(filepath);
-//        // Read all line in customers.txt file and put all data in arraylist
-//        for (String[] strings : database) {
-//            if (strings[6].equals(this.getUsername()) && validateName(newData))
-//                /* If the system could find out the username in customers' file and the new name is validated
-//                 * then the system allow customer to update their information
-//                 */
-//            {
-//                this.setName(newData);
-//                strings[1] = this.getName(); // The customer's information is changed in arraylist
-//            }
-//        }
-//        File file = new File(filepath);
-//        PrintWriter pw = new PrintWriter(file);
-//
-//        pw.write(""); // The file would erase all the data in customers' file
-//        pw.close();
-//
-//        for (String[] obj : database) {
-//            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
-//                    String.join(",", obj));
-//            // This method would allow system to write all data including new data into the customers' file
-//        }
-//    }
-
-//    public void updateEmail(String filepath, String newData) throws IOException
-//    // Update a new email in customer's information
-//    {
-//        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines(filepath);
-//        // Read all line in customers.txt file and put all data in arraylist
-//        for (String[] strings : database) {
-//            if (strings[6].equals(this.getUsername()) && validateEmail(newData))
-//                /* If the system could find out the username in customers' file and the new email is validated
-//                 * then the system allow customer to update their information
-//                 */
-//            {
-//                this.setEmail(newData);
-//                strings[2] = this.getEmail(); // The customer's information is changed in arraylist
-//            }
-//        }
-//        File file = new File(filepath);
-//        PrintWriter pw = new PrintWriter(file);
-//
-//        pw.write(""); // The file would erase all the data in customers' file
-//        pw.close();
-//
-//        for (String[] obj : database) {
-//            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
-//                    String.join(",", obj));
-//            // This method would allow system to write all data including new data into the customers' file
-//        }
-//    }
-
-//    public void updateAddress(String filepath, String newData) throws IOException
-//    // Update a new address in customer's information
-//    {
-//        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines(filepath);
-////        ArrayList<String[]> database = FileMethods.ReadDataFromTXTFile.readAllLines("./src/customers.txt");
-//        // Read all line in customers.txt file and put all data in arraylist
-//        for (String[] strings : database) {
-//            if (strings[6].equals(this.getUsername()) && validateAddress(newData))
-//                /* If the system could find out the username in customers' file and the new address is validated
-//                 * then the system allow customer to update their information
-//                 */
-//            {
-//                this.setAddress(newData);
-//                strings[3] = this.getAddress(); // The customer's information is changed in arraylist
-//            }
-//        }
-//        File file = new File(filepath);
-//        PrintWriter pw = new PrintWriter(file);
-//
-//        pw.write(""); // The file would erase all the data in customers' file
-//        pw.close();
-//
-//
-//        for (String[] obj : database) {
-//            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
-//                    String.join(",", obj));
-//            // This method would allow system to write all data including new data into the customers' file
-//        }
-//    }
-
-//    public void updatePhone(String filepath, String newData) throws IOException
-//    // Update a new phone number in customer's information
-//    {
-//        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines(filepath);
-//        // Read all line in customers.txt file and put all data in arraylist
-//        for (String[] strings : database) {
-//            if (strings[6].equals(getUsername()) && validatePhoneNumber(newData))
-//                /* If the system could find out the username in customers' file and the new phone number is validated
-//                 * then the system allow customer to update their information
-//                 */
-//            {
-//                this.setPhone(newData);
-//                strings[4] = this.getPhone(); // The customer's information is changed
-//            }
-//        }
-//        File file = new File(filepath);
-//        PrintWriter pw = new PrintWriter(file);
-//
-//        pw.write(""); // The file would erase all the data in customers' file
-//        pw.close();
-//
-////        ArrayList<String[]> newDatabase = database;
-//
-//        for (String[] obj : database) {
-//            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
-//                    String.join(",", obj));
-//            // This method would allow system to write all data including new data into the customers' file
-//        }
-//    }
-//
-//    public void updatePassword(String filepath, String newData) throws IOException
-//    // Update a new password in customer's information
-//    {
-//        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines(filepath);
-//        // Read all line in customers.txt file and put all data in arraylist
-//        for (String[] strings : database) {
-//            if (strings[6].equals(this.getUsername()) && validatePassword(newData))
-//                /* If the system could find out the username in customers' file and the new password is validated
-//                 * then the system allow customer to update their information
-//                 */
-//            {
-//                this.setPassword(this.hashing(newData));
-//                strings[7] = this.getPassword(); // The customer's information is changed
-//            }
-//        }
-//        File file = new File(filepath);
-//        PrintWriter pw = new PrintWriter(file);
-//
-//        pw.write(""); // The file would erase all the data in customers' file
-//        pw.close();
-//
-//        for (String[] obj : database) {
-//            Write.rewriteFile(filepath, "#ID,Name,Email,Address,Phone,Membership,Username,Password,Total spending,Total Points",
-//                    String.join(",", obj));
-//            // This method would allow system to write all data including new data into the customers' file
-//        }
-//    }
 
 
     public void checkMembership() throws IOException
@@ -595,4 +492,5 @@ public class Customer extends Account {
             // This method would allow system to write all data including new data into the customers' file
         }
     }
+
 }

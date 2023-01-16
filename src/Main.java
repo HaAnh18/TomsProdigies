@@ -1,14 +1,22 @@
 import menu.AuthenticationSystem;
+import product.Product;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException, ParseException {
         AuthenticationSystem authenticationSystem = new AuthenticationSystem();
         authenticationSystem.mainMenu();
+        Product product = new Product();
+        Scanner scanner = new Scanner(System.in);
+//        int s = Integer.parseInt(scanner.nextLine());
 
+//        product.getAllCategory();
+//        Customer customer = new Customer();
+//        System.out.println(customer.registerUsername());
 //        order.getAllOrderInfo();
 //        String[] customerInfo = ReadDataFromTXTFile.readSpecificLine("nana", 6, "./src/dataFile/customers.txt", ",");
 //        Customer member = new Customer(customerInfo[0], customerInfo[1], customerInfo[2], customerInfo[3],

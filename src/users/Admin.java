@@ -369,26 +369,35 @@ public class Admin extends Account {
         String[] dailyRevenue = ReadDataFromTXTFile.readColString(2, "./src/dataFile/billingHistory.txt", ",");
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/billingHistory.txt");
         ArrayList<Long> revenueList = new ArrayList<>(dailyRevenue.length);
-
         Scanner inputObj = new Scanner(System.in);
-        System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy):");
-        String date = inputObj.nextLine();
-        while (dateValidate(date)) /* validate if the timestamp is match to the user's input */ {
-            System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy):");
-            date = inputObj.nextLine();
-        }
+        String date;
+        boolean dateValidate = false;
+        do {
+            try {
+                System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy):");
+                date = inputObj.nextLine();
+                while (dateValidate(date)) /* validate if the timestamp is match to the user's input */ {
+                    System.out.println("Enter the date to get the daily revenue (MM/dd/yyyy):");
+                    date = inputObj.nextLine();
+                }
 
-        date = dateInput(date);
+                date = dateInput(date);
+                dateValidate = true;
 
-        //If the date is match, all the price will put in an Arraylist and total all the price.
-        for (int i = 1; i < database.size(); i++) {
-            String[] dateSplit = database.get(i)[3].split("_");
-            String splitDate = dateSplit[0].replaceAll("//s", "");
-            splitDate = dateInput(splitDate);
-            if (splitDate.equals(date)) {
-                revenueList.add(Long.valueOf(dailyRevenue[i]));
+                //If the date is match, all the price will put in an Arraylist and total all the price.
+                for (int i = 1; i < database.size(); i++) {
+                    String[] dateSplit = database.get(i)[3].split("_");
+                    String splitDate = dateSplit[0].replaceAll("//s", "");
+                    splitDate = dateInput(splitDate);
+                    if (splitDate.equals(date)) {
+                        revenueList.add(Long.valueOf(dailyRevenue[i]));
+                    }
+                }
+                return revenueList;
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("INVALID DATE");
             }
-        }
+        } while (!dateValidate);
         return revenueList;
     }
 

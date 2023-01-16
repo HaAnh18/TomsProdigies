@@ -1,3 +1,4 @@
 #ID,Title, Points, Category
 I005-2015,Harman Kardon,5000,Earbud
-I006-2014,Marshall,6000000,Headset
+I003-9999,Sennheiser PC86x,10000,Headphone
+I003-6969,HP omen 15",230000,Laptop
