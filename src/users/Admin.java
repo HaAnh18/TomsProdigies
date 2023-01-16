@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: COSC2081 Programming 1
+  Semester: 2022C
+  Assessment: Assignment 3
+  Author: Tom's Prodigies
+  ID: Nguyen Tran Ha Anh - s3938490
+      Hoang Tuan Minh - s3924716
+      Dang Kim Quang Minh - s3938024
+      Nguyen Gia Bao - s3938143
+  Acknowledgement:
+
+*/
+
 package users;
 
 import bonusFeatures.Cart;
@@ -24,19 +38,9 @@ public class Admin extends Account {
         super();
     }
 
-    public boolean verifyAdmin(String username, String password)
-    // This method would verify username and password for admin account
-    {
-        String hashPassword = this.hashing(password); // Hash the input password
-        // If the username and password after hashing are correct
-        return username.equals("admin") && hashPassword.equals("751cb3f4aa17c36186f4856c8982bf27");
-    }
-
-    public static boolean dateValidate(String date)
     // Validate the date that customer input
-    {
+    public static boolean dateValidate(String date) {
         //First, we will need to separate the day into three different component and reformat it into a string.
-
         String[] dateComponent = date.split("/");
         String month = dateComponent[0].replaceFirst("^0*", "");
         String day = dateComponent[1].replaceFirst("^0*", "");
@@ -60,9 +64,26 @@ public class Admin extends Account {
         return false;
     }
 
-    public void getAllCustomerInfo() throws FileNotFoundException
+    // This method is used to reformat the input date into a separate string for comparison.
+    public static String dateInput(String date) {
+        String[] dateComponent = date.split("/");
+        String month = dateComponent[0].replaceFirst("^0*", "");
+        String day = dateComponent[1].replaceFirst("^0*", "");
+        String year = dateComponent[2].replaceFirst("^0*", "");
+        date = month + "/" + day + "/" + year;
+        return date;
+
+    }
+
+    // This method would verify username and password for admin account
+    public boolean verifyAdmin(String username, String password) {
+        String hashPassword = this.hashing(password); // Hash the input password
+        // If the username and password after hashing are correct
+        return username.equals("admin") && hashPassword.equals("751cb3f4aa17c36186f4856c8982bf27");
+    }
+
     // This method will display all the customers' information that existed in customers' file
-    {
+    public void getAllCustomerInfo() throws FileNotFoundException {
         ArrayList<String[]> user = new ArrayList<>(); // Create an arraylist to contain all customers' information
         Scanner fileScanner = new Scanner(new File("./src/dataFile/customers.txt"));
 
@@ -106,9 +127,8 @@ public class Admin extends Account {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
-    public void addProduct() throws IOException, ParseException, InterruptedException
     // This method for admin to add new product
-    {
+    public void addProduct() throws IOException, ParseException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         PrintWriter pw;
         Product product = new Product();
@@ -120,19 +140,19 @@ public class Admin extends Account {
         String ID = String.format("I%03d-%04d", id, year); // Generate the product ID in items' file
         System.out.println("Enter category (e.g: Laptop): "); // Ask admin to input the product's category
         String category = scanner.nextLine();
-        product.registerCategory(category); // Increase the quantity if the category had existed or create new category
+        String capital = category.toUpperCase();
+        product.registerCategory(capital); // Increase the quantity if the category had existed or create new category
         System.out.println("Enter title (e.g: Asus ZenBook) : "); // Ask admin to input the product's title
         String title = scanner.nextLine();
         System.out.println("Enter price(e.g: 10000000): "); // Ask admin to input the product's price
         Long price = Long.parseLong(scanner.nextLine());
-        pw.println(ID + "," + title + "," + price + "," + category);
+        pw.println(ID + "," + title + "," + price + "," + capital);
 //        // FileMethods.Write product's information to items' file
         pw.close();
     }
 
-    public void getAllCategory() throws FileNotFoundException
     // This method will display all the customers' information that existed in customers' file
-    {
+    public void getAllCategory() throws FileNotFoundException {
         ArrayList<String[]> categoryList = new ArrayList<>(); // Create an arraylist to contain all customers' information
         Scanner fileScanner = new Scanner(new File("./src/dataFile/categories.txt"));
 
@@ -165,10 +185,8 @@ public class Admin extends Account {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
-
-    public void deleteProduct() throws IOException
     // This method allow admin to delete a product that had existed in items' file
-    {
+    public void deleteProduct() throws IOException {
         Product products = new Product();
         products.getProductHaveId();
         String choiceOrder = UserInput.rawInput();
@@ -199,9 +217,8 @@ public class Admin extends Account {
         System.out.println("Deletion successful");
     }
 
-    public void deleteCustomer(String filepath, String delCustomer, int col) throws IOException
     // This method allow admin to delete a customer that had existed in customers' file
-    {
+    public void deleteCustomer(String filepath, String delCustomer, int col) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         ArrayList<String[]> newDatabase = new ArrayList<>();
         for (String[] strings : database) {
@@ -224,9 +241,38 @@ public class Admin extends Account {
         System.out.println("Deletion successful");
     }
 
-    public void deleteCategory(String filepath, String delCategory) throws IOException
+
+    /* All the methods deleteCustomer and deleteCategory and deleteProduct basically works in the same logic
+     * First it finds the corresponding customer ID or name for category or product ID and exclude the information belong to
+     * that specific input, then it adds all the remaining info into a temporary ArrayList (newDataBase) and deletes all the content in .txt file
+     * and rewrite the file with the data in the newDataBase which will not have the "deleted data" since that has been excluded from the newDataBase
+     */
+    public void deleteProductCategory(String filepath, String delCategory) throws IOException {
+        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
+
+        // Loop through all the product ID
+        for (String[] strings : database) {
+
+            // If a category is the same, it will change the category of that product to None
+            if (strings[3].equals(delCategory)) {
+                strings[3] = "None";
+            }
+        }
+
+        PrintWriter pw = new PrintWriter("./src/dataFile/items.txt");
+
+        pw.write(""); // The file would erase all the data in products file
+        pw.close();
+
+        // This method would allow system to write all data including new data into the customers' file
+        for (String[] obj : database) {
+            Write.rewriteFile(filepath, "#ID,Title,Price,Category", String.join(",", obj));
+        }
+        System.out.println("Deletion successful");
+    }
+
     // This method allow admin to delete a category that had existed in categories' file
-    {
+    public void deleteCategory(String filepath, String delCategory) throws IOException {
         ArrayList<String[]> categoryList = ReadDataFromTXTFile.readAllLines("./src/dataFile/categories.txt");
         ArrayList<String[]> newCategoryList = new ArrayList<>();
 
@@ -252,39 +298,8 @@ public class Admin extends Account {
 //        System.out.println("Deletion successful");
     }
 
-
-    /* All the methods deleteCustomer and deleteCategory and deleteProduct basically works in the same logic
-     * First it finds the corresponding customer ID or name for category or product ID and exclude the information belong to
-     * that specific input, then it adds all the remaining info into a temporary ArrayList (newDataBase) and deletes all the content in .txt file
-     * and rewrite the file with the data in the newDataBase which will not have the "deleted data" since that has been excluded from the newDataBase
-     */
-
-    public void deleteProductCategory(String filepath, String delCategory) throws IOException {
-        ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
-
-        // Loop through all the product ID
-        for (String[] strings : database) {
-
-            // If a category is the same, it will change the category of that product to None
-            if (strings[3].equals(delCategory)) {
-                strings[3] = "None";
-            }
-        }
-
-        PrintWriter pw = new PrintWriter("./src/dataFile/items.txt");
-
-        pw.write(""); // The file would erase all the data in products file
-        pw.close();
-
-        // This method would allow system to write all data including new data into the customers' file
-        for (String[] obj : database) {
-            Write.rewriteFile(filepath, "#ID,Title,Price,Category", String.join(",", obj));
-        }
-        System.out.println("Deletion successful");
-    }
-
+    // This method will give admin the total revenue of the store.
     public ArrayList<Long> getTotalRevenue() throws IOException {
-        /*This method will give admin the total revenue of the store. */
 
         String[] revenue = ReadDataFromTXTFile.readColString(2, "./src/dataFile/billingHistory.txt", ",");
         // Creating an arraylist of prices
@@ -297,9 +312,8 @@ public class Admin extends Account {
         return revenueList;
     }
 
+    // This method will calculate the revenue
     public void calculateRevenue(ArrayList<Long> moneyList) {
-        /* This method will calculate the revenue*/
-
         long sum = 0;
         for (Long aLong : moneyList) {
             sum += aLong;
@@ -312,21 +326,8 @@ public class Admin extends Account {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
-
-    //This method is used to reformat the input date into a separate string for comparison.
-    public static String dateInput(String date) {
-        String[] dateComponent = date.split("/");
-        String month = dateComponent[0].replaceFirst("^0*", "");
-        String day = dateComponent[1].replaceFirst("^0*", "");
-        String year = dateComponent[2].replaceFirst("^0*", "");
-        date = month + "/" + day + "/" + year;
-        return date;
-
-    }
-
-    public void getMostSpender() throws IOException
     // Display all information of customer who spend the most in our system
-    {
+    public void getMostSpender() throws IOException {
         // Get total spending column
         String[] readSpending = ReadDataFromTXTFile.readColString(8, "./src/dataFile/customers.txt", ",");
 
@@ -363,7 +364,7 @@ public class Admin extends Account {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
-    /* This method allow admin to calculate daily revenue base on the timestamp of the purchase.*/
+    // This method allow admin to calculate daily revenue base on the timestamp of the purchase.
     public ArrayList<Long> getDailyRevenue() throws IOException {
 
         String[] dailyRevenue = ReadDataFromTXTFile.readColString(2, "./src/dataFile/billingHistory.txt", ",");
@@ -401,11 +402,12 @@ public class Admin extends Account {
         return revenueList;
     }
 
+    // Initialise maxCount
     public void getBestSeller() throws IOException {
-        // Initialise maxCount
         int maxCount = 0;
 
         ArrayList<String[]> productInfo = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
+
         // Reading column quantities in productsSold file
         String[] productList = ReadDataFromTXTFile.readColString(2, "./src/dataFile/productsSold.txt", ",");
 
@@ -455,8 +457,8 @@ public class Admin extends Account {
         // Getting the info of bestSeller product and adding it into the table
     }
 
+    // Initialise minCount
     public void getLeastSeller() throws IOException {
-        // Initialise minCount
         int minCount = 1000000;
 
         ArrayList<String[]> productInfo = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");

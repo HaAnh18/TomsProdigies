@@ -60,9 +60,8 @@ public class Account {
     }
 
 
-    public String hashing(String password)
     // Hashing the customer's password
-    {
+    public String hashing(String password) {
         try {
             // MessageDigest instance for MD5.
             MessageDigest m = MessageDigest.getInstance("MD5");
@@ -88,10 +87,10 @@ public class Account {
     }
 
 
-    public void getAllMembershipTypes()
-        /* Create table to display all types of customer's membership,
-        minimum spending in each membership's type
-        and discount for each membership's type */ {
+    /* Create table to display all types of customer's membership,
+     minimum spending in each membership's type
+     and discount for each membership's type */
+    public void getAllMembershipTypes() {
         CreateTable.setShowVerticalLines(true);
         CreateTable.setHeaders("MEMBERSHIP", "MINIMUM SPENDING", "DISCOUNT");
         CreateTable.addRow("Silver", "5 millions VND", "5%");
@@ -133,58 +132,72 @@ public class Account {
         return this.totalSpending;
     }
 
+    // Setter method for customer ID
     public void setcID(String cID) {
         this.cID = cID;
     }
 
+    // Getter method for name
     public String getName() {
         return name;
     }
 
+    // Setter method for name
     public void setName(String name) {
         this.name = name;
     }
 
+    // Getter method for email
     public String getEmail() {
         return email;
     }
 
+    // Setter method for email
     public void setEmail(String email) {
         this.email = email;
     }
 
+    // Getter method for address
     public String getAddress() {
         return address;
     }
 
+    // Setter method for address
     public void setAddress(String address) {
         this.address = address;
     }
 
+    // Getter method for phone number
     public String getPhone() {
         return phone;
     }
 
+    // Setter method for phone number
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
+    // Setter method for username
     public void setUsername(String username) {
         this.username = username;
     }
 
+    // Getter method for password
     public String getPassword() {
         return password;
     }
 
+    // Setter method for password
     public void setPassword(String password) {
         this.password = password;
     }
 
+    // Getter method for total point
     public Long getTotalPoint() {
         return totalPoint;
     }
 
+    // Setter method for total point
     public void setTotalPoint(Long totalPoint) {
         this.totalPoint = totalPoint;
     }

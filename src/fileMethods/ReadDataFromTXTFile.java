@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: COSC2081 Programming 1
+  Semester: 2022C
+  Assessment: Assignment 3
+  Author: Tom's Prodigies
+  ID: Nguyen Tran Ha Anh - s3938490
+      Hoang Tuan Minh - s3924716
+      Dang Kim Quang Minh - s3938024
+      Nguyen Gia Bao - s3938143
+  Acknowledgement:
+
+*/
+
 package fileMethods;
 
 import java.io.BufferedReader;
@@ -6,9 +20,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ReadDataFromTXTFile {
-    public static String[] readColString(int col, String filepath, String delimiter) throws IOException
+
     // Read all of a file's content within a specific column.
-    {
+    public static String[] readColString(int col, String filepath, String delimiter) throws IOException {
         String[] data;
         String currentLine;
         ArrayList<String> colData = new ArrayList<>();
@@ -30,18 +44,18 @@ public class ReadDataFromTXTFile {
         return colData.toArray(new String[0]);
     }
 
+    // Read all of a file's content lines
     public static ArrayList<String[]> readAllLines(String filepath) {
-        // Read all of a file's content lines
         String[] data;
         String currentLine;
         ArrayList<String[]> allFileData = new ArrayList<>();
 
         try {
-            // will read a specific text file in a particular method when using this method to support that method.
+            // Will read a specific text file in a particular method when using this method to support that method.
             FileReader fileReader = new FileReader(filepath);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-            // while reading that file, if the reader contact a "," it will then break,
+            // While reading that file, if the reader contact a "," it will then break,
             // so it will be much easier to add into an ArrayList later on when support another method.
             while ((currentLine = bufferedReader.readLine()) != null) {
                 data = currentLine.split(",");
@@ -53,11 +67,10 @@ public class ReadDataFromTXTFile {
         return allFileData;
     }
 
-    public static String[] readSpecificLine(String search, int col, String filepath, String delimiter) throws IOException {
-        // Read all of a file's content within a specific line.
+    // Read all of a file's content within a specific line.
+    public static String[] readSpecificLine(String search, int col, String filepath, String delimiter) {
         String[] lineData;
         String currentLine;
-        ArrayList<String> specificLineData = new ArrayList<>();
 
         try {
             // will read a specific text file in a particular method when using this method to support that method.

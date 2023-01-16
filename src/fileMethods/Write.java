@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: COSC2081 Programming 1
+  Semester: 2022C
+  Assessment: Assignment 3
+  Author: Tom's Prodigies
+  ID: Nguyen Tran Ha Anh - s3938490
+      Hoang Tuan Minh - s3924716
+      Dang Kim Quang Minh - s3938024
+      Nguyen Gia Bao - s3938143
+  Acknowledgement:
+
+*/
+
 package fileMethods;
 
 import java.io.BufferedReader;
@@ -8,8 +22,8 @@ import java.util.ArrayList;
 
 public class Write {
 
+    // This method will rewrite all content in a specific file
     public static void rewriteFile(String filepath, String header, String data) throws IOException {
-        // this method will rewrite all content in a specific file
         FileWriter newFile = new FileWriter(filepath, true);
         BufferedReader bufferedReader = new BufferedReader(new FileReader(filepath));
 
@@ -28,6 +42,7 @@ public class Write {
             ArrayList<String> newDatabase = new ArrayList<>();
 
             newDatabase.add(data);
+
             // This will then take the new data that this method's ArrayList and write them back into the file.
             for (String s : newDatabase) {
                 newFile.append(s);

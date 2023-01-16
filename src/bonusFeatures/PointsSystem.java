@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: COSC2081 Programming 1
+  Semester: 2022C
+  Assessment: Assignment 3
+  Author: Tom's Prodigies
+  ID: Nguyen Tran Ha Anh - s3938490
+      Hoang Tuan Minh - s3924716
+      Dang Kim Quang Minh - s3938024
+      Nguyen Gia Bao - s3938143
+  Acknowledgement:
+
+*/
+
 package bonusFeatures;
 
 import fileMethods.CreateTable;
@@ -21,9 +35,8 @@ import java.util.*;
 
 public class PointsSystem {
 
-    public static void pointsConversion(String cID, String oID) throws IOException
     // Update total points earned for customer after he/she finished every order
-    {
+    public static void pointsConversion(String cID, String oID) throws IOException {
         ArrayList<String[]> paymentConversion = ReadDataFromTXTFile.readAllLines("./src/dataFile/billingHistory.txt");
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         long newData;
@@ -45,7 +58,6 @@ public class PointsSystem {
                  */
                 long appendPoints = (Long.parseLong(database.get(i)[9]) + newPoints);
                 database.get(i)[9] = (String.valueOf(appendPoints));  // The customer's information is changed (assigning new points)
-//                System.out.println(database.get(i)[9]);
             }
         }
 
@@ -62,6 +74,7 @@ public class PointsSystem {
         }
     }
 
+    // Display all the prizes for customer to exchange
     public static void viewPrizes() throws IOException {
         ArrayList<String[]> prizeItems = new ArrayList<>();
         Scanner fileProducts = new Scanner(new File("./src/dataFile/prizeItems.txt"));
@@ -90,8 +103,8 @@ public class PointsSystem {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
+    // Update total points earned for customer after he/she finished every order
     public static void exchangeItem(String user, String itemID) throws IOException {
-        // Update total points earned for customer after he/she finished every order
         ArrayList<String[]> pointCost = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeItems.txt");
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/customers.txt");
         Long newData = null;
@@ -139,8 +152,8 @@ public class PointsSystem {
         }
     }
 
+    // Allow customer to exchange their points to have gift
     public static void logExchange(String user, String itemID, String Cost) throws IOException {
-        Order order = new Order();
         PrintWriter pw = new PrintWriter(new FileWriter("./src/dataFile/prizeExHistory.txt", true));
 
         // log Exchange date and assign status and pickup notifications
@@ -160,6 +173,7 @@ public class PointsSystem {
         PointsSystem.printConfirmation(oID);
     }
 
+    // Print the order that exchange gift status
     public static void printConfirmation(String oID) throws IOException {
         // Set up table
         CreateTable.setShowVerticalLines(true);
@@ -178,6 +192,7 @@ public class PointsSystem {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
+    // Display all the exchange history of customer
     public static void getExchangeInfo(String cID) {
         ArrayList<String[]> orders = new ArrayList<>();
 
@@ -210,8 +225,8 @@ public class PointsSystem {
         }
     }
 
+    // Read all line in prizeExHistory
     public static void viewExchangeLog() {
-        // Read all line in prizeExHistory
         ArrayList<String[]> orders = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeExHistory.txt");
 
         // Setting up table
@@ -229,9 +244,8 @@ public class PointsSystem {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
-    public static void updatePickupStatus(String newData, String oID) throws IOException
     // This method allow admin to modify a pickup status of order that had existed in items' file
-    {
+    public static void updatePickupStatus(String newData, String oID) throws IOException {
         File targetFile = new File("./src/dataFile/prizeExHistory.txt");
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeExHistory.txt");
         for (String[] strings : database) {
@@ -253,28 +267,27 @@ public class PointsSystem {
         }
     }
 
-    public static void searchExchangeOrderByOID(String oId)
     // Searching the order by using order ID
-    {
+    public static void searchExchangeOrderByOID(String oId) {
         ArrayList<String[]> orders = new ArrayList<>(); // Create a new arraylist to store order information
 
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeExHistory.txt");
         // Read all line in prizeExHistory.txt file and put all data in arraylist
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[0].equals(oId))
-                /* If the system could find out the customer's ID in prizeExHistory's file
-                 */ {
+            // If the system could find out the customer's ID in prizeExHistory's file
+            {
                 orders.add(database.get(i));
             }
         }
         if (!(orders.size() == 0)) {
             CreateTable.setShowVerticalLines(true);
             CreateTable.setHeaders("OID", "CID", "PID", "POINTS COST", "DATE EXCHANGED", "EXCHANGE STATUS", "PICKUP STATUS");
-            /* Set header for the order information table */
+            // Set header for the order information table
             for (String[] order : orders) {
                 CreateTable.addRow(order[0], order[1], order[2], order[3],
                         order[4], order[5], order[6]);
-                /* Add information to each row in table */
+                // Add information to each row in table
             }
             CreateTable.print();
             CreateTable.setHeaders(new String[0]);
@@ -284,9 +297,8 @@ public class PointsSystem {
         }
     }
 
-    public static void addPrize() throws IOException, ParseException, InterruptedException
     // This method for admin to add new product
-    {
+    public static void addPrize() throws IOException, ParseException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         PrintWriter pw;
         Product product = new Product();
@@ -308,9 +320,8 @@ public class PointsSystem {
         pw.close();
     }
 
-    public static void deletePrize() throws IOException
     // This method allow admin to delete a product that had existed in items' file
-    {
+    public static void deletePrize() throws IOException {
         PointsSystem.viewPrizes();
         String optionOrder = UserInput.rawInput();
         ArrayList<String[]> prizeItemList = ReadDataFromTXTFile.readAllLines("./src/dataFile/prizeItems.txt");

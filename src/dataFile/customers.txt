@@ -5,10 +5,12 @@ C413,Linh Nguyen,linh.nguyen22@yahoomail.com,12 Brunswick Street,0424173255,Plat
 C845,Antony Zinc,antony97@gmail.com,114 Fraser Avenue,0424512345,Silver,abookworm,56e5aa023235b331e828f612c88d8ba5,9400000,90
 C943,John Cain,john.cain@gmail.com,45 Sydney Road,0424325123,Platinum,johnthebaby,e10adc3949ba59abbe56e057f20f883e,29785000,2500
 C986,Dylan Case,dylan@hotmail.com,02 West Drive,0424125598,Gold,dylanc,79d886010186eb60e3611cd4a5d0bcae,11365000,1000
-C762,Ming Ka,minkuan159@gmail.com,999 svh,0963456789,Platinum,Ming,5eac73d5f4641d25dbd988b429787ba7,57000000,450
-C010,Na Na,nana@gmail.com,12 Street,0987654321,Platinum,nana,e508a7edac21c6f07eb184fb27ccc8e5,950700000,5800
+C762,Ming Ka,minkuan159@gmail.com,999 svh,0963456789,Platinum,Ming,5eac73d5f4641d25dbd988b429787ba7,145500000,725
+C010,Na Na,nana@gmail.com,12 Street,0987654321,Platinum,nana,e508a7edac21c6f07eb184fb27ccc8e5,1022450000,6466
 C833,Nhi Nguyen,nhingg@gmail.com,12 Abc,1234567890,Platinum,nhiheo,6941df95a19d99b149ec18426f9a661b,196900000,1544
 C765,Bao Nguyen,bao123@gmail.com,84 A Ton That Hiep,1234567890,Platinum,bao123,74b01c9f3000a4aee04f88d8fdc255ad,306950000,2742
 C555,Minh Minh,minh@gmail.com,12 Street,0987654321,Platinum,minh,0f54348d511f569f82978244b5ab6a3c,50000000,500
-C109,Na Na,a@1.com,12 Street,0987654321,Platinum,nana,e508a7edac21c6f07eb184fb27ccc8e5,950700000,0
-C671,Gia Bao,bao@gmail.com,12 Street,0987654421,Regular,bao,2899e42e763ae379055a5eec3b69df8e,0,0
+C718,Bao Nguyen,bao123@gmail.com,84 Thang Long,0999999999,Regular,bao,c001cbb20f0aef7b3d8c3cf62b4a4d82,0,0
+C497,Test User,testsystem@gmail.com,123 STree,0928282872,Regular,testing,751cb3f4aa17c36186f4856c8982bf27,0,0
+C017,Minh Minh,minh@gmail.com,12 S,0987654321,Platinum,ming,0f54348d511f569f82978244b5ab6a3c,50000000,500
+C610,Test User,testing@gmail.com,13 C,0987654321,Platinum,testuser,ac1c8d64fd23ae5a7eac5b7f7ffee1fa,241500000,1415

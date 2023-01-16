@@ -43,21 +43,19 @@ public class CreateTable {
         joinSep = showVerticalLines ? "*" : " ";
     }
 
-    public static void setHeaders(String... headers)
     // Set header for the table
-    {
+    public static void setHeaders(String... headers) {
         CreateTable.headers = headers;
     }
 
-    public static void addRow(String... cells)
     // Add new row for the table
-    {
+    public static void addRow(String... cells) {
         rows.add(cells);
     }
 
-    public static void print()
     // Print the table
-    { /*If the user input the header, the header will become !=null and all the borders will be measured.*/
+    public static void print() {
+        // If the user input the header, the header will become !=null and all the borders will be measured.*/
         int[] maxWidths = headers != null ?
                 Arrays.stream(headers).mapToInt(String::length).toArray() : null;
 
@@ -72,8 +70,8 @@ public class CreateTable {
                 maxWidths[i] = Math.max(maxWidths[i], cells[i].length());
             }
         }
-        /*If the user input the header, the header will become !=null and print out the table */
 
+        // If the user input the header, the header will become !=null and print out the table */
         if (headers != null) {
             printLine(maxWidths);
             printRow(headers, maxWidths);
@@ -87,7 +85,7 @@ public class CreateTable {
         }
     }
 
-    //This method is used to print the information in the line column.
+    // This method is used to print the information in the line column.
     private static void printLine(int[] columnWidths) {
         for (int i = 0; i < columnWidths.length; i++) {
             String line = String.join("", Collections.nCopies(columnWidths[i] +
@@ -97,7 +95,7 @@ public class CreateTable {
         System.out.println();
     }
 
-    //This method is used to print the information in the row column.
+    // This method is used to print the information in the row column.
     private static void printRow(String[] cells, int[] maxWidths) {
         for (int i = 0; i < cells.length; i++) {
             String s = cells[i];
@@ -111,6 +109,7 @@ public class CreateTable {
         System.out.println();
     }
 
+    // Setter method for rows
     public static void setRows(ArrayList<String[]> rows) {
         CreateTable.rows = rows;
     }

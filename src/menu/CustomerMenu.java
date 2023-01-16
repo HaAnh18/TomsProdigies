@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: COSC2081 Programming 1
+  Semester: 2022C
+  Assessment: Assignment 3
+  Author: Tom's Prodigies
+  ID: Nguyen Tran Ha Anh - s3938490
+      Hoang Tuan Minh - s3924716
+      Dang Kim Quang Minh - s3938024
+      Nguyen Gia Bao - s3938143
+  Acknowledgement:
+
+*/
+
 package menu;
 
 import bonusFeatures.Cart;
@@ -19,12 +33,12 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class CustomerMenu {
+
     // This class will display customer menu
     private boolean cookies;
 
-    public void view() throws IOException, InterruptedException, ParseException
     // Display menu when customer did not login yet
-    {
+    public void view() throws IOException, InterruptedException, ParseException {
         System.out.println("\n================================================= WELCOME TO TOM'S PRODIGIES STORE =================================================");
         System.out.println("1. Register");
         System.out.println("2. Login");
@@ -43,7 +57,6 @@ public class CustomerMenu {
         Customer customer = new Customer();
         Product product = new Product();
         AuthenticationSystem authenticationSystem = new AuthenticationSystem();
-        Order order = new Order();
 
         switch (option) {
             case "1":
@@ -119,9 +132,7 @@ public class CustomerMenu {
 
                     case "3":
                         product.getAllCategory();
-                        System.out.println("Enter category (e.g: laptop): ");
-                        String category = scanner.nextLine();
-                        product.searchCategoryByPriceRange(category);
+                        product.searchCategoryByPriceRange();
                         TimeUnit.SECONDS.sleep(1);
                         customerMenu.view();
 
@@ -178,9 +189,8 @@ public class CustomerMenu {
                 customerMenu.view();
 
             case "9":
-                authenticationSystem.mainMenu();
-                ;
                 // Back to the authentication system menu
+                authenticationSystem.mainMenu();
 
             case "10":
                 // Exit the system
@@ -195,6 +205,7 @@ public class CustomerMenu {
         }
     }
 
+    // Display homepage when customer log in successfully
     public void viewHomepage(String username) throws IOException, InterruptedException, ParseException {
         System.out.println("\n================================================= HOMEPAGE =================================================");
         // Display the login status when customer login successfully
@@ -272,9 +283,7 @@ public class CustomerMenu {
 
                     case "3":
                         product.getAllCategory();
-                        System.out.println("Enter category (e.g: laptop): ");
-                        String category = scanner.nextLine();
-                        product.searchCategoryByPriceRange(category);
+                        product.searchCategoryByPriceRange();
                         TimeUnit.SECONDS.sleep(1);
                         this.viewHomepage(username);
 
@@ -714,9 +723,8 @@ public class CustomerMenu {
         }
     }
 
-    public void createOrder(Customer member) throws IOException, InterruptedException, ParseException
     // Create a new order for customer
-    {
+    public void createOrder(Customer member) throws IOException, InterruptedException, ParseException {
         Cart cart = new Cart(member);
         ArrayList<String[]> cartList = cart.cartList();
         Random rd = new Random();
@@ -724,7 +732,7 @@ public class CustomerMenu {
         String oID = Order.oIDDataForValidate(String.format("T%03d", i)); // Generate the order id randomly and it is unique
         Order newOrder = new Order(oID, member);
         for (String[] strings : cartList)
-        /* this method will loop every item in customer's cart
+        /* This method will loop every item in customer's cart
         and create a new order for those items which have the same order id
          */ {
             String[] productInfo1 = new String[3];
@@ -735,6 +743,7 @@ public class CustomerMenu {
         Discount discount = new Discount(member, newOrder);
         newOrder.searchOrder(oID);
         newOrder.getTotalPaymentEachOrderId();
+
         // Display a total payment before and after discount depends on membership type
         ArrayList<String[]> discountCode = discount.discountCodeList();
         if (!(discountCode.size() == 0))
@@ -791,9 +800,6 @@ public class CustomerMenu {
             /* If customer doesn't have discount voucher,
             then the system will base on order's total spending after discount by membership to give customer discount voucher
             */
-            String[] orderInfo = ReadDataFromTXTFile.readSpecificLine(oID, 0,
-                    "./src/dataFile/billingHistory.txt", ",");
-            Long totalPayment = Long.parseLong(orderInfo[2]);
             discount.giveDiscountCode();
             PointsSystem.pointsConversion(member.getcID(), oID);
             this.viewHomepage(member.getUsername());

@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: COSC2081 Programming 1
+  Semester: 2022C
+  Assessment: Assignment 3
+  Author: Tom's Prodigies
+  ID: Nguyen Tran Ha Anh - s3938490
+      Hoang Tuan Minh - s3924716
+      Dang Kim Quang Minh - s3938024
+      Nguyen Gia Bao - s3938143
+  Acknowledgement:
+
+*/
+
 package product;
 
 import fileMethods.CreateTable;
@@ -14,27 +28,27 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.util.concurrent.TimeUnit;
 
 public class Product {
     // Attributes
-    // ArrayList<String> categories = new ArrayList<>(Arrays.asList(FileMethods.ReadDataFromTXTFile.readColString(3, "./src/items.txt", ",")));
     private String ID;
     private String title;
     private Long price;
     private String category;
 
-    public Product(String ID, String title, Long price, String category) throws IOException {
+    public Product(String ID, String title, Long price, String category) {
         this.ID = ID;
         this.title = title;
         this.price = price;
         this.category = category;
     }
 
-    public Product() throws IOException {
+    public Product() {
     }
 
-    /* This method will help user to search by category */
-    public void searchByCategory() throws IOException {
+    // This method will help user to search by category
+    public void searchByCategory() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the category (e.g: laptop):");
         String category = sc.nextLine();
@@ -81,31 +95,31 @@ public class Product {
         }
     }
 
-    public void searchCategoryByPriceRange(String category) {
-        //transforming user input to the right format.
+    // Transforming user input to the right format.
+    public void searchCategoryByPriceRange() throws InterruptedException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter category (e.g: laptop): ");
+        String category = scanner.nextLine();
         String capital = category.toUpperCase();
 
-        //create a empty Arraylist to store data after searching.
+        // Create a empty Arraylist to store data after searching.
         ArrayList<String[]> categories = new ArrayList<>();
 
-        //temporary database to store data.
+        // Temporary database to store data.
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
         for (int i = 1; i < database.size(); i++) {
             if (database.get(i)[3].equals(capital))
-                /* If the system could find out the category in items.txt file
-                 */ {
+            // If the system could find out the category in items.txt file
+            {
                 categories.add(database.get(i));
 
             }
         }
         printPriceRange();
         String option = UserInput.rawInput();
-
-
-//        ArrayList<String[]> matchResult = new ArrayList<>(this.getMatchResult(category[0]).size());
-
-
+        boolean check = false;
         switch (option) {
+            // Check for item's prices in a particular range defined
             case "1":
                 for (String[] strings : categories) {
                     Long priceItem = Long.parseLong(strings[2]);
@@ -114,6 +128,7 @@ public class Product {
                     }
                 }
                 System.out.println("Price range: 0 --> 25 mil");
+                check = true;
                 break;
             case "2":
                 for (String[] strings : categories) {
@@ -123,6 +138,7 @@ public class Product {
                     }
                 }
                 System.out.println("Price range: 25 mil --> 50 mil");
+                check = true;
                 break;
             case "3":
                 for (String[] strings : categories) {
@@ -132,6 +148,7 @@ public class Product {
                     }
                 }
                 System.out.println("Price range: 50 mil --> 75 mil");
+                check = true;
                 break;
             case "4":
                 for (String[] strings : categories) {
@@ -141,17 +158,25 @@ public class Product {
                     }
                 }
                 System.out.println("Price range: 75 mil --> 100 mil");
+                check = true;
                 break;
-            // for menu add 1 more but will be menu.something();
+            default:
+                System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
+                TimeUnit.SECONDS.sleep(1);
+                check = false;
+                searchCategoryByPriceRange();
+                // for menu add 1 more but will be menu.something();
         }
-        CreateTable.setShowVerticalLines(true);
-        CreateTable.setHeaders("ID", "Title", "Prices", "Category");
-        CreateTable.print();
-        CreateTable.setHeaders(new String[0]);
-        CreateTable.setRows(new ArrayList<String[]>());
-
+        if (check) {
+            CreateTable.setShowVerticalLines(true);
+            CreateTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
+            CreateTable.print();
+            CreateTable.setHeaders(new String[0]);
+            CreateTable.setRows(new ArrayList<String[]>());
+        }
     }
 
+    // Register new category
     public void registerCategory(String category) throws IOException, InterruptedException, ParseException {
         AdminMenu adminMenu = new AdminMenu();
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/categories.txt");
@@ -185,7 +210,7 @@ public class Product {
         }
     }
 
-    //This method is used to create new category and add to the categories.txt file.
+    // This method is used to create new category and add to the categories.txt file.
     public void createNewCategory(String category, int quantity) throws IOException {
         Path path = Paths.get("./src/dataFile/categories.txt");
         int id = (int) Files.lines(path).count();
@@ -195,11 +220,10 @@ public class Product {
         pw.close();
     }
 
-    //This method is used to check if the category belongs to the category list in categories.txt file.
+    // This method is used to check if the category belongs to the category list in categories.txt file.
     public boolean checkCategory(String category) {
 
         //Reformat the input to suitable for matching values.
-
         String capital = category.toUpperCase();
         boolean found = false;
         try {
@@ -219,6 +243,7 @@ public class Product {
         return found;
     }
 
+    // Display all the product with the id for customer to choose
     public void getProductHaveId() throws FileNotFoundException {
         ArrayList<String[]> user = new ArrayList<>();
         Scanner fileProducts = new Scanner(new File("./src/dataFile/items.txt"));
@@ -247,6 +272,7 @@ public class Product {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
+    // Display the price range
     public void printPriceRange() {
         System.out.println("1. Below 25 million VND.");
         System.out.println("2. 25 million VND to 50 million VND.");
@@ -268,13 +294,13 @@ public class Product {
         return pricesList;
     }
 
-    public void findItemByPriceRange() throws IOException {
+    public void findItemByPriceRange() throws InterruptedException {
         ArrayList<String[]> items = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
-
+        printPriceRange();
         String option = UserInput.rawInput();
-
+        boolean check = false;
         switch (option) {
-            //case 1: find the product between the price of 0 to 25000000.
+            // Case 1: find the product between the price of 0 to 25000000.
             case "1":
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
@@ -283,11 +309,11 @@ public class Product {
                     }
                 }
                 System.out.println("Price range: 0 --> 25 mil");
+                check = true;
                 break;
 
-            //case 2: find the product between the price of 25000000 to 50000000.
+            // Case 2: find the product between the price of 25000000 to 50000000.
             case "2":
-
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
                     if (25000000 <= priceItem && priceItem < 50000000) {
@@ -295,9 +321,10 @@ public class Product {
                     }
                 }
                 System.out.println("Price range: 25 mil --> 50 mil");
+                check = true;
                 break;
 
-            //case 3: find the product between the price of 50000000 to 75000000.
+            // Case 3: find the product between the price of 50000000 to 75000000.
             case "3":
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
@@ -306,10 +333,10 @@ public class Product {
                     }
                 }
                 System.out.println("Price range: 50 mil --> 75 mil");
+                check = true;
                 break;
 
-
-            //case 4: find the product between the price of 75000000 to 100000000.
+            // Case 4: find the product between the price of 75000000 to 100000000.
             case "4":
                 for (int i = 1; i < items.size(); i++) {
                     Long priceItem = Long.parseLong(items.get(i)[2]);
@@ -318,14 +345,22 @@ public class Product {
                     }
                 }
                 System.out.println("Price range: 75 mil --> 100 mil");
+                check = true;
                 break;
-            // for menu add 1 more but will be menu.something();
+            default:
+                System.out.println("THERE IS NO MATCHING RESULT, PLEASE TRY AGAIN!!!");
+                TimeUnit.SECONDS.sleep(1);
+                check = false;
+                findItemByPriceRange();
+                // for menu add 1 more but will be menu.something();
         }
-        CreateTable.setShowVerticalLines(true);
-        CreateTable.setHeaders("ID", "Title", "Prices", "Category");
-        CreateTable.print();
-        CreateTable.setHeaders(new String[0]);
-        CreateTable.setRows(new ArrayList<String[]>());
+        if (check) {
+            CreateTable.setShowVerticalLines(true);
+            CreateTable.setHeaders("ID", "Title", "Prices", "Category");
+            CreateTable.print();
+            CreateTable.setHeaders(new String[0]);
+            CreateTable.setRows(new ArrayList<String[]>());
+        }
     }
 
     // This method is used to gather and print all the product information.
@@ -346,7 +381,7 @@ public class Product {
             user.add(productData);
 
         }
-        //Print out the table contain all the product information.
+        // Print out the table contain all the product information.
         CreateTable.setShowVerticalLines(true);
         CreateTable.setHeaders("ID", "TITLE", "PRICE", "CATEGORY");
 
@@ -359,9 +394,8 @@ public class Product {
         CreateTable.setRows(new ArrayList<String[]>());
     }
 
-    public void updatePrice(String filepath, String newData) throws IOException
     // This method allow admin to modify a product's price that had existed in items' file
-    {
+    public void updatePrice(String filepath, String newData) throws IOException {
         ArrayList<String[]> database = ReadDataFromTXTFile.readAllLines("./src/dataFile/items.txt");
         for (String[] strings : database) {
             if (strings[0].equals(this.getID()))
@@ -384,6 +418,7 @@ public class Product {
         }
     }
 
+    // Display all the category
     public void getAllCategory() {
         ArrayList<String[]> allCategory = ReadDataFromTXTFile.readAllLines("./src/dataFile/categories.txt");
         ArrayList<String> category = new ArrayList<>();
@@ -423,15 +458,5 @@ public class Product {
     // Setter method for price
     public void setPrice(Long price) {
         this.price = price;
-    }
-
-    // Getter method for category
-    public String getCategory() {
-        return category;
-    }
-
-    // Setter method for category
-    public void setCategory(String category) {
-        this.category = category;
     }
 }

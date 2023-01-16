@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: COSC2081 Programming 1
+  Semester: 2022C
+  Assessment: Assignment 3
+  Author: Tom's Prodigies
+  ID: Nguyen Tran Ha Anh - s3938490
+      Hoang Tuan Minh - s3924716
+      Dang Kim Quang Minh - s3938024
+      Nguyen Gia Bao - s3938143
+  Acknowledgement:
+
+*/
+
 package menu;
 
 import fileMethods.CreateTable;
@@ -9,6 +23,8 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class AuthenticationSystem {
+
+    // Main menu when user start our system
     public void mainMenu() throws IOException, InterruptedException, ParseException {
         System.out.println("COSC2081 GROUP ASSIGNMENT");
         System.out.println("STORE ORDER MANAGEMENT SYSTEM");

@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: COSC2081 Programming 1
+  Semester: 2022C
+  Assessment: Assignment 3
+  Author: Tom's Prodigies
+  ID: Nguyen Tran Ha Anh - s3938490
+      Hoang Tuan Minh - s3924716
+      Dang Kim Quang Minh - s3938024
+      Nguyen Gia Bao - s3938143
+  Acknowledgement:
+
+*/
+
 package product;
 
 import fileMethods.CreateTable;
@@ -9,21 +23,25 @@ import java.util.Collections;
 
 public class SortProduct {
 
+    // Constructor
     public SortProduct() {
     }
 
-    public static ArrayList<Long> sortAscending(ArrayList<Long> values) { // Take in an arraylist and sort the content ascending
+    // Take in an arraylist and sort the content ascending
+    public static ArrayList<Long> sortAscending(ArrayList<Long> values) {
         Collections.sort(values);
 
         return values; // Return a sorted ArrayList
     }
 
-    public static ArrayList<Long> sortDescending(ArrayList<Long> values) { // Take in an arraylist and sort the content descending
+    // Take in an arraylist and sort the content descending
+    public static ArrayList<Long> sortDescending(ArrayList<Long> values) {
         values.sort(Collections.reverseOrder());
 
         return values; // Return a sorted ArrayList
     }
 
+    // Sorting the product by price
     public static void sortItems(int input) throws IOException {
         // Create an product object
         Product product = new Product();

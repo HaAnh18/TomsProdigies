@@ -1,3 +1,17 @@
+/*
+  RMIT University Vietnam
+  Course: COSC2081 Programming 1
+  Semester: 2022C
+  Assessment: Assignment 3
+  Author: Tom's Prodigies
+  ID: Nguyen Tran Ha Anh - s3938490
+      Hoang Tuan Minh - s3924716
+      Dang Kim Quang Minh - s3938024
+      Nguyen Gia Bao - s3938143
+  Acknowledgement:
+
+*/
+
 package menu;
 
 
@@ -15,8 +29,9 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class AdminMenu {
+
+    // Display a menu for user before login
     public void view() throws IOException, ParseException, InterruptedException {
-        // Display a menu for user before login
         System.out.println("\n================================================= WELCOME TO TOM'S PRODIGIES STORE =================================================");
         System.out.println("1. Login by admin account");
         System.out.println("2. Back to authentication system");
@@ -63,6 +78,7 @@ public class AdminMenu {
         }
     }
 
+    // Display the homepage for admin when he/she log in successfully
     public void viewHomepage() throws IOException, InterruptedException, ParseException {
         System.out.println("\n================================================= HOMEPAGE =================================================");
         System.out.println("\n1. List all products' information");
@@ -175,6 +191,7 @@ public class AdminMenu {
                 adminMenu.viewHomepage();
 
             case "10":
+                // Allow user to update order's status
                 System.out.println("\n================================================= UPDATING ORDER'S STATUS =================================================");
                 order.getAllOrderInfo();
                 System.out.print("Enter order ID to update delivery status (e.g: T001): ");
@@ -196,7 +213,8 @@ public class AdminMenu {
                     case "1":
                         System.out.print("Enter new category (e.g: Laptop): ");
                         String category = scanner.nextLine();
-                        product.createNewCategory(category, 0);
+                        String capital = category.toUpperCase();
+                        product.createNewCategory(capital, 0);
                         adminMenu.viewHomepage();
 
                     case "2":
@@ -217,6 +235,7 @@ public class AdminMenu {
                 }
 
             case "12":
+                // Control everything about the point system
                 System.out.println("\n================================================= MANAGE POINT SHOP =================================================");
                 System.out.println("1. View exchange log");
                 System.out.println("2. View prizes");
@@ -306,9 +325,8 @@ public class AdminMenu {
         }
     }
 
-    public void viewStatistic() throws IOException, InterruptedException, ParseException
     // Display all the statistic related to the revenue of the store as well as the most/the least popular product and the most spender in store
-    {
+    public void viewStatistic() throws IOException, InterruptedException, ParseException {
         System.out.println("\n================================================= ALL STATISTICS =================================================");
         System.out.println("1. List total revenue");
         System.out.println("2. List total revenue in particular day");
